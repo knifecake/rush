@@ -1,6 +1,6 @@
 #include "building.h"
 
-struct _building{
+struct _Building {
   size_t id;   /* Building id*/
   int level;  /* Level building */
   int unlocking_level;  /* Player level requiered to build it*/
@@ -8,7 +8,7 @@ struct _building{
   int cost;   /*Cost of building or leveling it up*/
   int tile_id;  /*Id where it is built*/
   int base_resources; /* Quantity of resources returned each time */
-}
+};
 
 Building *building_new (size_t id){
 

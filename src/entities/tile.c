@@ -1,5 +1,7 @@
 #include "tile.h"
+
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct _Tile {
   int tile_id;

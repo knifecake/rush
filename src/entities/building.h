@@ -46,4 +46,4 @@ int building_get_cost(Building *);
 
 int building_get_tile_id(Building *);
 
-int building_get_base_resources(Building *)
+int building_get_base_resources(Building *);
