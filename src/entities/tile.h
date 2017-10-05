@@ -15,3 +15,10 @@
  *  - draw_tile(x, y) draws the tile starting from (x, y)
  *
  */
+
+ /*
+  *This constant is used in the tiles to limit the amount of materials you can obtain
+  *from this tile.
+  *
+  */
+#define MAX_RESOURCES 10
