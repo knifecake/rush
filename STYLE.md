@@ -15,11 +15,37 @@
 
   * The pointer `*` should be placed next to the variable or function name, not next to the type. Good: `int *list, Building *building_new()`, bad: `int* list, Building* building_new()`.
   * Indent your code with `2 spaces`. Do not leave trailing whitespace at the end of any line. Use unix-style line endings (`\n`, not `\r\n`). Encode your files in `utf8`.
-  * Curly braces are placed on the same line in `for, while, do-while` and `if-elsif-else` constructs, but on a different line for functions.
+  * Curly braces are placed on the same line as `for, while, do-while, if-elsif-else` constructs and `functions`.
+  * Function arguments should be in the following order: files, function pointers, entities, other pointers, static variables.
+  * Avoid declaring variables atop functions. They should be declared as close to their first use as posible. This is especially true for iterators.
 
 ## Further considerations
 
   * Comparisons with `NULL` should be avoided: use `!something` instead of `something == NULL` to check for a `NULL` value.
   * Include `<stdbool.h>` for boolean types. They are declared like this: `bool something = true`. `true` and `false` keywords are lowercase, as all other C keywords.
   * Write descriptive commit messages. Do not end them with a period
+  * Thoroughly comment your code.
+    * Place a comment before each function (before its prototype in the header file) describing what it does and how it's used.
+    * Code inside a function should not need comments in every line. Descriptive variable names, clear control flow and keeping functions to the point should be enough to understand what a function does.
   * Be succinct.
+
+## Example of a file header in comments
+```
+/*
+ * tile.h
+ *
+ * A place is the basic unit of space. It has the following attributes:
+ *  - tile_id: unique identifier for this cell
+ *  - building_type: id of building type, -1 if no building
+ *  - resource_multipliers: the amounts of each resource that can be obtained from this tile
+ *  - remaining_resources: the amount of each resource remaining on this tile
+ *  - visible: whether this tile is visible to the player
+ *  - enemies: the number of enemies currently on this tile, -1 if conquered
+ *  - sprite: tile image
+ *
+ * Actions:
+ *  - build_a_building
+ *  - draw_tile(x, y) draws the tile starting from (x, y)
+ *
+ */
+```
