@@ -9,6 +9,7 @@
   * Constants are declared in `ALL_CAPS`, with underscores as separators.
   * Function prototypes do not include argument names, only the types. Good: `Building *building_destroy(Building *)`.
   * Names for initializers and destroy methods in entities follow the `Entity *entity_new(), void entity_destroy(Entity *)` pattern.
+  * Maximum will be named by `MAX` and number with `NUM`
 
 
 ## Placement of keywords, delimiters and operators
@@ -19,6 +20,7 @@
   * Function arguments should be in the following order: files, function pointers, entities, other pointers, static variables.
   * Avoid declaring variables atop functions. They should be declared as close to their first use as posible. This is especially true for iterators.
   * The access to struct fields with -> will be done like `struct -> field` and not `struct->field`
+  * Operators and if-clauses parenthesis will be delimited by spaces. Good: `a = b`. Bad: `a=b`
   * The usage of size_t type should be use inside iterators. The print - escape code for this type of data is %zu.
 ## Further considerations
 
