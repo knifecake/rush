@@ -6,7 +6,6 @@ struct _building {
   int unlocking_level;  /* Player level requiered to build it*/
   int health; /* Health points of the building */
   int cost;   /*Cost of building or leveling it up*/
-  int tile_id;  /*Id where it is built*/
   int base_resources; /* Quantity of resources returned each time */
 
   /* We're using int so whe don't have to check the value is not negative */
@@ -45,19 +44,6 @@ Building *building_level_up (Building *bp){
    * health and base_resources fields.
    */
    return bp;
-}
-
-Building *building_place (Building *bp, int tile_id){
-  if(!bp){
-    fprintf(stderr, "building_place: Error! Pointer is NULL\n");
-    return NULL;
-  }
-  if (tile_id > MAX_TILE){
-    fprintf(stderr, "building_place: Error! tile_id exceeds from limits\n");
-    return NULL;
-  }
-  bp->tile_id = tile_id;
-  return bp;
 }
 
 Building *building_edit_health (Building* bp, int increment){
@@ -111,14 +97,6 @@ int building_get_cost (Building *bp){
     return -1;
   }
   return bp -> cost;
-}
-
-int building_get_tile_id (Building *bp){
-  if(!bp){
-    fprintf(stderr, "building_get_tile_id: Error! Pointer is NULL\n");
-    return -1;
-  }
-  return bp -> tile_id;
 }
 
 int building_get_base_resources (Building *bp){

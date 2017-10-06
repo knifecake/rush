@@ -43,12 +43,6 @@ void building_destroy(Building *);
 Building *building_level_up(Building *);
 
 /*
- * Associates a building with the id of a tile.
- * Returns a NULL value if an error occurs.
- */
-Building *building_place(Building *, int);
-
-/*
  * Adds or subtract depending on the increment. If the value were going to be
  * negative, instead it is 0.
  * Returns a NULL value if an error occurs.
@@ -66,7 +60,5 @@ int building_get_unlocking_level(Building *);
 int building_get_health(Building *);
 
 int building_get_cost(Building *);
-
-int building_get_tile_id(Building *);
 
 int building_get_base_resources(Building *);
