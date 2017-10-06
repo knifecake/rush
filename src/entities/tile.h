@@ -11,7 +11,7 @@
  *  - sprite: tile image
  *
  * Actions:
- *  - build_a_building
+ *  - build
  *  - draw_tile(x, y) draws the tile starting from (x, y)
  *
  */
@@ -22,3 +22,25 @@
   *
   */
 #define MAX_RESOURCES 10
+
+Tile *tile_new ();
+
+void tile_destroy (Tile *);
+
+int tile_get_id (Tile *);
+
+int tile_get_building_type (Tile *);
+
+float tile_get_resource_multipliers (Tile *);
+
+int tile_get_remaining_resources (Tile *);
+
+bool tile_get_visible (Tile *);
+
+int tile_get_enemies (Tile *);
+
+Tile *tile_set_id (Tile *, int);
+
+Tile *tile_set_building_type (Tile *, int);
+
+Tile *tile_build (Tile *, Building *);
