@@ -99,10 +99,10 @@ int building_get_cost (Building *bp){
   return bp -> cost;
 }
 
-int *building_get_base_resources (Building *bp){
+int building_get_base_resource (Building *bp, int resource_id){
   if(!bp){
     fprintf(stderr, "building_get_base_resources: Error! Pointer is NULL\n");
-    return NULL;
+    return -1;
   }
-  return bp -> base_resources;
+  return bp -> base_resources[resource_id];
 }

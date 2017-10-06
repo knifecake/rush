@@ -62,4 +62,8 @@ int building_get_health(Building *);
 
 int building_get_cost(Building *);
 
-int *building_get_base_resources(Building *);
+/*
+ * Returns the base resource of a building given the id of the resource.
+ * If it fails, returns -1.
+ */
+int building_get_base_resources(Building *, int);
