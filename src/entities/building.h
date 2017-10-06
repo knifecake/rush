@@ -66,4 +66,4 @@ int building_get_cost(Building *);
  * Returns the base resource of a building given the id of the resource.
  * If it fails, returns -1.
  */
-int building_get_base_resources(Building *, int);
+int building_get_base_resources(Building *, const int);

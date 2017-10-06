@@ -6,7 +6,7 @@ struct _Building {
   int unlocking_level;  /* Player level requiered to build it*/
   int health; /* Health points of the building */
   int cost;   /*Cost of building or leveling it up*/
-  int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
+  int base_resources[MAX_RESOURCE]; /* Quantity of resources returned each time */
 
   /* We're using int so whe don't have to check the value is not negative */
 };
@@ -99,7 +99,7 @@ int building_get_cost (Building *bp){
   return bp -> cost;
 }
 
-int building_get_base_resource (Building *bp, int resource_id){
+int building_get_base_resource (Building *bp, const int resource_id){
   if(!bp){
     fprintf(stderr, "building_get_base_resources: Error! Pointer is NULL\n");
     return -1;
