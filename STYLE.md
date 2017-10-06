@@ -28,8 +28,8 @@
     * Place a comment before each function (before its prototype in the header file) describing what it does and how it's used.
     * Code inside a function should not need comments in every line. Descriptive variable names, clear control flow and keeping functions to the point should be enough to understand what a function does.
   * Error handling should print the error information in standard error.
-    * Use the next function prototype: `fprintf( stderr, <name_of_your_method>: error information \n );`.
-    * Example: In the function `building_new`, the function will be `fprintf( sterr, building_new: Error! Memory not allocated \n);`
+    * Use the next function prototype: `fprintf( stderr, "<name_of_your_method>: error information \n" );`.
+    * Example: In the function `building_new`, the function will be `fprintf( sterr, "building_new: Error! Memory not allocated \n");`
   * Be succinct.
 
 ## Example of a file header in comments
