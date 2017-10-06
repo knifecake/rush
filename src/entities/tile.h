@@ -23,6 +23,11 @@
   */
 #define MAX_RESOURCES 10
 
+#include <stdbool.h>
+#include "building.h"
+
+typedef struct _Tile Tile;
+
 Tile *tile_new ();
 
 void tile_destroy (Tile *);
@@ -31,9 +36,9 @@ int tile_get_id (Tile *);
 
 int tile_get_building_type (Tile *);
 
-float tile_get_resource_multipliers (Tile *);
+float tile_get_resource_multipliers (Tile *, int);
 
-int tile_get_remaining_resources (Tile *);
+int tile_get_remaining_resources (Tile *, int);
 
 bool tile_get_visible (Tile *);
 

@@ -1,17 +1,16 @@
 #include "tile.h"
-#include "building.h"
 
 #include <stdlib.h>
-#include <stdbool.h>
 
 struct _Tile {
-  int tile_id;
-  int building_type;
+  int id;
+  int building_id;
+  int type;
   float resource_multipliers[MAX_RESOURCES];
   int remaining_resources[MAX_RESOURCES];
   bool visible;
   int enemies;
-} _Tile;
+};
 
 Tile *tile_new () {
   Tile *tile;
@@ -35,28 +34,28 @@ int tile_get_id (Tile *tile) {
   return tile->id;
 }
 
-int tile_get_building_type (Tile *tile) {
+int tile_get_building_id (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_building_type: invalid tile.\n");
+    fprintf(stderr, "tile_get_building_id: invalid tile.\n");
     return -1;
   }
-  return tile->building_type;
+  return tile->building_id;
 }
 
-float tile_get_resource_multipliers (Tile *tile) {
+float tile_get_resource_multipliers (Tile *tile, int multiplier_id) {
   if(!tile) {
     fprintf(stderr, "tile_get_resource_multipliers: invalid tile.\n");
     return -1;
   }
-  return tile->resource_multipliers;
+return tile->resource_multipliers[multiplier_id];
 }
 
-int tile_get_remaining_resources (Tile *tile) {
+int tile_get_remaining_resources (Tile *tile, int resource_id) {
   if(!tile) {
     fprintf(stderr, "tile_get_remaining_resources: invalid tile.\n");
     return -1;
   }
-  return tile->remaining_resources;
+  return tile->remaining_resources[resource_id];
 }
 
 bool tile_get_visible (Tile *tile) {
@@ -81,15 +80,10 @@ Tile *tile_set_id (Tile *tile, int id) {
     return NULL;
   }
   if(id<0) {
-    fprintf(stderr, "%tile_set_id: invalid id.\n");
+    fprintf(stderr, "tile_set_id: invalid id.\n");
     return NULL;
   }
   tile->id=id;
 
   return tile;
-}
-
-
-Tile *tile_build (Tile *tile, Building *building) {
-  building =
 }
