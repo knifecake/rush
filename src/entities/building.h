@@ -19,8 +19,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include "resource.h"
 
-typedef struct _building Building;
+typedef struct _Building Building;
 
 
 /*
@@ -28,7 +29,7 @@ typedef struct _building Building;
  * as an argument, then sets every other value according to the established data
  * If it fails, NULL is returned.
  */
-Building *building_new(size_t id);
+Building *building_new(int id);
 
 /*
  * Frees memory allocated by building_new, it will only free it if the pointer
@@ -43,12 +44,6 @@ void building_destroy(Building *);
 Building *building_level_up(Building *);
 
 /*
- * Associates a building with the id of a tile.
- * Returns a NULL value if an error occurs.
- */
-Building *building_place(Building *, size_t);
-
-/*
  * Adds or subtract depending on the increment. If the value were going to be
  * negative, instead it is 0.
  * Returns a NULL value if an error occurs.
@@ -57,16 +52,18 @@ Building *building_edit_health(Building *, int);
 
 /*GETTERS*/
 
-size_t building_get_id(Building *);
+int building_get_id(Building *);
 
-size_t building_get_level(Building *);
+int building_get_level(Building *);
 
-size_t building_get_unlocking_level(Building *);
+int building_get_unlocking_level(Building *);
 
-size_t building_get_health(Building *);
+int building_get_health(Building *);
 
-size_t building_get_cost(Building *);
+int building_get_cost(Building *);
 
-size_t building_get_tile_id(Building *);
-
-size_t building_get_base_resources(Building *);
+/*
+ * Returns the base resource of a building given the id of the resource.
+ * If it fails, returns -1.
+ */
+int building_get_base_resources(Building *, const int);
