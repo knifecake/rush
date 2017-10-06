@@ -19,8 +19,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include "resources.h"
 
-typedef struct _building Building;
+typedef struct _Building Building;
 
 
 /*

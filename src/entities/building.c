@@ -1,12 +1,12 @@
 #include "building.h"
 
-struct _building {
+struct _Building {
   int id;   /* Building id*/
   int level;  /* Level building */
   int unlocking_level;  /* Player level requiered to build it*/
   int health; /* Health points of the building */
   int cost;   /*Cost of building or leveling it up*/
-  int base_resources; /* Quantity of resources returned each time */
+  int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
 
   /* We're using int so whe don't have to check the value is not negative */
 };
