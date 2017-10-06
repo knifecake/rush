@@ -1,18 +1,18 @@
 #include "building.h"
 
 struct _building {
-  size_t id;   /* Building id*/
-  size_t level;  /* Level building */
-  size_t unlocking_level;  /* Player level requiered to build it*/
-  size_t health; /* Health points of the building */
-  size_t cost;   /*Cost of building or leveling it up*/
-  size_t tile_id;  /*Id where it is built*/
-  size_t base_resources; /* Quantity of resources returned each time */
+  int id;   /* Building id*/
+  int level;  /* Level building */
+  int unlocking_level;  /* Player level requiered to build it*/
+  int health; /* Health points of the building */
+  int cost;   /*Cost of building or leveling it up*/
+  int tile_id;  /*Id where it is built*/
+  int base_resources; /* Quantity of resources returned each time */
 
-  /* We're using size_t so whe don't have to check the value is not negative */
+  /* We're using int so whe don't have to check the value is not negative */
 };
 
-Building *building_new (size_t id){
+Building *building_new (int id){
   Building *bp;
   if (!bp = calloc(1, sizeof(Building))){
     fprintf(stderr, "building_new: Error! Memory not allocated\n");
@@ -47,7 +47,7 @@ Building *building_level_up (Building *bp){
    return bp;
 }
 
-Building *building_place (Building *bp, size_t tile_id){
+Building *building_place (Building *bp, int tile_id){
   if(!bp){
     fprintf(stderr, "building_place: Error! Pointer is NULL\n");
     return NULL;
@@ -73,30 +73,58 @@ Building *building_edit_health (Building* bp, int increment){
   return bp;
 }
 
-size_t building_get_id (Building *bp){
-
+int building_get_id (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_id: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> id;
 }
 
-size_t building_get_level (Building *bp){
-
+int building_get_level (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_level: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> level;
 }
 
-size_t building_get_unlocking_level (Building *bp){
-
+int building_get_unlocking_level (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_unlocking_level: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> unlocking_level;
 }
 
-size_t building_get_health (Building *bp){
-
+int building_get_health (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_health: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> health;
 }
 
-size_t building_get_cost (Building *bp){
-
+int building_get_cost (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_cost: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> cost;
 }
 
-size_t building_get_tile_id (Building *bp){
-
+int building_get_tile_id (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_tile_id: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> tile_id;
 }
 
-size_t building_get_base_resources (Building *bp){
-
+int building_get_base_resources (Building *bp){
+  if(!bp){
+    fprintf(stderr, "building_get_base_resources: Error! Pointer is NULL\n");
+    return -1;
+  }
+  return bp -> base_resources;
 }
