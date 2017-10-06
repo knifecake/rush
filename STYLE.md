@@ -18,7 +18,7 @@
   * Curly braces are placed on the same line as `for, while, do-while, if-elsif-else` constructs and `functions`.
   * Function arguments should be in the following order: files, function pointers, entities, other pointers, static variables.
   * Avoid declaring variables atop functions. They should be declared as close to their first use as posible. This is especially true for iterators.
-
+  * The usage of size_t type should be use whenever you want to use natural numbers, especially for iterators. The print - escape code for this type of data is %zu.
 ## Further considerations
 
   * Comparisons with `NULL` should be avoided: use `!something` instead of `something == NULL` to check for a `NULL` value.

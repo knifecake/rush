@@ -36,24 +36,37 @@ Building *building_new(size_t id);
  */
 void building_destroy(Building *);
 
+/*
+ * Increases level of the building, as well as the other parameters of it.
+ * Returns a NULL value if an error occurs.
+ */
 Building *building_level_up(Building *);
 
-Building *building_place(Building *, int);
+/*
+ * Associates a building with the id of a tile.
+ * Returns a NULL value if an error occurs.
+ */
+Building *building_place(Building *, size_t);
 
+/*
+ * Adds or subtract depending on the increment. If the value were going to be
+ * negative, instead it is 0.
+ * Returns a NULL value if an error occurs.
+ */
 Building *building_edit_health(Building *, int);
 
 /*GETTERS*/
 
 size_t building_get_id(Building *);
 
-int building_get_level(Building *);
+size_t building_get_level(Building *);
 
-int building_get_unlocking_level(Building *);
+size_t building_get_unlocking_level(Building *);
 
-int building_get_health(Building *);
+size_t building_get_health(Building *);
 
-int building_get_cost(Building *);
+size_t building_get_cost(Building *);
 
-int building_get_tile_id(Building *);
+size_t building_get_tile_id(Building *);
 
-int building_get_base_resources(Building *);
+size_t building_get_base_resources(Building *);
