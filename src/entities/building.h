@@ -22,8 +22,18 @@
 
 typedef struct _building Building;
 
+
+/*
+ * This function saves memory for a new bulding, recieve the id of the building
+ * as an argument, then sets every other value according to the established data
+ * If it fails, NULL is returned.
+ */
 Building *building_new(size_t id);
 
+/*
+ * Frees memory allocated by building_new, it will only free it if the pointer
+ * is not NULL.
+ */
 void building_destroy(Building *);
 
 Building *building_level_up(Building *);
@@ -32,7 +42,7 @@ Building *building_place(Building *, int);
 
 Building *building_edit_health(Building *, int);
 
-/*GET FUNCTIONS*/
+/*GETTERS*/
 
 size_t building_get_id(Building *);
 

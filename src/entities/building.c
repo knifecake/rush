@@ -11,11 +11,18 @@ struct _Building {
 };
 
 Building *building_new (size_t id){
-
+  Building *bp;
+  if (!bp = calloc(1, sizeof(Building))) return NULL;
+  bp -> id = id;
+  /*
+   * This piece of code should be substituted with the initial values depending
+   * on the id of this building. Probably a switch statement.
+   */
+  return bp;
 }
 
 void building_destroy (Building *bp){
-
+  if (bp) free(bp);
 }
 
 Building *building_level_up (Building *bp){
@@ -59,5 +66,5 @@ int building_get_tile_id (Building *bp){
 }
 
 int building_get_base_resources (Building *bp){
-  
+
 }
