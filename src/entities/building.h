@@ -19,7 +19,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "resources.h"
+#include "resource.h"
 
 typedef struct _Building Building;
 
@@ -62,4 +62,4 @@ int building_get_health(Building *);
 
 int building_get_cost(Building *);
 
-int building_get_base_resources(Building *);
+int *building_get_base_resources(Building *);

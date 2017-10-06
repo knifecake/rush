@@ -1,6 +1,6 @@
 
 
-#include "resources.h"
+#include "resource.h"
 
 struct _Resources{
   int id;

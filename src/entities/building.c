@@ -13,7 +13,7 @@ struct _Building {
 
 Building *building_new (int id){
   Building *bp;
-  if (!bp = calloc(1, sizeof(Building))){
+  if (!(bp = calloc(1, sizeof(Building)))) {
     fprintf(stderr, "building_new: Error! Memory not allocated\n");
     return NULL;
   }
@@ -26,7 +26,7 @@ Building *building_new (int id){
 }
 
 void building_destroy (Building *bp){
-  if (!bp){
+  if (!bp) {
     fprintf(stderr, "building_destroy: Error! Pointer is NULL\n");
     return;
   }
@@ -34,7 +34,7 @@ void building_destroy (Building *bp){
 }
 
 Building *building_level_up (Building *bp){
-  if(!bp){
+  if (!bp) {
     fprintf(stderr, "building_level_up: Error! Pointer is NULL\n");
     return NULL;
   }
@@ -51,7 +51,7 @@ Building *building_edit_health (Building* bp, int increment){
     fprintf(stderr, "building_edit_health: Error! Pointer is NULL\n");
     return NULL;
   }
-  if (increment < 0 && (-1*increment) => bp -> health){
+  if (increment < 0 && (-1*increment) >= bp -> health){
     bp -> health = 0;
   }else{
     bp -> health += increment;
@@ -99,10 +99,10 @@ int building_get_cost (Building *bp){
   return bp -> cost;
 }
 
-int building_get_base_resources (Building *bp){
+int *building_get_base_resources (Building *bp){
   if(!bp){
     fprintf(stderr, "building_get_base_resources: Error! Pointer is NULL\n");
-    return -1;
+    return NULL;
   }
   return bp -> base_resources;
 }
