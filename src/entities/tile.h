@@ -16,15 +16,9 @@
  *
  */
 
- /*
-  *This constant is used in the tiles to limit the amount of materials you can obtain
-  *from this tile.
-  *
-  */
-#define MAX_RESOURCES 10
+#include "building.h"
 
 #include <stdbool.h>
-#include "building.h"
 
 typedef struct _Tile Tile;
 

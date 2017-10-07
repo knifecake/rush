@@ -5,10 +5,46 @@
  *
  */
 
- #include <stdio.h>
- #include <stdlib.h>
+#ifndef __RESOURCE_H__
+#define __RESOURCE_H__
 
- #define MAX_RESOURCE 10
- #define MAX_RESOURCE_NAME 32
+#include <stdio.h>
+#include <stdlib.h>
 
- typedef struct _Resource Resource;
+/*
+ * The maximun number of Resources the game currently supports.
+ *
+ * Note that other entities such as tile depend on this constant.
+ * Choosing a very large number and not using that many Resources
+ * means a lot of wasted space in other entities.
+ */
+#define MAX_RESOURCES 10
+
+
+/*
+ * Maximun length of the resource name.
+ */
+#define MAX_RESOURCE_NAME 32
+
+typedef struct _Resource Resource;
+
+/*
+ * Creates a resource with the given ID and name. Name is copied on
+ * creation of the resource and freed on deletion.
+ *
+ * Returns NULL on error.
+ */
+Resource *resource_new(int id, const char *name);
+
+
+/*
+ * Frees the given resource.
+ */
+void resource_destroy(Resource *);
+
+/*
+ * Prints the given resource, for debugging purposes.
+ */
+void resource_print(FILE *s, Resource *r);
+
+#endif

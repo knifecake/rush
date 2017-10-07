@@ -1,0 +1,16 @@
+## Tile definition format
+
+1         # (int) tile_id
+name      # (char *) tile name
+
+10.5      # (float) resource 1 multiplier
+12.0      # (float) resource 2 multiplier
+...
+0.89      # (float) resource n multiplier
+
+177261    # (int) quantity of resource 1 available
+12001     # (int) quantity of resource 2 available
+...
+0         # (int) quantity of resource n avaiable
+
+120       # number of enemies

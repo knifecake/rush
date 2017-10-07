@@ -1,0 +1,24 @@
+## Resource description file
+
+# This file will be loaded onto the game. Resources will be created from
+# the descriptions given here and assigned to the player. This is the most
+# basic asset file. The number of resources present in this file determines
+# the number of resources that must be present on resource lists in tiles
+# and buildings.
+
+2         # number of resources present on this file
+
+# BEGIN: resource 1
+
+0         # (int) resource ID
+gin       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
+
+# END: resource 1
+
+
+# BEGIN: resource 2
+
+1               # (int) resource ID
+chococrispies   # (string) resource name, must be shorter than MAX_RESOURCE_NAME
+
+# END: resource 2
