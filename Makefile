@@ -1,15 +1,22 @@
 CC			= gcc
-CFLAGS	= -Wall -Wextra -std=c99
+CFLAGS	= -Wall -std=c99
 
 BUILD_DIR = build
+EXE				= game
 
 src	= $(wildcard src/*.c) \
 			$(wildcard src/**/*.c)
-obj = $(src:.c=.o)
+lib = $(wildcard lib/*.c)
+obj = $(src:.c=.o) \
+			$(lib:.c=.o)
 
 game: $(obj)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $^
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^
 	@make clear
+
+run: game
+	@echo "\n🤡  Running THE GAME 🤡\n"
+	./$(BUILD_DIR)/$(EXE)
 
 .PHONY: clear
 clear:
