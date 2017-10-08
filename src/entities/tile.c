@@ -4,7 +4,7 @@
 
 struct _Tile {
   int id;
-  char sprite[MAX_TILE_NAME + 1];
+  char sprite[MAX_SPRITE_NAME + 1];
   float resource_multipliers[MAX_RESOURCES];
   int remaining_resources[MAX_RESOURCES];
   int enemies;
@@ -12,12 +12,12 @@ struct _Tile {
   bool visible;
 };
 
-Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *remaining_resources) {
+Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *remaining_resources, int enemies) {
   if(!sprite){
     handle_error("cannot create tile, missing sprite name", "tile_new",  __FILE__, __LINE__);
     return NULL;
   }
-  if (strlen(sprite) > MAX_RESOURCE_NAME){
+  if (strlen(sprite) > MAX_SPRITE_NAME){
     handle_error("cannot create tile, sprite name too long", "tile_new", __FILE__, __LINE__);
     return NULL;
   }

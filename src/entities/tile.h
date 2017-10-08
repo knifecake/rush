@@ -14,10 +14,18 @@
  *  - build
  *
  */
+ #ifndef __TILE_H__
+ #define __TILE_H__
 
 #include "building.h"
 
+#include "../error_handling.h"
+
 #include <stdbool.h>
+
+#include <string.h>
+
+#define MAX_SPRITE_NAME 32
 
 typedef struct _Tile Tile;
 
@@ -26,7 +34,7 @@ typedef struct _Tile Tile;
  * remaining_resources.
  * Returns NULL on error.
  */
-Tile *tile_new (int, const char*, float*, int*, int);
+Tile *tile_new (int, const char *, float *, int *, int);
 
 /*
  * Frees memory allocated by tile.
@@ -55,3 +63,11 @@ int tile_get_enemies (Tile *);
  * Returns NULL on error.
  */
 Tile *tile_build (Tile *, Building *);
+
+/*
+ * Given a tile and a resource id, return amount of resources.
+ * Returns -1 on error.
+ */
+ int tile_collect_resources(Tile *, int);
+
+ #endif
