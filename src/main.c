@@ -7,6 +7,8 @@
 #include "asset_loaders/resource_loader.h"
 #include "asset_loaders/tile_loader.h"
 
+#include "sprite.h"
+
 
 /*
  * Provisional constant.
@@ -17,6 +19,7 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
+#define IMAGE_ASSET "assets/img/color_key.bmp"
 
 
 int main(void) {
@@ -57,6 +60,12 @@ int main(void) {
     fclose(tf);
 
     for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
+
+    FILE *imf = fopen(IMAGE_ASSET, "r");
+    Sprite *s = sprite_new(imf);
+    sprite_draw(s, 1, 1);
+    sprite_destroy(s);
+    fclose(imf);
 
     tile_list_destroy(tiles);
 

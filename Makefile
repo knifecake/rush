@@ -11,7 +11,7 @@ obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
 game: $(obj)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ -lm
 	@make clear
 
 run: game
