@@ -34,7 +34,7 @@ typedef struct _Resource Resource;
  *
  * Returns NULL on error.
  */
-Resource *resource_new(int id, const char *name);
+Resource *resource_new(int , const char *);
 
 
 /*
@@ -45,6 +45,6 @@ void resource_destroy(Resource *);
 /*
  * Prints the given resource, for debugging purposes.
  */
-void resource_print(FILE *s, Resource *r);
+void resource_print(FILE *, Resource *);
 
 #endif
