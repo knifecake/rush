@@ -4,20 +4,54 @@
 
 struct _Tile {
   int id;
-  int building_id;
-  int type;
+  char sprite[MAX_TILE_NAME + 1];
   float resource_multipliers[MAX_RESOURCES];
   int remaining_resources[MAX_RESOURCES];
-  bool visible;
   int enemies;
+  int building_id;
+  bool visible;
 };
 
-Tile *tile_new () {
-  Tile *tile;
-  tile = (Tile *)calloc(1, sizeof(Tile));
-  if(!tile) {
-    fprintf(stderr, "tile_new: cannot create tile.\n");
+Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *remaining_resources) {
+  if(!sprite){
+    handle_error("cannot create tile, missing sprite name", "tile_new",  __FILE__, __LINE__);
+    return NULL;
   }
+  if (strlen(sprite) > MAX_RESOURCE_NAME){
+    handle_error("cannot create tile, sprite name too long", "tile_new", __FILE__, __LINE__);
+    return NULL;
+  }
+
+  if(!resource_multipliers){
+    handle_error("cannot create tile, missing resource multiplier", "tile_new",  __FILE__, __LINE__);
+    return NULL;
+  }
+
+  if(!remaining_resources){
+    handle_error("cannot create tile, missing resource multiplier", "tile_new",  __FILE__, __LINE__);
+    return NULL;
+  }
+
+  Tile *tile = (Tile *)calloc(1, sizeof(Tile));
+
+  if(!tile) {
+    handle_error("cannot create tile, out of memory", "tile_new", __FILE__, __LINE__);
+    return NULL;
+  }
+
+  tile->id = id;
+  strcpy(tile->sprite, sprite);
+
+  for (size_t i = 0; i<MAX_RESOURCES; i++)
+    tile->resource_multipliers[i] = resource_multipliers[i];
+
+  for (size_t i = 0; i<MAX_RESOURCES; i++)
+    tile->remaining_resources[i] = remaining_resources[i];
+
+  tile->enemies = enemies;
+  tile->building_id = -1;
+  tile->visible = false;
+
   return tile;
 }
 
@@ -42,12 +76,12 @@ int tile_get_building_id (Tile *tile) {
   return tile->building_id;
 }
 
-float tile_get_resource_multipliers (Tile *tile, int multiplier_id) {
+float tile_get_resource_multipliers (Tile *tile, int resource_id) {
   if(!tile) {
     fprintf(stderr, "tile_get_resource_multipliers: invalid tile.\n");
     return -1;
   }
-return tile->resource_multipliers[multiplier_id];
+return tile->resource_multipliers[resource_id];
 }
 
 int tile_get_remaining_resources (Tile *tile, int resource_id) {

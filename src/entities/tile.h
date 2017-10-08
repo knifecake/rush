@@ -22,7 +22,12 @@
 
 typedef struct _Tile Tile;
 
-Tile *tile_new ();
+/*
+ * Creates a new tile given the id, sprite name, resource_multipliers and
+ * remaining_resources.
+ * Returns NULL on error.
+ */
+Tile *tile_new (int, const char*, float*, int*, int);
 
 void tile_destroy (Tile *);
 

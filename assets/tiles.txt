@@ -1,7 +1,7 @@
 ## Tile definition format
 
 1         # (int) tile_id
-name      # (char *) tile name
+forest    # (char *) sprite
 
 10.5      # (float) resource 1 multiplier
 12.0      # (float) resource 2 multiplier
