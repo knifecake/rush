@@ -20,7 +20,13 @@
 
 #define MAXLINE  10000
 
+/*
+ * Wrap strdup inside guards for MacOS systems, which include strdup by
+ * default.
+ */
+#ifndef __DARWIN_C_LEVEL
 char *strdup(char *);
+#endif
 
 /*-------------------------------------------------------------------
             I N T E R N A L    F U N C T I O N S
