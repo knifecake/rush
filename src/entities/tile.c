@@ -8,7 +8,7 @@ struct _Tile {
   float resource_multipliers[MAX_RESOURCES];
   int remaining_resources[MAX_RESOURCES];
   int enemies;
-  int building_id;
+  Building *building;
   bool visible;
 };
 
@@ -50,7 +50,7 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
     tile->remaining_resources[i] = remaining_resources[i];
 
   tile->enemies = enemies;
-  tile->building_id = -1;
+  tile->building = NULL;
   tile->visible = false;
 
   return tile;
@@ -69,12 +69,12 @@ int tile_get_id (Tile *tile) {
   return tile->id;
 }
 
-int tile_get_building_id (Tile *tile) {
+Building *tile_get_building (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_building_id: invalid tile.\n");
-    return -1;
+    fprintf(stderr, "tile_get_building: invalid tile.\n");
+    return NULL;
   }
-  return tile->building_id;
+  return tile->building;
 }
 
 float tile_get_resource_multipliers (Tile *tile, int resource_id) {
@@ -132,8 +132,27 @@ Tile *tile_build (Tile *tile, Building *bp){
     handle_error("invalid building pointer", "tile_build", __FILE__, __LINE__);
     return NULL;
   }
-  tile->building_id = building_get_id(bp);
+  tile->building = bp;
   return tile;
+}
+
+int tile_collect_resources(Tile * tile, int resource_id){
+  if (!tile){
+    handle_error("invalid tile pointer", "tile_collect_resources", __FILE__, __LINE__);
+    return -1;
+  }
+  if (resource_id < 0 || resource_id > MAX_RESOURCES){
+    handle_error("invalid resource_id", "tile_collect_resources", __FILE__, __LINE__);
+    return -1;
+  }
+  int base_resource = building_get_base_resources(tile->building, resource_id);
+  if (tile->remaining_resources [resource_id]< base_resource){
+    base_resource = tile->remaining_resources[resource_id];
+    tile->remaining_resources[resource_id] = 0;
+  }else{
+    tile -> remaining_resources[resource_id] -= base_resource;
+  }
+  return (int) base_resource * tile->resource_multipliers[resource_id];
 }
 
 void tile_print(FILE *f, Tile *t) {

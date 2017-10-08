@@ -53,7 +53,7 @@ void tile_destroy (Tile *);
  */
 int tile_get_id (Tile *);
 
-int tile_get_building_type (Tile *);
+Building *tile_get_building (Tile *);
 
 float tile_get_resource_multipliers (Tile *, int);
 
