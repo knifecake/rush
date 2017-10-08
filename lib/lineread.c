@@ -20,7 +20,7 @@
 
 #define MAXLINE  10000
 
-/* char *strdup(char *); */
+char *strdup(char *);
 
 /*-------------------------------------------------------------------
             I N T E R N A L    F U N C T I O N S
