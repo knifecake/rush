@@ -50,7 +50,9 @@ Building *building_level_up(Building *);
  */
 Building *building_edit_health(Building *, int);
 
-/*GETTERS*/
+/*
+ * GETTERS. Returns -1 on error.
+ */
 
 int building_get_id(Building *);
 

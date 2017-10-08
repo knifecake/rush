@@ -108,7 +108,7 @@ int tile_get_enemies (Tile *tile) {
   return tile->enemies;
 }
 
-Tile *tile_set_id (Tile *tile, int id) {
+/*Tile *tile_set_id (Tile *tile, int id) {
   if(!tile) {
     fprintf(stderr, "tile_set_id: invalid tile.\n");
     return NULL;
@@ -119,5 +119,18 @@ Tile *tile_set_id (Tile *tile, int id) {
   }
   tile->id=id;
 
+  return tile;
+}*/
+
+Tile *tile_build (Tile *tile, Building *bp){
+  if (!tile){
+    handle_error("invalid tile pointer", "tile_build", __FILE__, __LINE__);
+    return NULL;
+  }
+  if (!bp){
+    handle_error("invalid building pointer", "tile_build", __FILE__, __LINE__);
+    return NULL;
+  }
+  tile->building_id = building_get_id(bp);
   return tile;
 }

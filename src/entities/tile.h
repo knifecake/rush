@@ -12,7 +12,6 @@
  *
  * Actions:
  *  - build
- *  - draw_tile(x, y) draws the tile starting from (x, y)
  *
  */
 
@@ -29,8 +28,14 @@ typedef struct _Tile Tile;
  */
 Tile *tile_new (int, const char*, float*, int*, int);
 
+/*
+ * Frees memory allocated by tile.
+ */
 void tile_destroy (Tile *);
 
+/*
+ * GETTERS. Returns NULL, -1 or false on error.
+ */
 int tile_get_id (Tile *);
 
 int tile_get_building_type (Tile *);
@@ -43,8 +48,10 @@ bool tile_get_visible (Tile *);
 
 int tile_get_enemies (Tile *);
 
-Tile *tile_set_id (Tile *, int);
+/*Tile *tile_set_id (Tile *, int); Is it useful?*/
 
-Tile *tile_set_building_type (Tile *, int);
-
+/*
+ * Given a tile and a building, links them.
+ * Returns NULL on error.
+ */
 Tile *tile_build (Tile *, Building *);
