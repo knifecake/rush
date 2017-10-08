@@ -20,8 +20,9 @@ int load_resources_from_file(FILE *f, Resource **resources)
     num_resources = (num_resources > MAX_RESOURCES) ? MAX_RESOURCES : num_resources;
 
     for (int i = 0; i < num_resources; i++) {
-        int id = atoi(fgetll(f));
-        const char *name = fgetll(f);
+        char *buff = fgetll(f);
+        int id = atoi(buff); free(buff);
+        char *name = fgetll(f);
 
         if (!name) {
             handle_error("could not retrieve name for a resource", "load_resources_from_file", __FILE__, __LINE__);
@@ -31,7 +32,7 @@ int load_resources_from_file(FILE *f, Resource **resources)
         resources[i] = resource_new(id, name);
         if (!resources[i]) {
             handle_error("could not create resource", "load_resources_from_file", __FILE__, __LINE__);
-            resource_list_destroy(resources, i - 1); return PINT_ERROR;
+            free(name); resource_list_destroy(resources, i - 1); return PINT_ERROR;
         }
 
         free(name);

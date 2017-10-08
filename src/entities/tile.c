@@ -17,6 +17,7 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
     handle_error("cannot create tile, missing sprite name", "tile_new",  __FILE__, __LINE__);
     return NULL;
   }
+
   if (strlen(sprite) > MAX_SPRITE_NAME){
     handle_error("cannot create tile, sprite name too long", "tile_new", __FILE__, __LINE__);
     return NULL;
@@ -133,4 +134,24 @@ Tile *tile_build (Tile *tile, Building *bp){
   }
   tile->building_id = building_get_id(bp);
   return tile;
+}
+
+void tile_print(FILE *f, Tile *t) {
+    if (!f || !t) {
+        handle_error("invalid arguments", "tile_print", __FILE__, __LINE__);
+        return;
+    }
+
+    fprintf(f, "Tile %d (%s):", t->id, t->sprite);
+
+    fprintf(f, "\n - resource no.:         ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", i++));
+
+    fprintf(f, "\n - remaining resources:  ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", t->remaining_resources[i++]));
+
+    fprintf(f, "\n - resource multipliers: ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8g ", t->resource_multipliers[i++]));
+
+    fprintf(f, "\n - enemies: %d\n", t->enemies);
 }

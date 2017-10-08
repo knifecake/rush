@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 /*
  * Define ERROR handling constants.
  */
@@ -17,7 +19,20 @@
 #define ERROR_LOG_FILE stderr
 
 /*
- * This functions should handle all errors encountered by the program. This
+ * Instructs log_msg to output debug information to the given file or stream.
+ * If this is the same as ERROR_LOG_FILE, debug messages will be prefixed with
+ * DEBUG:
+ */
+#define DEBUG_LOG_FILE stderr
+
+/*
+ * If set to false, any call to log_msg will have no effect. Else, log messages
+ * will be written to DEBUG_LOG_FILE.
+ */
+#define DEBUG true
+
+/*
+ * This function should handle all errors encountered by the program. This
  * function can either be run with one or four arguments. The first one is
  * always required. If the first one ends with a new line ('\n'), then the rest
  * are ignored and the given error message is handled. Else, the rest are used
@@ -40,3 +55,11 @@
  * its error messages.
  */
 void handle_error(const char *error_msg, ...);
+
+/*
+ * Logging can be performed through this function. It works in the same way as
+ * handle_error, but it'll writes to a separate stream from handle_error. The
+ * stream this function writes to depends on the DEBUG_LOG_FILE constant
+ * declared above.
+ */
+void log_msg(const char *msg, ...);

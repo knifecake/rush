@@ -14,8 +14,8 @@
  *  - build
  *
  */
- #ifndef __TILE_H__
- #define __TILE_H__
+#ifndef __TILE_H__
+#define __TILE_H__
 
 #include "building.h"
 
@@ -27,11 +27,18 @@
 
 #define MAX_SPRITE_NAME 32
 
+/*
+ * Maximum number of tiles the program supports. Unlike MAX_RESOURCES, setting
+ * a large MAX_TILES does not incur in a space penalty, as tiles are stored
+ * dynamically.
+ */
+#define MAX_TILES 100
+
 typedef struct _Tile Tile;
 
 /*
- * Creates a new tile given the id, sprite name, resource_multipliers and
- * remaining_resources.
+ * Creates a new tile given the id, sprite name, resource_multipliers,
+ * remaining_resources and enemies.
  * Returns NULL on error.
  */
 Tile *tile_new (int, const char *, float *, int *, int);
@@ -68,6 +75,11 @@ Tile *tile_build (Tile *, Building *);
  * Given a tile and a resource id, return amount of resources.
  * Returns -1 on error.
  */
- int tile_collect_resources(Tile *, int);
+int tile_collect_resources(Tile *, int);
+
+/*
+ * Prints a Tile, for DEBUG purposes.
+ */
+void tile_print(FILE *, Tile *);
 
  #endif

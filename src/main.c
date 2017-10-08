@@ -4,9 +4,8 @@
 
 #include "error_handling.h"
 
-#include "entities/resource.h"
-
 #include "asset_loaders/resource_loader.h"
+#include "asset_loaders/tile_loader.h"
 
 
 /*
@@ -17,9 +16,11 @@
  * information on where this file is.
  */
 #define RESOURCES_DB "assets/resources.txt"
+#define TILES_DB "assets/tiles.txt"
 
 
 int main(void) {
+    printf("Loading resources...\n");
     FILE *rf = fopen(RESOURCES_DB, "r");
     if (!rf) {
         handle_error("could not open resources db file", "main", __FILE__, __LINE__);
@@ -38,6 +39,26 @@ int main(void) {
     for (int i = 0; i < num_resources; resource_print(stdout, resources[i++]));
 
     resource_list_destroy(resources, num_resources);
+
+
+    printf("\nLoading tiles...\n");
+    FILE *tf = fopen(TILES_DB, "r");
+    if (!tf) {
+        handle_error("could not open tiles db file", "main", __FILE__, __LINE__);
+        return PINT_ERROR;
+    }
+
+    Tile **tiles = load_tiles_from_file(tf, num_resources);
+    if (!tiles) {
+        handle_error("could not load tiles", "main", __FILE__, __LINE__);
+        return PINT_ERROR;
+    }
+
+    fclose(tf);
+
+    for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
+
+    tile_list_destroy(tiles);
 
     return 0;
 }
