@@ -99,14 +99,10 @@ void sprite_destroy(Sprite *s)
  */
 void sprite_draw(Sprite *s, int x0, int y0)
 {
-    if (!s || x0 < 0 || y0 < 0) {
+    if (!s || x0 < 1 || y0 < 1) {
         handle_error("invalid params", "sprite_draw", __FILE__, __LINE__);
         return;
     }
-    x0++; y0++;
-    x0 *= 2;
-    x0 --;
-    printf("\033[%d;%dH", y0, x0);
 
     for (int y = 1; y <= s->height; y++) {
         for (int x = 1; x <= s->width; x++) {
@@ -114,10 +110,9 @@ void sprite_draw(Sprite *s, int x0, int y0)
             if (s->bytes_per_pixel == 3 || (s->bytes_per_pixel == 4 && p[3] != 0))
                 printf("\033[38;2;%d;%d;%dm\u2588\u2588", p[0], p[1], p[2]);
             else
-                printf("\033[%d;%dH", y0+y, x0+2*(x+1));
+                printf("\033[0m  ");
+            if (x % s->width == 0) printf("\n");
         }
-        printf("\n");
-        printf("\033[%d;%dH", y0+y, x0);
     }
 
     printf("\033[0m");
