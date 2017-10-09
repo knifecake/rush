@@ -19,7 +19,7 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
-#define IMAGE_ASSET "assets/img/color_key.bmp"
+#define IMAGE_ASSET "assets/img/color_key.png"
 
 
 int main(void) {

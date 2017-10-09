@@ -1,4 +1,4 @@
-#include "../lib/bmp.h"
+#include <png.h>
 
 #include <stdio.h>
 
@@ -18,7 +18,7 @@
  * Define sprites as 8-bit indexed BMPs. We only support that at the
  * moment.
  */
-typedef struct _Sprite24 Sprite;
+typedef struct _SpritePNG Sprite;
 
 
 /*
