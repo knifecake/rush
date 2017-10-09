@@ -19,7 +19,7 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
-#define IMAGE_ASSET "assets/img/color_key.png"
+#define IMAGE_ASSET "assets/img/Hex_1.png"
 
 
 int main(void) {
@@ -63,7 +63,7 @@ int main(void) {
 
     FILE *imf = fopen(IMAGE_ASSET, "r");
     Sprite *s = sprite_new(imf);
-    sprite_draw(s, 1, 1);
+    sprite_draw(s, 4, 4);
     sprite_destroy(s);
     fclose(imf);
 
