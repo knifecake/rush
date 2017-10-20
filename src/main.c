@@ -19,21 +19,22 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
-#define IMAGE_ASSET "assets/img/Hex_1.png"
+#define IMAGE_ASSET "assets/img/firefox.png"
 
 
 int main(void) {
+
     printf("Loading resources...\n");
     FILE *rf = fopen(RESOURCES_DB, "r");
     if (!rf) {
-        handle_error("could not open resources db file", "main", __FILE__, __LINE__);
+        HE("could not open resources db file", "main")
         return PINT_ERROR;
     }
 
     Resource **resources = malloc(MAX_RESOURCES * sizeof(Resource *));
     int num_resources = load_resources_from_file(rf, resources);
     if (num_resources == 0) {
-        handle_error("could not load resources", "main", __FILE__, __LINE__);
+        HE("could not load resources", "main")
         return PINT_ERROR;
     }
 
@@ -47,13 +48,13 @@ int main(void) {
     printf("\nLoading tiles...\n");
     FILE *tf = fopen(TILES_DB, "r");
     if (!tf) {
-        handle_error("could not open tiles db file", "main", __FILE__, __LINE__);
+        HE("could not open tiles db file", "main")
         return PINT_ERROR;
     }
 
     Tile **tiles = load_tiles_from_file(tf, num_resources);
     if (!tiles) {
-        handle_error("could not load tiles", "main", __FILE__, __LINE__);
+        HE("could not load tiles", "main")
         return PINT_ERROR;
     }
 
@@ -63,7 +64,7 @@ int main(void) {
 
     FILE *imf = fopen(IMAGE_ASSET, "r");
     Sprite *s = sprite_new(imf);
-    sprite_draw(s, 4, 4);
+    /* sprite_draw(s, 4, 4); */
     sprite_destroy(s);
     fclose(imf);
 

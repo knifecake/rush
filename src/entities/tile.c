@@ -1,6 +1,9 @@
 #include "tile.h"
 
+#include "../error_handling.h"
+
 #include <stdlib.h>
+#include <string.h>
 
 struct _Tile {
   int id;
@@ -14,29 +17,29 @@ struct _Tile {
 
 Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *remaining_resources, int enemies) {
   if(!sprite){
-    handle_error("cannot create tile, missing sprite name", "tile_new",  __FILE__, __LINE__);
+    HE("cannot create tile, missing sprite name", "tile_new")
     return NULL;
   }
 
   if (strlen(sprite) > MAX_SPRITE_NAME){
-    handle_error("cannot create tile, sprite name too long", "tile_new", __FILE__, __LINE__);
+    HE("cannot create tile, sprite name too long", "tile_new")
     return NULL;
   }
 
   if(!resource_multipliers){
-    handle_error("cannot create tile, missing resource multiplier", "tile_new",  __FILE__, __LINE__);
+    HE("cannot create tile, missing resource multiplier", "tile_new")
     return NULL;
   }
 
   if(!remaining_resources){
-    handle_error("cannot create tile, missing resource multiplier", "tile_new",  __FILE__, __LINE__);
+    HE("cannot create tile, missing resource multiplier", "tile_new")
     return NULL;
   }
 
   Tile *tile = (Tile *)calloc(1, sizeof(Tile));
 
   if(!tile) {
-    handle_error("cannot create tile, out of memory", "tile_new", __FILE__, __LINE__);
+    HE("cannot create tile, out of memory", "tile_new")
     return NULL;
   }
 
@@ -63,7 +66,7 @@ void tile_destroy (Tile *tile) {
 
 int tile_get_id (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_id: invalid tile.\n");
+    HE("invalid tile", "tile_get_id")
     return -1;
   }
   return tile->id;
@@ -71,7 +74,7 @@ int tile_get_id (Tile *tile) {
 
 Building *tile_get_building (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_building: invalid tile.\n");
+    HE("invalid tile", "tile_get_building")
     return NULL;
   }
   return tile->building;
@@ -79,7 +82,7 @@ Building *tile_get_building (Tile *tile) {
 
 float tile_get_resource_multipliers (Tile *tile, int resource_id) {
   if(!tile) {
-    fprintf(stderr, "tile_get_resource_multipliers: invalid tile.\n");
+    HE("invalid tile", "tile_get_resource_multipliers")
     return -1;
   }
 return tile->resource_multipliers[resource_id];
@@ -87,7 +90,7 @@ return tile->resource_multipliers[resource_id];
 
 int tile_get_remaining_resources (Tile *tile, int resource_id) {
   if(!tile) {
-    fprintf(stderr, "tile_get_remaining_resources: invalid tile.\n");
+    HE("invalid tile", "tile_get_remaining_resources")
     return -1;
   }
   return tile->remaining_resources[resource_id];
@@ -95,7 +98,7 @@ int tile_get_remaining_resources (Tile *tile, int resource_id) {
 
 bool tile_get_visible (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_visible: invalid tile.\n");
+    HE("invalid tile", "tile_get_visible")
     return false;
   }
   return tile->visible;
@@ -103,7 +106,7 @@ bool tile_get_visible (Tile *tile) {
 
 int tile_get_enemies (Tile *tile) {
   if(!tile) {
-    fprintf(stderr, "tile_get_enemies: invalid tile.\n");
+    HE("invalid tile", "tile_get_enemies")
     return -1;
   }
   return tile->enemies;
@@ -111,11 +114,11 @@ int tile_get_enemies (Tile *tile) {
 
 /*Tile *tile_set_id (Tile *tile, int id) {
   if(!tile) {
-    fprintf(stderr, "tile_set_id: invalid tile.\n");
+    HE("tile_set_id: invalid tile.\n");
     return NULL;
   }
   if(id<0) {
-    fprintf(stderr, "tile_set_id: invalid id.\n");
+    HE("tile_set_id: invalid id.\n");
     return NULL;
   }
   tile->id=id;
@@ -125,11 +128,11 @@ int tile_get_enemies (Tile *tile) {
 
 Tile *tile_build (Tile *tile, Building *bp){
   if (!tile){
-    handle_error("invalid tile pointer", "tile_build", __FILE__, __LINE__);
+    HE("invalid tile", "tile_build")
     return NULL;
   }
   if (!bp){
-    handle_error("invalid building pointer", "tile_build", __FILE__, __LINE__);
+    HE("invalid building", "tile_build")
     return NULL;
   }
   tile->building = bp;
@@ -138,11 +141,11 @@ Tile *tile_build (Tile *tile, Building *bp){
 
 int tile_collect_resources(Tile * tile, int resource_id){
   if (!tile){
-    handle_error("invalid tile pointer", "tile_collect_resources", __FILE__, __LINE__);
+    HE("invalid tile pointer", "tile_collect_resources")
     return -1;
   }
   if (resource_id < 0 || resource_id > MAX_RESOURCES){
-    handle_error("invalid resource_id", "tile_collect_resources", __FILE__, __LINE__);
+    HE("invalid resource_id", "tile_collect_resources")
     return -1;
   }
   int base_resource = building_get_base_resources(tile->building, resource_id);
@@ -157,7 +160,7 @@ int tile_collect_resources(Tile * tile, int resource_id){
 
 void tile_print(FILE *f, Tile *t) {
     if (!f || !t) {
-        handle_error("invalid arguments", "tile_print", __FILE__, __LINE__);
+        HE("invalid arguments", "tile_print")
         return;
     }
 

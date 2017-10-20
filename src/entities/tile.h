@@ -1,3 +1,5 @@
+#ifndef __TILE_H__
+#define __TILE_H__
 /*
  * tile.h
  *
@@ -14,16 +16,10 @@
  *  - build
  *
  */
-#ifndef __TILE_H__
-#define __TILE_H__
 
 #include "building.h"
 
-#include "../error_handling.h"
-
 #include <stdbool.h>
-
-#include <string.h>
 
 #define MAX_SPRITE_NAME 32
 

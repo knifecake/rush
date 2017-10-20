@@ -1,3 +1,6 @@
+#ifndef __RESOURCE_H__
+#define __RESOURCE_H__
+
 /*
  * resource.h
  *
@@ -5,8 +8,6 @@
  *
  */
 
-#ifndef __RESOURCE_H__
-#define __RESOURCE_H__
 
 #include <stdio.h>
 #include <stdlib.h>

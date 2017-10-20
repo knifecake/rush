@@ -31,6 +31,7 @@
   * Alternatively, errors can be handle by `handle_error` declared in `src/error_handling.h`. Using this function is essentially equal to using the previous method but it can provide more comprehensive error descriptions more easily. It can be used in to ways:
     1. Analogously to the `fprintf(stderr, ...)` way: you may call `handle_error("error_message\n")` and it will be outputted to the appropriate log file or `stderr`. Take care to end your error message with a `\n`. Not doing so instructs the function to behave in the second way.
     2. In addition to the error message, you may pass the name of the function that raised the error, the filename where that function lives, and the line number where the call to handle_error was triggered. Although this may seem intimidating, it can be easily done with `handle_error`. Just call it like this: `handle_error("some error message", "draw_tile", __FILE__, __LINE__);`. In that way, the preprocessor will substitute for the appropriate file and line numbers. Refer to `handle_error.h` for further documentation.
+      * **To use this way of calling handle error in a more convenient way, there is a macro, defined in `handle_error.h` that will automatically substitute file and line number information for you when it calls handle error. *This is the preferred way of handling errors.***
 
 
 ## Further considerations

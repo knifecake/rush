@@ -32,6 +32,14 @@
 #define DEBUG true
 
 /*
+ * This macro is a wrapper arround handle_error. It only works with the
+ * detailed way of handling errors, that is, it must be given a function name.
+ * It will automatically substitute the appropriate file and line numbers for
+ * you in the call to handle error. Note that it does not need to be appended
+ * with a semicolon when it is called as it already includes it. */
+#define HE(msg, func) handle_error(msg, func, __FILE__, __LINE__);
+
+/*
  * This function should handle all errors encountered by the program. This
  * function can either be run with one or four arguments. The first one is
  * always required. If the first one ends with a new line ('\n'), then the rest

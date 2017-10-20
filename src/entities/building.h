@@ -1,3 +1,5 @@
+#ifndef __BUILDING_H__
+#define __BUILDING_H__
 /*
  * building.h
  *
@@ -19,6 +21,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "resource.h"
 
 typedef struct _Building Building;
@@ -69,3 +72,4 @@ int building_get_cost(Building *);
  * If it fails, returns -1.
  */
 int building_get_base_resources(Building *, const int);
+#endif

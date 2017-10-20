@@ -9,7 +9,7 @@
 int load_resources_from_file(FILE *f, Resource **resources)
 {
     if (!f || !resources) {
-        handle_error("invalid parameters", "load_resources_from_file", __FILE__, __LINE__);
+        HE("invalid parameters", "load_resources_from_file")
         return PINT_ERROR;
     }
 
@@ -25,13 +25,13 @@ int load_resources_from_file(FILE *f, Resource **resources)
         char *name = fgetll(f);
 
         if (!name) {
-            handle_error("could not retrieve name for a resource", "load_resources_from_file", __FILE__, __LINE__);
+            HE("could not retrieve name for a resource", "load_resources_from_file")
             resource_list_destroy(resources, i - 1); return PINT_ERROR;
         }
 
         resources[i] = resource_new(id, name);
         if (!resources[i]) {
-            handle_error("could not create resource", "load_resources_from_file", __FILE__, __LINE__);
+            HE("could not create resource", "load_resources_from_file")
             free(name); resource_list_destroy(resources, i - 1); return PINT_ERROR;
         }
 
