@@ -44,12 +44,11 @@ World *world_load_map(World *);
 /*
  * Lets player perform actions.
  */
-World *world_player_turn(World *, Player *);
+World *world_player_turn(World *);
 
 /*
  * Updates the world between turns of the player.
  */
-World *world_ai_turn();
-
+World *world_ai_turn(World *);
 
 #endif
