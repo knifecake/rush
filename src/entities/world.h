@@ -27,11 +27,8 @@ World *world_new(Tile **, Building **);
 
 void world_destroy(World *);
 
-World *world_load_map(World *);
-
 World *world_player_turn(World *, Player *);
 
-World *world_ai_turn();
-
+World *world_ai_turn(World *);
 
 #endif
