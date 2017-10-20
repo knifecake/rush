@@ -7,7 +7,7 @@
 #include "asset_loaders/resource_loader.h"
 #include "asset_loaders/tile_loader.h"
 
-#include "sprite.h"
+#include "sprite-txt.h"
 
 
 /*
@@ -19,7 +19,7 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
-#define IMAGE_ASSET "assets/img/Hex_1.png"
+#define IMAGE_ASSET "assets/img/Hex_1.txt"
 
 
 int main(void) {
@@ -62,11 +62,9 @@ int main(void) {
 
     for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
 
-    FILE *imf = fopen(IMAGE_ASSET, "r");
-    Sprite *s = sprite_new(imf);
-    sprite_draw(s, 4, 4);
+    Sprite *s = sprite_new(IMAGE_ASSET);
+    sprite_draw(stdout, s, 4, 4);
     sprite_destroy(s);
-    fclose(imf);
 
     tile_list_destroy(tiles);
 
