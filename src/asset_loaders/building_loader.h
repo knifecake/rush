@@ -5,7 +5,7 @@
  */
 
 
- #include "../entities/building.h"
+#include "../entities/building.h"
 
 /*
  *  Returns a null-terminated list of pointers to buildings with buildings loaded
@@ -34,11 +34,11 @@
  * See the example building database file provided in assets/building.txt for
  * additional details on the file format.
  */
- Building **load_buildings_from_file(FILE *, int);
+Building **load_buildings_from_file(FILE *, int);
 
  /*
   * Frees a list of pointers to buildings. Assumes list is len buildings long.
   *
   * TODO: consider this a utility function. Maybe it should be somewhere else.
   */
- void building_list_destroy(Tile **);
+void building_list_destroy(Building **);

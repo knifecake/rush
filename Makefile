@@ -10,7 +10,7 @@ lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
-test_sources = $(wildcard test/*.c)
+test_sources = $(wildcard test/test_*.c)
 test_objs = $(test_sources:.c=.o)
 test_exes = $(test_sources:.c=)
 
@@ -18,9 +18,13 @@ game: $(obj)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ -lm -lpng
 	@make clear
 
-# Compiles whichever test you tell it to
-test_%: $(test_objs)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $^ -lm -lpng
+# compiles all tests
+.PHONY: test
+test: $(test_exes)
+
+# compiles whichever test you tell it to
+test_%: $(test_objs) test/minitest.o
+	$(CC) $(CFLAGS) -o $(@:.c=) $^ -lm -lpng
 
 run: game
 	@echo "\n🤡  Running THE GAME 🤡\n"
@@ -33,3 +37,4 @@ clear:
 .PHONY: clean
 clean: clear
 	@rm -rf $(BUILD_DIR)/*
+	@rm $(test_exes)

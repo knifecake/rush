@@ -1,5 +1,8 @@
-#include <stdio.h>
+#include "minitest.h"
 
-int main(void) {
-    printf("hello, we're testing\n");
+int main(void)
+{
+    assert("this should pass", true);
+    assert("this should fail", false);
+    return 0;
 }
