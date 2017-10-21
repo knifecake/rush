@@ -2,6 +2,8 @@
 build/*
 !build/.keep
 
+assets/img/*.txt
+
 # MacOS directory files
 .DS_Store
 

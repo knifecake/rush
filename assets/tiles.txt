@@ -7,7 +7,7 @@
 forest    # (char *) sprite
 
 -10.5     # (float) resource 0 multiplier
-12.87     # (float) resource 1 multiplier
+3.75      # (float) resource 1 multiplier
 
 177261    # (int) quantity of resource 0 available
 12001     # (int) quantity of resource 1 available

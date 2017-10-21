@@ -1,6 +1,19 @@
-#include "sprite-txt.h"
+#include "sprite.h"
 
-struct _Sprite{
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+#include "error_handling.h"
+
+#define MAXBUFF 100
+
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+#define ALPHA 3
+
+struct _SpriteTXT {
   unsigned int width;
   unsigned int height;
   unsigned int depth;
@@ -12,25 +25,18 @@ struct _Sprite{
  */
 int log2_floor (int x);
 
-Sprite *sprite_new(const char * filename){
-  if (!filename){
-    handle_error("null filename","sprite_new",__FILE__,__LINE__);
-    return NULL;
-  }
-
-  FILE* fp;
-  fp = fopen(filename, "r");
+Sprite *sprite_new(FILE *fp){
   if (!fp){
-    handle_error("error opening the file","sprite_new",__FILE__,__LINE__);
+    HE("null filename", "sprite_new")
     return NULL;
   }
 
   Sprite *spr = calloc (1, sizeof(Sprite));
   if(!spr){
-    handle_error("spr out of memory", "sprite_new",__FILE__,__LINE__);
-    fclose(fp);
+    HE("spr out of memory", "sprite_new")
     return NULL;
   }
+
   /*
    * Gets width and height
    */
@@ -49,6 +55,7 @@ Sprite *sprite_new(const char * filename){
       fclose(fp);
       return NULL;
     }
+
     for (int i = 0; i < spr->width; i++){
       spr->pixels[i]=(short**) calloc (spr->height, sizeof(short *));
         if (!spr->pixels[i]){
@@ -58,7 +65,6 @@ Sprite *sprite_new(const char * filename){
           }
           free(spr->pixels);
           free(spr);
-          fclose(fp);
           return NULL;
         }
       for (int j = 0; j < spr->height; j++){
@@ -73,7 +79,6 @@ Sprite *sprite_new(const char * filename){
           }
           free(spr->pixels);
           free(spr);
-          fclose(fp);
           return NULL;
         }
       }
@@ -91,7 +96,6 @@ Sprite *sprite_new(const char * filename){
          spr->pixels[pixel_x][pixel_y][BLUE]=pixel_blue;
          spr->pixels[pixel_x][pixel_y][ALPHA]=pixel_alpha;
      }
-     fclose(fp);
      return spr;
 }
 

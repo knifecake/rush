@@ -102,7 +102,7 @@ void sprite_destroy(Sprite *s)
  *
  * TODO: we're still not drawing at (x0,y0), but rather at the cursor possition.
  */
-void sprite_draw(Sprite *s, int x0, int y0)
+void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
 {
     if (!s || x0 < 0 || y0 < 0) {
         HE("invalid params", "sprite_draw")
@@ -113,18 +113,18 @@ void sprite_draw(Sprite *s, int x0, int y0)
     x0 --;
 
     // move to (x0, y0)
-    printf("\033[%d;%dH", y0, x0);
+    fprintf(f, "\033[%d;%dH", y0, x0);
 
     for (int y = 1; y <= s->height; y++) {
         for (int x = 1; x <= s->width; x++) {
             png_byte *p = _sprite_pixel_at(s, x, y);
             if (s->bytes_per_pixel == 3 || (s->bytes_per_pixel == 4 && p[RGB_ALPHA] != 0))
-                printf("\033[38;2;%d;%d;%dm\u2588\u2588", p[RGB_RED], p[RGB_GREEN], p[RGB_BLUE]);
+                fprintf(f, "\033[38;2;%d;%d;%dm\u2588\u2588", p[RGB_RED], p[RGB_GREEN], p[RGB_BLUE]);
             else
-                printf("\033[%d;%dH", y0+y, x0+2*(x+1));
+                fprintf(f, "\033[%d;%dH", y0 + y, x0 + 2 * (x + 1));
         }
-        printf("\n");
-        printf("\033[%d;%dH", y0+y, x0);
+        fprintf(f, "\n");
+        fprintf(f, "\033[%d;%dH", y0 + y, x0);
     }
 
     printf("\033[0m");

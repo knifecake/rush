@@ -7,7 +7,7 @@
 #include "asset_loaders/resource_loader.h"
 #include "asset_loaders/tile_loader.h"
 
-#include "sprite-txt.h"
+#include "sprite.h"
 
 
 /*
@@ -57,16 +57,21 @@ int main(void) {
         HE("could not load tiles", "main")
         return PINT_ERROR;
     }
-
+    tile_list_destroy(tiles);
     fclose(tf);
 
     for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
 
-    Sprite *s = sprite_new(IMAGE_ASSET);
+    FILE *sf = fopen(IMAGE_ASSET, "r");
+    if (!sf) {
+        HE("could not open image file", "main")
+        return -1;
+    }
+
+    Sprite *s = sprite_new(sf);
     sprite_draw(stdout, s, 4, 4);
     sprite_destroy(s);
 
-    tile_list_destroy(tiles);
 
     return 0;
 }

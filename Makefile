@@ -10,9 +10,17 @@ lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
+test_sources = $(wildcard test/*.c)
+test_objs = $(test_sources:.c=.o)
+test_exes = $(test_sources:.c=)
+
 game: $(obj)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ -lm -lpng
 	@make clear
+
+# Compiles whichever test you tell it to
+test_%: $(test_objs)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $^ -lm -lpng
 
 run: game
 	@echo "\n🤡  Running THE GAME 🤡\n"

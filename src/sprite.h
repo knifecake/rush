@@ -1,5 +1,3 @@
-#include <png.h>
-
 #include <stdio.h>
 
 /*
@@ -18,7 +16,7 @@
  * Define sprites as 8-bit indexed BMPs. We only support that at the
  * moment.
  */
-typedef struct _SpritePNG Sprite;
+typedef struct _SpriteTXT Sprite;
 
 
 /*
@@ -41,8 +39,10 @@ Sprite *sprite_new(FILE *img);
 void sprite_destroy(Sprite *s);
 
 /*
- * Draws a sprite starting at x, y.
+ * Draws a sprite.
+ *
+ * Starts at x,y, so the stream given should be a terminal.
  *
  * TODO: we're still not drawing at (x,y), but rather at the cursor possition.
  */
-void sprite_draw(Sprite *s, int x, int y);
+void sprite_draw(FILE *f, Sprite *s, int x, int y);

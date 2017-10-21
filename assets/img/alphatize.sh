@@ -2,6 +2,6 @@
 
 png='.png'
 txt='.txt'
-name=${1::-4}
+name=${1%.*}
 convert $1 -alpha set $name$png
 convert $name$png $name$txt
