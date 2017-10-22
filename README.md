@@ -1,6 +1,5 @@
 # pprog
-The f*cking pprog game.
-
+[![CircleCI](https://circleci.com/gh/knifecake/pprog.svg?style=svg&circle-token=a738aa38091dce1ca9eead8125f07cdd91df0831)](https://circleci.com/gh/knifecake/pprog)
 ## How to compile this project
 Inside the root directory run `make`. An executable will be created inside
 `build/`. You may run it with `./build/game`. Intermediate object files (`*.o`)
