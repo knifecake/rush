@@ -2,6 +2,10 @@
 build/*
 !build/.keep
 
+test/*
+!test/*.c
+!test/*.h
+
 assets/img/*.txt
 
 # MacOS directory files

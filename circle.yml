@@ -1,3 +1,6 @@
 compile:
   override:
     - make game
+test:
+  override:
+    - make test

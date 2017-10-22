@@ -21,6 +21,7 @@ game: $(obj)
 # compiles all tests
 .PHONY: test
 test: $(test_exes)
+	$(foreach test,$(test_exes), $(test);)
 
 # compiles whichever test you tell it to
 test_%: $(test_objs) test/minitest.o
