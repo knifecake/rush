@@ -1,2 +1,5 @@
 general:
   build_dir: build
+compile:
+  override:
+    - make game
