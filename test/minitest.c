@@ -1,5 +1,10 @@
 #include "minitest.h"
 
+/*
+ * Has any test failed?
+ */
+static int _minitests_failed_tests;
+
 typedef enum {green, red} color;
 
 void cprintf(color c, char *format);
@@ -8,10 +13,17 @@ void assert(char *desc, bool boolean)
 {
     if (boolean)
         cprintf(green, desc);
-    else
+    else {
+        _minitests_failed_tests++;
         cprintf(red, desc);
+    }
 
     printf("\n");
+}
+
+int failed_tests(void)
+{
+    return _minitests_failed_tests;
 }
 
 void cprintf(color c, char *format)

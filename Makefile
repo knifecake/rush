@@ -25,6 +25,7 @@ test: $(test_exes)
 
 # compiles whichever test you tell it to
 test_%: $(test_objs) test/minitest.o
+	@echo "Compiling $(@)"
 	$(CC) $(CFLAGS) -o $(@:.c=) $^ -lm -lpng
 
 run: game
