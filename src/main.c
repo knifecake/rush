@@ -2,12 +2,12 @@
 
 #include "../lib/lineread.h"
 
-#include "error_handling.h"
+#include "lib/error_handling.h"
+#include "lib/sprite.h"
 
 #include "asset_loaders/resource_loader.h"
 #include "asset_loaders/tile_loader.h"
 
-#include "sprite.h"
 
 
 /*
@@ -19,7 +19,7 @@
  */
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
-#define IMAGE_ASSET "assets/img/Hex_1.txt"
+#define IMAGE_ASSET "assets/img/GUI.txt"
 
 
 int main(void) {

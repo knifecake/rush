@@ -1,7 +1,7 @@
 #include "minitest.h"
 
 /*
- * Has any test failed?
+ * Have any tests failed?
  */
 static int _minitests_failed_tests;
 

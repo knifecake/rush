@@ -1,36 +1,45 @@
 CC			= gcc
 CFLAGS	= -Wall -std=c99
+LDFLAGS	= -lm -lpng
 
 BUILD_DIR = build
 EXE				= game
 
-src	= $(wildcard src/*.c) \
-			$(wildcard src/**/*.c)
+src	= $(wildcard src/**/*.c)
 lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
 test_sources = $(wildcard test/test_*.c)
-test_objs = $(test_sources:.c=.o)
-test_exes = $(test_sources:.c=)
+test_exes = $(test_sources:.c=.test)
 
-game: $(obj)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ -lm -lpng
-	@make clear
+#
+# This one should be the first target. It will compile the game, but will take
+# care of not compiling anything that was already compiled, thus saving time.
+#
+.PHONY: game
+game: $(BUILD_DIR)/$(EXE)
+
+# actually build the main game executable
+$(BUILD_DIR)/$(EXE): src/main.o $(obj)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ $(LDFLAGS)
 
 # compiles all tests
 .PHONY: test
 test: $(test_exes)
-	$(foreach test,$(test_exes), $(test);)
+	@echo "💁  💁‍♂️  Running the whole test suite... 🙏  🙏\n"
+	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test); echo "";)
 
 # compiles whichever test you tell it to
-test_%: $(test_objs) test/minitest.o
+# TODO: fix this rule to only compile the test_*.o that have changed
+test_%.test: $(obj) test/minitest.o test/*.c
 	@echo "Compiling $(@)"
-	$(CC) $(CFLAGS) -o $(@:.c=) $^ -lm -lpng
+	$(CC) $(CFLAGS) -c -o $(@:.test=.o) $(@:.test=.c)
+	$(CC) $(CFLAGS) -o $@ $(@:.test=.o) $(obj) test/minitest.o $(LDFLAGS)
 
-run: game
-	@echo "\n🤡  Running THE GAME 🤡\n"
-	./$(BUILD_DIR)/$(EXE)
+# compiles the test library
+test/minitest.o:
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 .PHONY: clear
 clear:
@@ -39,4 +48,4 @@ clear:
 .PHONY: clean
 clean: clear
 	@rm -rf $(BUILD_DIR)/*
-	@rm $(test_exes)
+	@rm -rf $(test_exes)

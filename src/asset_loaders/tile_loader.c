@@ -1,6 +1,6 @@
 #include "tile_loader.h"
 
-#include "../error_handling.h"
+#include "../lib/error_handling.h"
 #include "../../lib/lineread.h"
 
 #include <stdlib.h>

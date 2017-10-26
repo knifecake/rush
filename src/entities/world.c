@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "world.h"
-#include "../error_handling.h"
+#include "../lib/error_handling.h"
 
 
 struct _World{

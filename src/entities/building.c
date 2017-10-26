@@ -1,6 +1,6 @@
 #include "building.h"
 
-#include "../error_handling.h"
+#include "../lib/error_handling.h"
 
 struct _Building {
   int id;   /* Building id*/

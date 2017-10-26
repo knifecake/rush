@@ -3,14 +3,21 @@
 ## How to compile this project
 Inside the root directory run `make`. An executable will be created inside
 `build/`. You may run it with `./build/game`. Intermediate object files (`*.o`)
-will be deleted, however, if by any chance one is left behind, git is
-instructed to ignore them. Also, it will ignore anything inside the build
-directory except for the directory itself which is required by make. Please, do
-not remove `build/.keep`, it makes sure `build/` is committed and ready to use
-in compilation.
+will be deleted after running `make clean`, however, if by any chance one is
+left behind, git is instructed to ignore them. Also, it will ignore anything
+inside the build directory except for the directory itself which is required by
+make. Please, do not remove `build/.keep`, it makes sure `build/` is committed
+and ready to use in compilation. Finally, note that, to save time, `make` is
+configured to only compile files that have changed. So do not be surprised if
+you do not see a lot of commands being run when you hit `make` if you did not
+change many files. If for any reason you need to start fresh, delete every
+intermediate file with `make clean`.
+
+## How to test this project
+In addition to compiling, `make` is also capable of running tests. They may be
+compiled and run with `make test`.
 
 ## A note about image assets
-
 The Sprite library was created for the sole purpose of displaying bitmaps on a
 terminal. Performance is still a major unknown. At the moment, Sprite is able
 to display RGB and RGBA PNGs, or, more generally, any PNG readable by the
@@ -34,3 +41,6 @@ more or less prepared to play it depending on your available resources. Also,
 the game theme is not final, and we are thinking of a more exciting topic for
 our story, although the game dynamics will remain the same.
 
+# Project architecture
+
+![Game architecture diagram](https://i.imgur.com/XoYpIfp.png)
