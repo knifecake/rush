@@ -51,7 +51,11 @@ Event *event_new(char*, float*, int, int);
  * comes to an end.
  */
 void event_destroy(Event *);
-
+/*
+ * This function decrease in 1 the number of turns remaining each time.
+ * If n_turns = 0, it will exit successfully.
+ */
+Event *event_next_turn(Event *);
 /*
  * Getters.
  */

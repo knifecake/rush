@@ -51,6 +51,18 @@ void event_destroy(Event *e)
     free(e);
 }
 
+Event *event_next_turn(Event *e){
+  if(!e){
+    HE("null event", "event_next_turn");
+    return NULL;
+  }
+  if(e->num_turns == 0){
+    return e;
+  }
+  e->num_turns--;
+  return e;
+}
+
 int event_get_id (Event *e){
   if(!e){
     HE("null event", "event_get_id")
