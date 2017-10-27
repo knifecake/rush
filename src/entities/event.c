@@ -8,7 +8,7 @@
 struct _Event{
   int id;
   int num_turns;
-  char *name;
+  char name[MAX_EVENT_NAME+1];
   float mult[MAX_RESOURCES];
 };
 
@@ -33,12 +33,15 @@ Event *event_new (char *name, float *mult, int id, int num_turns){
   Event *e;
 
   e = calloc(1, sizeof(Event));
+  if(!e){
+    HE("error on calloc", "event_new")
+    return NULL;
+  }
   e->id = id;
   e->num_turns = num_turns;
   for (size_t i = 0; i < MAX_RESOURCES-1; i++) {
     e->mult[i] = mult[i];
   }
-
   strcpy(e->name, name);
   return e;
 }
