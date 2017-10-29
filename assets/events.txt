@@ -3,7 +3,7 @@
 
 # BEGIN: event 0
 
-0          # (int) id
+1          # (int) id
 3          # (int) number of turns
 earthquake # (char *) name
 

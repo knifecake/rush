@@ -35,5 +35,6 @@ int main(void) {
   event_destroy(e);
   assert("can destroy event successfully", true);
   assert("--FINISH TEST EVENT--", true);
-  return 0;
+  free(mult);
+  return failed_tests();
 }

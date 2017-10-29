@@ -11,6 +11,10 @@ Event **load_events_from_file(FILE *fp, int num_resources){
     HE("invalid parameters - no file given", "load_events_from_file")
     return NULL;
   }
+  if (num_resources < 1){
+    HE("invalid parameters - non-positive number of resources", "load_events_from_file")
+    return NULL;
+  }
 
   int num_events = 0;
   char *buff = fgetll(fp);
@@ -42,7 +46,7 @@ Event **load_events_from_file(FILE *fp, int num_resources){
       HE("could not allocate memory for resources multipliers", "load_events_from_file");
       free(name); event_list_destroy(events);return NULL;
     }
-    for (int j = 0; i < num_resources; j++){
+    for (int j = 0; j < num_resources; j++){
       buff = fgetll(fp);
       if(!buff){
         HE("error reading multipliers from event", "load_events_from_file");
