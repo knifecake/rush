@@ -25,12 +25,6 @@
 #include "resource.h"
 
 /*
- * The maximun number of Events the game currently supports.
- */
-#define MAX_EVENTS 5
-
-
-/*
  * Maximum length of the event name.
  */
 #define MAX_EVENT_NAME 32
