@@ -1,16 +1,22 @@
 #include <stdbool.h>
+#include <limits.h>
 
 /*
  * Define ERROR handling constants.
  */
 
 /*
- * PINT_ERROR should be returned by functions that encounter an error and are
+ * UINT_ERROR should be returned by functions that encounter an error and are
  * suposed to return a positive integer, such as the number of operations
- * performed. Please take care not to return PINT_ERROR if your function may
+ * performed. Please take care not to return UINT_ERROR if your function may
  * return negative integers or if your return type is unsigned.
  */
-#define PINT_ERROR -1
+#define UINT_ERROR -1
+
+/*
+ * INT_ERROR should be returned when a function which returns an int throws an error.
+ */
+#define INT_ERROR INT_MAX
 
 /*
  * Instructs handle_error to output error information to the given file or

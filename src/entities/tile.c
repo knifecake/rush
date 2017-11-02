@@ -67,7 +67,7 @@ void tile_destroy (Tile *tile) {
 int tile_get_id (Tile *tile) {
   if(!tile) {
     HE("invalid tile", "tile_get_id")
-    return -1;
+    return INT_ERROR;
   }
   return tile->id;
 }
@@ -83,7 +83,7 @@ Building *tile_get_building (Tile *tile) {
 float tile_get_resource_multipliers (Tile *tile, int resource_id) {
   if(!tile) {
     HE("invalid tile", "tile_get_resource_multipliers")
-    return -1;
+    return INT_ERROR;
   }
 return tile->resource_multipliers[resource_id];
 }
@@ -91,7 +91,7 @@ return tile->resource_multipliers[resource_id];
 int tile_get_remaining_resources (Tile *tile, int resource_id) {
   if(!tile) {
     HE("invalid tile", "tile_get_remaining_resources")
-    return -1;
+    return INT_ERROR;
   }
   return tile->remaining_resources[resource_id];
 }
@@ -107,7 +107,7 @@ bool tile_get_visible (Tile *tile) {
 int tile_get_enemies (Tile *tile) {
   if(!tile) {
     HE("invalid tile", "tile_get_enemies")
-    return -1;
+    return INT_ERROR;
   }
   return tile->enemies;
 }
@@ -142,11 +142,11 @@ Tile *tile_build (Tile *tile, Building *bp){
 int tile_collect_resources(Tile * tile, int resource_id){
   if (!tile){
     HE("invalid tile pointer", "tile_collect_resources")
-    return -1;
+    return INT_ERROR;
   }
   if (resource_id < 0 || resource_id > MAX_RESOURCES){
     HE("invalid resource_id", "tile_collect_resources")
-    return -1;
+    return INT_ERROR;
   }
   int base_resource = building_get_base_resources(tile->building, resource_id);
   if (tile->remaining_resources [resource_id]< base_resource){

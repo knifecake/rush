@@ -10,7 +10,7 @@ int load_resources_from_file(FILE *f, Resource **resources)
 {
     if (!f || !resources) {
         HE("invalid parameters", "load_resources_from_file")
-        return PINT_ERROR;
+        return UINT_ERROR;
     }
 
     int num_resources = 0;
@@ -26,13 +26,13 @@ int load_resources_from_file(FILE *f, Resource **resources)
 
         if (!name) {
             HE("could not retrieve name for a resource", "load_resources_from_file")
-            resource_list_destroy(resources, i - 1); return PINT_ERROR;
+            resource_list_destroy(resources, i - 1); return UINT_ERROR;
         }
 
         resources[i] = resource_new(id, name);
         if (!resources[i]) {
             HE("could not create resource", "load_resources_from_file")
-            free(name); resource_list_destroy(resources, i - 1); return PINT_ERROR;
+            free(name); resource_list_destroy(resources, i - 1); return UINT_ERROR;
         }
 
         free(name);
