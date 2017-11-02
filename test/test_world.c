@@ -45,10 +45,10 @@ int main(void) {
     map[2]=tile_new(2, "tile2", flist, ilist, 0);
 
     b=(Building **)malloc(4*sizeof(Building *));
-    b[0]=building_new(0);
-    b[1]=building_new(1);
-    b[2]=building_new(2);
-
+    int res[MAX_RESOURCES] = {1, 2, 3};
+    b[0] = building_new(10, 1, 1, 10, 10, res);
+    b[1] = building_new(20, 1, 1, 10, 10, res);
+    b[2] = building_new(30, 1, 1, 10, 10, res);
     World *w = world_new(map, b);
     assert("can create world with valid parameters", w);
 
@@ -76,6 +76,8 @@ int main(void) {
      * this way, our continuous integration platform will be able to tell if
      * any tests have failed.
      */
+
+    // TODO: free buildings and map
      free(map);
      free(b);
 

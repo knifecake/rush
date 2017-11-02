@@ -18,7 +18,8 @@ int main(void) {
     assert("tiles are invisible by default",
             !tile_get_visible(t));
 
-    Building *b = building_new(10);
+    int res[MAX_RESOURCES] = {1, 2, 3};
+    Building *b = building_new(10, 1, 1, 10, 10, res);
 
     assert("can link a tile and a building",
             t = tile_build(t, b));
