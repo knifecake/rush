@@ -1,0 +1,25 @@
+/home/sergio/Desktop/pprog/src/asset_loaders/building_loader.c: In function ‘load_buildings_from_file’:
+/home/sergio/Desktop/pprog/src/asset_loaders/building_loader.c:57:79: warning: passing argument 6 of ‘building_new’ makes pointer from integer without a cast [-Wint-conversion]
+         buildings[i] = building_new(id, level, unlocking_level, health, cost, base_resources[MAX_RESOURCES]);
+                                                                               ^
+In file included from /home/sergio/Desktop/pprog/src/asset_loaders/building_loader.h:8:0,
+                 from /home/sergio/Desktop/pprog/src/asset_loaders/building_loader.c:1:
+/home/sergio/Desktop/pprog/src/asset_loaders/../entities/building.h:35:11: note: expected ‘int *’ but argument is of type ‘int’
+ Building *building_new(int, int, int, int, int, int[MAX_RESOURCES]);
+           ^
+/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+/tmp/ccNPjrb7.o: In function `load_buildings_from_file':
+building_loader.c:(.text+0x40): undefined reference to `handle_error'
+building_loader.c:(.text+0x5d): undefined reference to `fgetll'
+building_loader.c:(.text+0x86): undefined reference to `handle_error'
+building_loader.c:(.text+0xe9): undefined reference to `handle_error'
+building_loader.c:(.text+0x10b): undefined reference to `fgetll'
+building_loader.c:(.text+0x136): undefined reference to `fgetll'
+building_loader.c:(.text+0x161): undefined reference to `fgetll'
+building_loader.c:(.text+0x18c): undefined reference to `fgetll'
+building_loader.c:(.text+0x1b7): undefined reference to `fgetll'
+/tmp/ccNPjrb7.o:building_loader.c:(.text+0x1eb): more undefined references to `fgetll' follow
+/tmp/ccNPjrb7.o: In function `load_buildings_from_file':
+building_loader.c:(.text+0x255): undefined reference to `building_new'
+collect2: error: ld returned 1 exit status

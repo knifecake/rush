@@ -28,7 +28,7 @@ $(BUILD_DIR)/$(EXE): src/main.o $(obj)
 .PHONY: test
 test: $(test_exes)
 	@echo "💁  💁‍♂️  Running the whole test suite... 🙏  🙏\n"
-	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test); echo "";)
+	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test) 2>/dev/null; echo "";)
 
 # compiles whichever test you tell it to
 # TODO: fix this rule to only compile the test_*.o that have changed

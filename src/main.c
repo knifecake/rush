@@ -28,14 +28,14 @@ int main(void) {
     FILE *rf = fopen(RESOURCES_DB, "r");
     if (!rf) {
         HE("could not open resources db file", "main")
-        return PINT_ERROR;
+        return UINT_ERROR;
     }
 
     Resource **resources = malloc(MAX_RESOURCES * sizeof(Resource *));
     int num_resources = load_resources_from_file(rf, resources);
     if (num_resources == 0) {
         HE("could not load resources", "main")
-        return PINT_ERROR;
+        return UINT_ERROR;
     }
 
     fclose(rf);
@@ -49,13 +49,13 @@ int main(void) {
     FILE *tf = fopen(TILES_DB, "r");
     if (!tf) {
         HE("could not open tiles db file", "main")
-        return PINT_ERROR;
+        return UINT_ERROR;
     }
 
     Tile **tiles = load_tiles_from_file(tf, num_resources);
     if (!tiles) {
         HE("could not load tiles", "main")
-        return PINT_ERROR;
+        return UINT_ERROR;
     }
     tile_list_destroy(tiles);
     fclose(tf);

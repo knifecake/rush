@@ -32,7 +32,7 @@ typedef struct _Building Building;
  * as an argument, then sets every other value according to the established data
  * If it fails, NULL is returned.
  */
-Building *building_new(int id);
+Building *building_new(int, int, int, int, int, int *);
 
 /*
  * Frees memory allocated by building_new, it will only free it if the pointer
