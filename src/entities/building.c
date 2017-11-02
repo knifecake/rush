@@ -11,13 +11,22 @@ struct _Building {
   int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
 };
 
-Building *building_new (int id){
+Building *building_new (int id, int level, int unlocking_level, int health,
+int cost, int * base_resources){
   Building *bp;
   if (!(bp = calloc(1, sizeof(Building)))) {
     HE("memory not allocated", "building_new");
     return NULL;
   }
+
   bp -> id = id;
+  bp -> level = level;
+  bp -> unlocking_level = unlocking_level;
+  bp -> health = health;
+  bp -> cost = cost;
+  for (int i = 0; i < MAX_RESOURCES; i++){
+    bp->base_resources[i] = base_resources[i];
+  }
   /*
    * This piece of code should be substituted with the initial values depending
    * on the id of this building. Probably a switch statement.
