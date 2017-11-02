@@ -1,0 +1,14 @@
+/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+/tmp/cclhoXiy.o: In function `building_new':
+building.c:(.text+0x50): undefined reference to `handle_error'
+/tmp/cclhoXiy.o: In function `building_destroy':
+building.c:(.text+0xfa): undefined reference to `handle_error'
+/tmp/cclhoXiy.o: In function `building_level_up':
+building.c:(.text+0x13b): undefined reference to `handle_error'
+/tmp/cclhoXiy.o: In function `building_edit_health':
+building.c:(.text+0x18d): undefined reference to `handle_error'
+/tmp/cclhoXiy.o: In function `building_get_id':
+building.c:(.text+0x203): undefined reference to `handle_error'
+/tmp/cclhoXiy.o:building.c:(.text+0x243): more undefined references to `handle_error' follow
+collect2: error: ld returned 1 exit status

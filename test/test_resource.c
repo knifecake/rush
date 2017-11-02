@@ -24,7 +24,10 @@
 
 int main(void) {
     /*
-     * Note how you can check for a non-NULL pointer without any comparison or equality operator. If the pointer returned is not NULL then it won't be 0. In C, anything that's not zero will be evaluated to true, so this test will pass when resource_new returns a new pointer.
+     * Note how you can check for a non-NULL pointer without any comparison or
+     * equality operator. If the pointer returned is not NULL then it won't be 0.
+     * In C, anything that's not zero will be evaluated to true, so this test
+     * will pass when resource_new returns a new pointer.
      *
      * Also, keep in mind that you may not nest the call to resource new inside
      * the assert call. This is because resource new is expected to return a
