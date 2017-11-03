@@ -14,7 +14,7 @@ int main(){
   FILE *f=NULL;
   Building **buildings;
 
-  f=fopen("example_buiilding_loader.txt", "r");
+  f=fopen("test/assets/example_building_loader.txt", "r");
   if(!f){
     assert("cannot load building test file", false);
     return -1;

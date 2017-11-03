@@ -68,6 +68,6 @@ void event_list_destroy(Event **list)
 {
     if (!list) return;
 
-    while (*list++) event_destroy(*list);
+    for (int i = 0; list[i]; event_destroy(list[i++]));
     free(list);
 }

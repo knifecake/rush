@@ -1,0 +1,25 @@
+## Event definition format
+1          #(int) number of events to be loaded
+
+# BEGIN: event 0
+
+1          # (int) id
+3          # (int) number of turns
+earthquake # (char *) name
+
+0.2        # (float) resource 0 multiplier
+0.41       # (float) resource 1 multiplier
+
+# END: event 0
+
+
+# BEGIN: event 1
+
+1          # (int) id
+2          # (int) number of turns
+tsunami    # (char *) name
+
+0.26       # (float) resource 0 multiplier
+0.31       # (float) resource 1 multiplier
+
+# END: event 1
