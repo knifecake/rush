@@ -18,6 +18,7 @@
  */
 
 #include "building.h"
+#include "event.h"
 
 #include <stdbool.h>
 
@@ -45,7 +46,7 @@ Tile *tile_new (int, const char *, float *, int *, int);
 void tile_destroy (Tile *);
 
 /*
- * GETTERS. Returns NULL, -1 or false on error.
+ * GETTERS. Returns NULL, INT_ERROR or false on error.
  */
 int tile_get_id (Tile *);
 
@@ -59,8 +60,27 @@ bool tile_get_visible (Tile *);
 
 int tile_get_enemies (Tile *);
 
+Event *tile_get_event (Tile *tile);
+
 /*Tile *tile_set_id (Tile *, int); Is it useful?*/
 
+/*
+ * Creates a copy of an event loaded and insert it into tile.
+ * It allocates memory.
+ * Returns NULL on error. Return modified tile on success.
+ */
+Tile *tile_set_event (Tile *, Event *);
+
+/*
+ * TODO: Decide what tile_next_turn has to manage.
+ * - event: calls function event_next_turn and then checks if the event has
+ *          finished. If so, it frees the mem allocated by the event and sets
+ *          the event pointer to NULL again.
+ *
+ *
+ * Returns NULL on error. Returns modified tile on success.
+ */
+Tile *tile_next_turn (Tile *);
 /*
  * Given a tile and a building, links them.
  * Returns NULL on error.
