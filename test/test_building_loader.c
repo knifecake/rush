@@ -10,7 +10,6 @@
 
 int main(){
 
-  int i = 0;
   FILE *f=NULL;
   Building **buildings;
 
@@ -25,5 +24,6 @@ int main(){
 
   building_list_destroy(buildings);
   fclose(f);
+
   return failed_tests();
 }

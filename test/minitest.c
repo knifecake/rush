@@ -1,9 +1,9 @@
 #include "minitest.h"
 
 /*
- * Have any tests failed?
+ * Have any tests failed? How many tests were run?
  */
-static int _minitests_failed_tests;
+static int _minitest_failed_tests, _minitest_run_tests;
 
 typedef enum {green, red} color;
 
@@ -14,16 +14,18 @@ void assert(char *desc, bool boolean)
     if (boolean)
         cprintf(green, desc);
     else {
-        _minitests_failed_tests++;
+        _minitest_failed_tests++;
         cprintf(red, desc);
     }
 
     printf("\n");
+    _minitest_run_tests++;
 }
 
 int failed_tests(void)
 {
-    return _minitests_failed_tests;
+    printf("finished: %d out of %d tests failed\n", _minitest_failed_tests, _minitest_run_tests);
+    return _minitest_failed_tests;
 }
 
 void cprintf(color c, char *format)

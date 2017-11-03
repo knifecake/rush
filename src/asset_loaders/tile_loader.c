@@ -92,6 +92,6 @@ void tile_list_destroy(Tile **list)
 {
     if (!list) return;
 
-    while (*list++) tile_destroy(*list);
+    for (int i = 0; list[i++]; tile_destroy(list[i]));
     free(list);
 }

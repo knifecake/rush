@@ -45,7 +45,7 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
         int cost = atoi(buff); free(buff);
 
         int base_resources[MAX_RESOURCES];
-        for(int j = 0; j < MAX_RESOURCES; j++){
+        for(int j = 0; j < num_resources; j++){
             buff = fgetll(f);
             base_resources[j] = atoi(buff); free(buff);
         }
@@ -60,6 +60,6 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
 void building_list_destroy(Building **l)
 {
     if (!l) return;
-    while (*l++) building_destroy(*l);
+    for (int i = 0; l[i++]; building_destroy(l[i]));
     free(l);
 }

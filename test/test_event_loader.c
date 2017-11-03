@@ -40,6 +40,5 @@ int main(void) {
   assert("second multiplier read correctly", 0.41f == multipliers[1]);
 
   event_list_destroy(events);
-  assert("can destroy a list of events successfully --FINISH TEST EVENT LOADER--", true);
   return failed_tests();
 }
