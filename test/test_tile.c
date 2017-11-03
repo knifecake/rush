@@ -3,6 +3,7 @@
 #include "../src/entities/tile.h"
 
 #include "../src/entities/building.h"
+#include "../src/entities/event.h"
 #include "../src/lib/error_handling.h"
 
 int main(void) {
@@ -27,12 +28,29 @@ int main(void) {
     assert("tile refuses to link a new building",
             !tile_build(t, NULL));
 
+    Event *e = event_new("Earthquake", rm, 1, 1);
+
+    assert("can link a tile and an event",
+            t = tile_set_event(t, e));
+    event_destroy(e);
+
+    assert("linked event is not NULL",
+            tile_get_event(t));
+
+    assert("tile refuses to link a NULL event",
+            !tile_set_event(t, NULL));
+
     assert("can collect a resource",
             (int )(rr[0] * rm[0]) == tile_collect_resources(t, 0));
 
     assert("refuses to collect a resource with an invalid id",
             INT_ERROR == tile_collect_resources(t, MAX_RESOURCES + 1));
 
+
+    assert("event finishes when number of turns reaches 0",
+            tile_next_turn(t) && !tile_get_event(t));
+
+    building_destroy(b);
     tile_destroy(t);
 
     return failed_tests();

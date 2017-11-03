@@ -13,6 +13,7 @@ struct _Tile {
   int enemies;
   Building *building;
   bool visible;
+  Event* event;
 };
 
 Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *remaining_resources, int enemies) {
@@ -55,12 +56,17 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
   tile->enemies = enemies;
   tile->building = NULL;
   tile->visible = false;
+  tile->event = NULL;
 
   return tile;
 }
 
 void tile_destroy (Tile *tile) {
   if(!tile) return;
+  if(tile->event){
+    event_destroy(tile->event);
+    tile->event=NULL;
+  }
   free(tile);
 }
 
@@ -112,6 +118,14 @@ int tile_get_enemies (Tile *tile) {
   return tile->enemies;
 }
 
+Event *tile_get_event (Tile *tile){
+  if(!tile) {
+    HE("invalid tile", "tile_get_event")
+    return NULL;
+  }
+  return tile->event;
+}
+
 /*Tile *tile_set_id (Tile *tile, int id) {
   if(!tile) {
     HE("tile_set_id: invalid tile.\n");
@@ -125,7 +139,46 @@ int tile_get_enemies (Tile *tile) {
 
   return tile;
 }*/
+Tile *tile_set_event (Tile *tile, Event *event){
+  if(!tile){
+    HE("invalid tile", "tile_set_event")
+    return NULL;
+  }
+  if(!event){
+    HE("invalid event", "tile_set_event")
+    return NULL;
+  }
+  if(tile->event){
+    event_destroy(tile->event);
+    tile->event = NULL;
+  }
+  tile->event = event_copy (event);
+  if(!tile->event){
+    HE("couldn't copy the event", "tile_set_event")
+    return NULL;
+  }
+  return tile;
+}
 
+Tile *tile_next_turn (Tile *tile){
+  if(!tile){
+    HE("invalid tile", "tile_next_turn")
+    return NULL;
+  }
+  /*TODO: Decide what tile does at the end of the turn*/
+
+  if(tile->event){
+    if(!event_next_turn(tile->event)){
+      HE("error nexting event turn", "tile_next_turn")
+      return NULL;
+    }
+    if(event_get_num_turns(tile->event) == 0){
+      event_destroy(tile->event);
+      tile->event = NULL;
+    }
+  }
+  return tile;
+}
 Tile *tile_build (Tile *tile, Building *bp){
   if (!tile){
     HE("invalid tile", "tile_build")

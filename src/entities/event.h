@@ -35,16 +35,24 @@ typedef struct _Event Event;
  * Creates an event given the name, resource_multipliers, id and number of
  * turns on an envent. Name is copied on creation and freed on deletion.
  *
- * Returns NULL on error.
+ * Returns NULL on error. Num_Turns NEED to be >= 1.
  */
 Event *event_new(char*, float*, int, int);
 
 
 /*
  * Frees memory given an Event. This will be managed by the tile when the event
- * comes to an end.
+ * comes to an end. RETURNS NULL. Usage MUST BE "e = event_destroy(e);"
  */
 void event_destroy(Event *);
+
+/*
+ * Creates a copy of event src.
+ * Returns the copy on success.
+ * Returns NULL on error.
+ */
+Event *event_copy (Event *src);
+
 /*
  * This function decrease in 1 the number of turns remaining each time.
  * If n_turns = 0, it will exit successfully.
