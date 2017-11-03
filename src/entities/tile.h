@@ -66,7 +66,7 @@ Event *tile_get_event (Tile *tile);
 
 /*
  * Creates a copy of an event loaded and insert it into tile.
- * It allocates memory.
+ * It ALLOCATES memory.
  * Returns NULL on error. Return modified tile on success.
  */
 Tile *tile_set_event (Tile *, Event *);
@@ -82,8 +82,8 @@ Tile *tile_set_event (Tile *, Event *);
  */
 Tile *tile_next_turn (Tile *);
 /*
- * Given a tile and a building, links them.
- * Returns NULL on error.
+ * Given a tile and a building, links them, does not allocate memory.
+ * Returns NULL on error. TODO: Should this allocate memory itself?
  */
 Tile *tile_build (Tile *, Building *);
 

@@ -49,7 +49,8 @@ int main(void) {
 
     assert("event finishes when number of turns reaches 0",
             tile_next_turn(t) && !tile_get_event(t));
-
+            
+    building_destroy(b);
     tile_destroy(t);
 
     return failed_tests();
