@@ -46,20 +46,17 @@ Event *event_new (char *name, float *mult, int id, int num_turns){
   return e;
 }
 
-Event* event_destroy(Event *e)
+void event_destroy(Event *e)
 {
     free(e);
-    return NULL;
 }
 
-Event *event_copy(Event *dest, Event *src){
+Event *event_copy(Event *src){
   if(!src){
     HE("invalid source event", "event_copy")
     return NULL;
   }
-  if(dest){
-    dest = event_destroy(dest);
-  }
+  Event *dest;
   dest = event_new(src->name, src->mult, src->id, src->num_turns);
   if (!dest){
     HE("creating dest event was not possible", "event_copy")

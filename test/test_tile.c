@@ -32,7 +32,7 @@ int main(void) {
 
     assert("can link a tile and an event",
             t = tile_set_event(t, e));
-    e = event_destroy(e);
+    event_destroy(e);
 
     assert("linked event is not NULL",
             tile_get_event(t));
@@ -49,7 +49,7 @@ int main(void) {
 
     assert("event finishes when number of turns reaches 0",
             tile_next_turn(t) && !tile_get_event(t));
-            
+
     building_destroy(b);
     tile_destroy(t);
 

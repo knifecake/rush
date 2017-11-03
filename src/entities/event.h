@@ -44,17 +44,14 @@ Event *event_new(char*, float*, int, int);
  * Frees memory given an Event. This will be managed by the tile when the event
  * comes to an end. RETURNS NULL. Usage MUST BE "e = event_destroy(e);"
  */
-Event* event_destroy(Event *);
+void event_destroy(Event *);
 
 /*
- * Creates a copy of event src to event dest.
- * The dest pointer NEEDS to be NULL, if this not happens the function will try
- * to free the memory allocated in the dest pointer.
- *
+ * Creates a copy of event src.
  * Returns the copy on success.
  * Returns NULL on error.
  */
-Event *event_copy (Event *dest, Event *src);
+Event *event_copy (Event *src);
 
 /*
  * This function decrease in 1 the number of turns remaining each time.

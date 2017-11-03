@@ -64,7 +64,8 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
 void tile_destroy (Tile *tile) {
   if(!tile) return;
   if(tile->event){
-    tile->event = event_destroy(tile->event);
+    event_destroy(tile->event);
+    tile->event=NULL;
   }
   free(tile);
 }
@@ -147,7 +148,11 @@ Tile *tile_set_event (Tile *tile, Event *event){
     HE("invalid event", "tile_set_event")
     return NULL;
   }
-  tile->event = event_copy (tile->event, event);
+  if(tile->event){
+    event_destroy(tile->event);
+    tile->event = NULL;
+  }
+  tile->event = event_copy (event);
   if(!tile->event){
     HE("couldn't copy the event", "tile_set_event")
     return NULL;
@@ -168,7 +173,8 @@ Tile *tile_next_turn (Tile *tile){
       return NULL;
     }
     if(event_get_num_turns(tile->event) == 0){
-      tile->event = event_destroy(tile->event);
+      event_destroy(tile->event);
+      tile->event = NULL;
     }
   }
   return tile;

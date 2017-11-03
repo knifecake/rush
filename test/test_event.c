@@ -27,24 +27,24 @@ int main(void) {
   e = event_next_turn(e); /* ¿e->turns == 2? */
   assert("number of turns decrease successfully", turns == event_get_num_turns(e) + 1);
 
-  Event *ecopy=NULL;
-  assert("cannot copy an event from NULL", !event_copy(ecopy, NULL));
-  ecopy = event_copy(ecopy, e);
+  Event *ecopy;
+  assert("cannot copy an event from NULL", !event_copy(NULL));
+  ecopy = event_copy(e);
   assert("can copy an event with valid parameters", ecopy);
 
   assert("number of turns copied successfully", event_get_num_turns(e) == event_get_num_turns(ecopy));
   assert("id copied successfully", event_get_id(e) == event_get_id(ecopy));
   assert("name copied successfully", 0 == strcmp(event_get_name(e), event_get_name(ecopy)));
 
-  ecopy = event_destroy(ecopy);
+  event_destroy(ecopy);
 
   e = event_next_turn(e);/* e->turns == 1 */
   e = event_next_turn(e);/* e->turns == 0 */
   e = event_next_turn(e);/* ¿e->turns == 0? */
   assert("number of turns stays as 0 when next_turn happens", 0 == event_get_num_turns(e));
 
-  e = event_destroy(e);
-  assert("can destroy events successfully", !e && !ecopy);
+  event_destroy(e);
+  assert("can destroy events successfully", true);
   assert("--FINISH TEST EVENT--", true);
   free(mult);
   return failed_tests();
