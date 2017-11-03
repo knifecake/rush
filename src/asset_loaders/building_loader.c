@@ -56,3 +56,10 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
 
     return buildings;
 }
+
+void building_list_destroy(Building **l)
+{
+    if (!l) return;
+    while (*l++) building_destroy(*l);
+    free(l);
+}

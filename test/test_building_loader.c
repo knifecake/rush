@@ -16,17 +16,14 @@ int main(){
 
   f=fopen("example_buiilding_loader.txt", "r");
   if(!f){
-    HE("No puedo abrir el archivo.", "test_building_loader");
+    assert("cannot load building test file", false);
     return -1;
   }
 
   buildings = load_buildings_from_file(f, 3);
   assert("can load buildings correctly", buildings);
 
-  while(buildings[i]){
-    building_destroy(buildings[i]);
-    i++;
-  }
+  building_list_destroy(buildings);
   fclose(f);
   return failed_tests();
 }

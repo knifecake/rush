@@ -2,9 +2,7 @@
 build/*
 !build/.keep
 
-test/*
-!test/*.c
-!test/*.h
+test/*.test
 
 assets/img/*.txt
 

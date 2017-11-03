@@ -24,7 +24,6 @@
 
 
 int main(void) {
-
     printf("Loading resources...\n");
     FILE *rf = fopen(RESOURCES_DB, "r");
     if (!rf) {
