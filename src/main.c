@@ -20,7 +20,7 @@
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
 #define EVENTS_DB "assets/events.txt"
-#define IMAGE_ASSET "assets/img/GUI.txt"
+#define IMAGE_ASSET "assets/img/color_key-alpha-ind.png"
 
 
 int main(void) {
