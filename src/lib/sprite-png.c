@@ -160,3 +160,17 @@ png_byte *_sprite_pixel_at(Sprite *s, int x, int y)
 
     return &s->rows[y][x * BYTES_PER_PIXEL];
 }
+
+int sprite_get_h(Sprite *s)
+{
+    if (!s) return UINT_ERROR;
+
+    return s->height;
+}
+
+int sprite_get_w(Sprite *s)
+{
+    if (!s) return UINT_ERROR;
+
+    return s->width;
+}
