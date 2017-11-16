@@ -1,12 +1,16 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../lib/lineread.h"
 
 #include "lib/error_handling.h"
 #include "lib/sprite.h"
+#include "lib/font.h"
 
 #include "asset_loaders/resource_loader.h"
 #include "asset_loaders/tile_loader.h"
+#include "asset_loaders/font_loader.h"
+#include "asset_loaders/event_loader.h"
 
 
 
@@ -20,7 +24,7 @@
 #define RESOURCES_DB "assets/resources.txt"
 #define TILES_DB "assets/tiles.txt"
 #define EVENTS_DB "assets/events.txt"
-#define IMAGE_ASSET "assets/img/GUI.txt"
+#define IMAGE_ASSET "assets/img/Hex_1.png"
 
 
 int main(void) {
@@ -69,8 +73,12 @@ int main(void) {
     }
 
     Sprite *s = sprite_new(sf);
-    sprite_draw(stdout, s, 4, 4);
+    sprite_draw(stdout, s, 1, 1);
     sprite_destroy(s);
+    Sprite **font;
+    font = load_font(' ','~');
+    font_write(stdout, font, "Lorem ipsum dolor sit amet, cons\nectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.", 1, 1, 64);
+    destroy_font(font, ' ', '~');
 
 
     return 0;

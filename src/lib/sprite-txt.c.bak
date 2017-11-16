@@ -27,7 +27,7 @@ int log2_floor (int x);
 
 Sprite *sprite_new(FILE *fp){
   if (!fp){
-    HE("null filename", "sprite_new")
+    HE("null file pointer", "sprite_new")
     return NULL;
   }
 
@@ -119,8 +119,8 @@ void sprite_draw(FILE* fp, Sprite* spr, int x0, int y0){
     handle_error("null parameters", "sprite_draw", __FILE__, __LINE__);
     return;
   }
-  if (x0 < 1 || y0 < 1){
-    handle_error("coordinates < (1,1)", "sprite_draw", __FILE__, __LINE__);
+  if (x0 < 1 || y0 < 0){
+    handle_error("coordinates < (1,0)", "sprite_draw", __FILE__, __LINE__);
     return;
   }
   x0 *= 2;
@@ -141,6 +141,22 @@ void sprite_draw(FILE* fp, Sprite* spr, int x0, int y0){
     fprintf(fp, "\n");
     fprintf(fp, "\033[%d;%dH", y0+y+1, x0);
   }
+}
+
+int sprite_get_h(Sprite *s){
+  if(!s){
+    HE("invalid argument", "sprite_get_h");
+    return -1;
+  }
+  return s->height;
+}
+
+int sprite_get_w(Sprite *s){
+  if(!s){
+    HE("invalid argument", "sprite_get_w");
+    return -1;
+  }
+  return s->width;
 }
 
 int log2_floor (int x){
