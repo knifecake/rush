@@ -27,7 +27,7 @@ typedef struct _World World;
  * Returns a new world object. Receives an array of pointers to all the
  * available tiles and buildings. Returns NULL on failure.
  */
-World *world_new(Tile **, Building **);
+World *world_new(void);
 
 /*
  * Destroys a world, freeing all associated objects.
@@ -50,5 +50,7 @@ World *world_player_turn(World *);
  * Updates the world between turns of the player.
  */
 World *world_ai_turn(World *);
+
+void world_print(FILE *s, World *w);
 
 #endif

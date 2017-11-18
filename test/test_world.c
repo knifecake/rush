@@ -33,24 +33,8 @@ int main(void) {
      * variable. In any case you have to free the allocated entity after you
      * finish testing it.
      */
-    Tile **map=NULL;
-    Building **b=NULL;
-    float flist[]={0,1.0,2.3};
-    int ilist[]={0,1,2};
-
-
-    map=(Tile **)malloc(4*sizeof(Tile *));
-    map[0]=tile_new(0, "tile0", flist, ilist, 0);
-    map[1]=tile_new(1, "tile1", flist, ilist, 0);
-    map[2]=tile_new(2, "tile2", flist, ilist, 0);
-
-    b=(Building **)malloc(4*sizeof(Building *));
-    int res[MAX_RESOURCES] = {1, 2, 3};
-    b[0] = building_new(10, 1, 1, 10, 10, res);
-    b[1] = building_new(20, 1, 1, 10, 10, res);
-    b[2] = building_new(30, 1, 1, 10, 10, res);
-    World *w = world_new(map, b);
-    assert("can create world with valid parameters", w);
+    World *w = world_new();
+    assert("can create world", w);
 
     /*
      * Tests for destruction are hard with our current entity_destroy
@@ -60,15 +44,6 @@ int main(void) {
     world_destroy(w);
     assert("can destroy world", true);
 
-    /*
-     * You may directly nest a function call into an assert call if the
-     * function does not return something that needs to be freed later.
-     */
-    assert("cannot create a world with invalid parameters", !world_new(NULL, NULL));
-
-    assert("cannot create a world with invalid parameters", !world_new(NULL, b));
-
-    assert("cannot create a world with invalid parameters", !world_new(map, NULL));
 
     /*
      * Always, always return the value of failed_tests(). This value will be
@@ -76,10 +51,6 @@ int main(void) {
      * this way, our continuous integration platform will be able to tell if
      * any tests have failed.
      */
-
-    // TODO: free buildings and map
-     free(map);
-     free(b);
 
     return failed_tests();
 }

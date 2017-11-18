@@ -1,77 +1,109 @@
 #include <stdio.h>
+#include <termios.h>
 
 #include "../lib/lineread.h"
 
 #include "lib/error_handling.h"
-#include "lib/sprite.h"
+#include "lib/messages.h"
+#include "lib/cop.h"
 
-#include "asset_loaders/resource_loader.h"
-#include "asset_loaders/tile_loader.h"
+#include "entities/world.h"
 
+#define CMD_FILE "assets/cmd.txt"
 
+int do_build(void *w, char *cmd, char **msg, int num_msg)
+{
+    if (!w || !cmd || !msg || num_msg < 1) {
+        HE("invalid parameters", "cop_demo");
+        return UINT_ERROR;
+    }
 
-/*
- * Provisional constant.
- *
- * Describes where are we loading our resources from relative to the directory
- * from where the executable file will be called. See Makefile or README.md for
- * information on where this file is.
- */
-#define RESOURCES_DB "assets/resources.txt"
-#define TILES_DB "assets/tiles.txt"
-#define EVENTS_DB "assets/events.txt"
-#define IMAGE_ASSET "assets/img/GUI.txt"
+    show_msg("You executed %s\n", cmd);
+    show_msg(msg[0]);
 
+    return !UINT_ERROR;
+}
+
+int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
+{
+    if (!w || !cmd || !msg || num_msg < 1) {
+        HE("invalid parameters", "cop_demo");
+        return UINT_ERROR;
+    }
+
+    show_msg(msg[0], cmd);
+    show_msg("\n");
+
+    return !UINT_ERROR;
+}
 
 int main(void) {
-    printf("Loading resources...\n");
-    FILE *rf = fopen(RESOURCES_DB, "r");
-    if (!rf) {
-        HE("could not open resources db file", "main")
-        return UINT_ERROR;
+    // save term state
+    struct termios initial;
+    tcgetattr(fileno(stdin), &initial);
+
+
+    // init terminal
+    struct termios new;
+    new = initial;
+
+    // do not wait for enter to send key presses
+    new.c_lflag &= ~ICANON;
+
+    // do not automatically show typed characters
+    new.c_lflag &= ~ECHO;
+
+    // send characters one at a time, just when they are received
+    new.c_cc[VMIN] = 1;
+
+    // TODO: find out what this does
+    new.c_cc[VTIME] = 0;
+
+    // dicard signals (do not quit on Ctrl-c)
+    /* new.c_lflag &= ~ISIG; */
+
+    // apply settings to the terminal
+    tcsetattr(fileno(stdin), TCSANOW, &new);
+
+    // load assets
+    World *w = world_new();
+
+    // load cop
+    // TODO: decide what to do about error handling
+    FILE *cf = fopen(CMD_FILE, "r");
+    CoP *c = cop_new(cf);
+    fclose(cf);
+
+    cop_assoc(c, "int_test", do_build);
+    cop_assoc(c, "error_cmd", cop_error_cmd);
+    cop_set_error_cmd(c, "404_not_found");
+
+    // GAME LOOP
+    char input;
+    char cmd[2];
+    while (1) {
+        if ((input = fgetc(stdin))) {
+            show_msg("You pressed %c\n", input);
+
+            if (input == 'q') {
+                show_msg("\nExiting...\n");
+                break;
+            } else {
+                // turn the given command into a string
+                sprintf(cmd, "%c", input);
+
+                cop_exec(c, cmd, w);
+            }
+        }
     }
+    // END GAME LOOP
 
-    Resource **resources = malloc(MAX_RESOURCES * sizeof(Resource *));
-    int num_resources = load_resources_from_file(rf, resources);
-    if (num_resources == 0) {
-        HE("could not load resources", "main")
-        return UINT_ERROR;
-    }
+    // free
+    world_destroy(w);
 
-    fclose(rf);
+    // restore terminal configuration
+    tcsetattr(fileno(stdin), TCSANOW, &initial);
 
-    for (int i = 0; i < num_resources; resource_print(stdout, resources[i++]));
-
-    resource_list_destroy(resources, num_resources);
-
-
-    printf("\nLoading tiles...\n");
-    FILE *tf = fopen(TILES_DB, "r");
-    if (!tf) {
-        HE("could not open tiles db file", "main")
-        return UINT_ERROR;
-    }
-
-    Tile **tiles = load_tiles_from_file(tf, num_resources);
-    if (!tiles) {
-        HE("could not load tiles", "main")
-        return UINT_ERROR;
-    }
-    tile_list_destroy(tiles);
-    fclose(tf);
-
-    for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
-
-    FILE *sf = fopen(IMAGE_ASSET, "r");
-    if (!sf) {
-        HE("could not open image file", "main")
-        return -1;
-    }
-
-    Sprite *s = sprite_new(sf);
-    sprite_draw(stdout, s, 4, 4);
-    sprite_destroy(s);
-
-
+    // exit
     return 0;
 }
