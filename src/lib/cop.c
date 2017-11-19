@@ -6,34 +6,80 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_INT_CMD_NAME 25
 
+/*
+ * Structure for an external command.
+ */
 typedef struct {
+    /*
+     * Name of the external command (what the user must type).
+     */
     char *cmd;
+
+    /*
+     * Name of the internal command associated with this external command.
+     */
     char *internal;
+
+    /*
+     * Number of messages defined for this command.
+     */
     int num_msg;
+
+    /*
+     * Actual messages defined for this command. These will get passed to the
+     * function that is run when this command is called.
+     */
     char **msg;
 } ext_cmd;
 
+/*
+ * Structure for an internal command.
+ */
 typedef struct {
+    /*
+     * Name of the internal command. External commands point to this command by
+     * storing this name on their structure.
+     */
     char i_name[MAX_INT_CMD_NAME];
+
+    /*
+     * Pointer to the function that will be run when an external command linked
+     * to this command is executed.
+     */
     CoP_fun f;
 } int_cmd;
 
 struct _CoP {
+    /*
+     * A list of external commands (e_list) of length num_ext;
+     */
     ext_cmd **e_list;
     int     num_ext;
+
+    /*
+     * The index of the error command in the ext cmd list.
+     */
     int     error_cmd;
 
+    /*
+     * A list of internal commands of length num_int. i_list is allocated to be
+     * as big as e_list even though not all possitions might be used.
+     */
     int_cmd **i_list;
     int     num_int;
-    int     int_max;
 } _CoP;
 
 
-ext_cmd *_cop_read_ext_cmd(CoP *c, FILE *cf)
+/*
+ * @private
+ *
+ * Reads a chunk of the fiven file and returns an external command, NULL on
+ * error.
+ */
+ext_cmd *_cop_read_ext_cmd(FILE *cf)
 {
-    if (!c || !cf) {
+    if (!cf) {
         HE("invalid params", "_cop_read_ext_cmd");
         return NULL;
     }
@@ -90,6 +136,11 @@ ext_cmd *_cop_read_ext_cmd(CoP *c, FILE *cf)
     return e;
 }
 
+/*
+ * @private
+ *
+ * Destroys an external command.
+ */
 void _cop_ext_cmd_destroy(ext_cmd *e)
 {
     if (!e) return;
@@ -102,6 +153,13 @@ void _cop_ext_cmd_destroy(ext_cmd *e)
     free(e);
 }
 
+/*
+ * @private
+ *
+ * Linearly walks through the list of internal commands looking for one with
+ * i_name equal to the given name. Returns the index of that command inside the
+ * given CoP, UINT_ERROR if is not found or on error.
+ */
 int _cop_find_int_cmd_by_name(CoP *c, const char *name)
 {
     if (!name || !c) {
@@ -117,6 +175,13 @@ int _cop_find_int_cmd_by_name(CoP *c, const char *name)
     return UINT_ERROR;
 }
 
+/*
+ * @private
+ *
+ * Linearly walks thorugh the list of external commands looking for one with
+ * cmd equal to the givem cmd. Returns the index of that command in the given
+ * cop or UINT_ERROR in case it was not found or if there was an error.
+ */
 int _cop_find_ext_cmd_by_name(CoP *c, const char *cmd)
 {
     if (!cmd || !c) {
@@ -132,10 +197,21 @@ int _cop_find_ext_cmd_by_name(CoP *c, const char *cmd)
     return UINT_ERROR;
 }
 
+/*
+ * @private
+ *
+ * Creates an internal command with the given name. Returns the command on
+ * success, NULL on error.
+ */
 int_cmd *_cop_int_cmd_new(const char *name)
 {
     if (!name) {
         HE("invalid parameters", "_cop_int_cmd_new");
+        return NULL;
+    }
+
+    if (strlen(name) > MAX_INT_CMD_NAME - 1) {
+        HE("internal command name too long", "_cop_int_cmd_new");
         return NULL;
     }
 
@@ -149,6 +225,12 @@ int_cmd *_cop_int_cmd_new(const char *name)
     return ic;
 }
 
+
+/*
+ * @private
+ *
+ * Destroys an internal command.
+ */
 void _cop_int_cmd_destroy(int_cmd *ic)
 {
     free(ic);
@@ -197,7 +279,7 @@ CoP *cop_new(FILE *cf)
 
     for (int i = 0; i < c->num_ext; i++)
     {
-        c->e_list[i] = _cop_read_ext_cmd(c, cf);
+        c->e_list[i] = _cop_read_ext_cmd(cf);
         if (!c->e_list[i]) {
             HE("could not read an external command", "cop_new");
 
@@ -337,4 +419,10 @@ void cop_print(FILE *s, CoP *c)
     fprintf(s, "Internal commands:\n");
     for (int i = 0; i < c->num_int; i++)
         fprintf(s, "%2d. %s -> %p\n", i + 1, c->i_list[i]->i_name, c->i_list[i]->f);
+
+    if (c->error_cmd != UINT_ERROR) {
+        fprintf(s, "Error command: %2d. %s -> %s\n", c->error_cmd, c->e_list[c->error_cmd]->cmd, c->e_list[c->error_cmd]->internal);
+    } else {
+        fprintf(s, "Error command: no error command was defined.\n");
+    }
 }

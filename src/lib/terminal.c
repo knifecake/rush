@@ -4,12 +4,15 @@
 #include "terminal.h"
 #include "error_handling.h"
 
-static struct termios initial_term;
+/*
+ * Stores the initial terminal configuration.
+ */
+static struct termios term_initial;
 
-int gc_read_key(FILE *s)
+int term_read_key(FILE *s)
 {
     if (!s) {
-        HE("invalid arguments", "gc_read_key");
+        HE("invalid arguments", "term_read_key");
         return 0;
     }
 
@@ -37,23 +40,23 @@ int gc_read_key(FILE *s)
     return buff;
 }
 
-bool gc_is_arrow_key(int k)
+bool term_is_arrow_key(int k)
 {
     return (k == UP_ARROW || k == DOWN_ARROW || k == LEFT_ARROW || k == RIGHT_ARROW || k == HERE);
 }
 
-void gc_terminal_setup(FILE *s)
+void term_setup(FILE *s)
 {
     if (!s) {
-        HE("invalid arguments", "gc_terminal_teardown");
+        HE("invalid arguments", "term_terminal_teardown");
         return;
     }
 
-    tcgetattr(fileno(stdin), &initial_term);
+    tcgetattr(fileno(stdin), &term_initial);
 
     // init terminal
     struct termios new;
-    new = initial_term;
+    new = term_initial;
 
     // do not wait for enter to send key presses
     new.c_lflag &= ~ICANON;
@@ -76,12 +79,12 @@ void gc_terminal_setup(FILE *s)
 
 }
 
-void gc_terminal_teardown(FILE *s)
+void term_teardown(FILE *s)
 {
     if (!s) {
-        HE("invalid arguments", "gc_terminal_teardown");
+        HE("invalid arguments", "term_terminal_teardown");
         return;
     }
 
-    tcsetattr(fileno(stdin), TCSANOW, &initial_term);
+    tcsetattr(fileno(stdin), TCSANOW, &term_initial);
 }

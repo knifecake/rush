@@ -5,6 +5,9 @@
 #include "error_handling.h"
 #include "../../lib/lineread.h"
 
+/*
+ * Maximum config dictionary size.
+ */
 #define MAX_DICT_SIZE 25
 
 typedef struct {
@@ -13,8 +16,17 @@ typedef struct {
     int size;
 } ConfigDict;
 
+/*
+ * The gloval config dictionary (this is the reason you don't need to pass the
+ * dictionary arround when retrieving configuration options.
+ */
 ConfigDict *cd;
 
+/*
+ * @private
+ *
+ * Creates a new dictionary. Returns NULL on error.
+ */
 ConfigDict *_config_dict_new()
 {
     ConfigDict *cd = calloc(1, sizeof(ConfigDict));
@@ -39,41 +51,11 @@ ConfigDict *_config_dict_new()
     return cd;
 }
 
-int config_set(char *key, char *value)
-{
-    if (!key || !value) {
-        HE("invalid parameters", "config_set");
-        return UINT_ERROR;
-    }
-
-    // initialize a dictionary for config if there isn't one already
-    if (!cd)
-        cd = _config_dict_new();
-
-    if (cd->size >= MAX_DICT_SIZE) {
-        HE("no more config items fit into the config dictionary, increase MAX_DICT_SIZE", "config_set");
-        return UINT_ERROR;
-    }
-
-    cd->keys[cd->size] = malloc(strlen(key) + 1);
-    if (!cd->keys[cd->size]) {
-        HE("out of memory", "config_set");
-        return UINT_ERROR;
-    }
-
-    cd->values[cd->size] = malloc(strlen(value) + 1);
-    if (!cd->values[cd->size]) {
-        HE("out of memory", "config_set");
-        return UINT_ERROR;
-    }
-
-    // copy k&v and increase dict size
-    strcpy(cd->keys[cd->size], key);
-    strcpy(cd->values[cd->size++], value);
-
-    return cd->size;
-}
-
+/*
+ * @private
+ *
+ * Frees all memory allocated for the given dictionary.
+ */
 void _config_dict_destroy(ConfigDict *cd)
 {
     if (!cd)
@@ -89,6 +71,73 @@ void _config_dict_destroy(ConfigDict *cd)
     free(cd);
 }
 
+/*
+ * @private
+ *
+ * Returns the index of the given key if present on the given dictionary,
+ * UINT_ERROR if it isn't found or an error was encountered.
+ */
+int _config_dict_key_index(ConfigDict *cd, char *key)
+{
+    if (!cd || !key) {
+        HE("invalid parameters", "_config_dict_key_index");
+        return UINT_ERROR;
+    }
+
+    for (int i = 0; i < cd->size; i++) {
+        if (strcmp(cd->keys[i], key) == 0)
+            return i;
+    }
+
+    return UINT_ERROR;
+}
+
+int config_set(char *key, char *value)
+{
+    if (!key || !value) {
+        HE("invalid parameters", "config_set");
+        return UINT_ERROR;
+    }
+
+    // initialize a dictionary for config if there isn't one already
+    if (!cd)
+        cd = _config_dict_new();
+
+
+    int index;
+    if ((index = _config_dict_key_index(cd, key)) == UINT_ERROR) {
+        if (cd->size >= MAX_DICT_SIZE) {
+            HE("no more config items fit into the config dictionary, increase MAX_DICT_SIZE", "config_set");
+            return UINT_ERROR;
+        }
+
+        index = cd->size;
+
+        cd->keys[index] = malloc(strlen(key) + 1);
+        if (!cd->keys[index]) {
+            HE("out of memory", "config_set");
+            return UINT_ERROR;
+        }
+
+        cd->values[index] = malloc(strlen(value) + 1);
+        if (!cd->values[index]) {
+            HE("out of memory", "config_set");
+            return UINT_ERROR;
+        }
+
+        cd->size++;
+    }
+
+
+
+    // copy k&v and increase dict size
+    strcpy(cd->keys[index], key);
+    strcpy(cd->values[index], value);
+
+    return cd->size;
+}
+
+
 char *config_get(char *key)
 {
     if (!key) {
@@ -99,10 +148,9 @@ char *config_get(char *key)
     if (!cd)
         return NULL;
 
-    for (int i = 0; i < cd->size; i++) {
-        if (strcmp(key, cd->keys[i]) == 0) {
-            return cd->values[i];
-        }
+    int index = _config_dict_key_index(cd, key);
+    if (index != UINT_ERROR) {
+        return cd->values[index];
     }
 
     return NULL;
@@ -130,7 +178,11 @@ int load_config_from_file(const char *config_file)
             return UINT_ERROR;
         }
 
-        config_set(key, value);
+        if (!config_set(key, value)) {
+            HE("could not store given key in dictionary", "load_config_from_file");
+            free(key); free(value);
+            return UINT_ERROR;
+        }
         free(key);
         free(value);
     }

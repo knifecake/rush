@@ -41,7 +41,7 @@ int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
 
 int main(void) {
     // init terminal (saving previous state)
-    gc_terminal_setup(stdin);
+    term_setup(stdin);
 
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
@@ -64,11 +64,11 @@ int main(void) {
     char input;
     char cmd[2];
     while (1) {
-        if ((input = gc_read_key(stdin))) {
+        if ((input = term_read_key(stdin))) {
             if (input == 'q') {
                 show_msg("\nExiting...\n");
                 break;
-            } else if (gc_is_arrow_key(input)) {
+            } else if (term_is_arrow_key(input)) {
                 w = world_move_cursor(w, input);
             } else {
                 // turn the given command into a string
@@ -85,7 +85,7 @@ int main(void) {
     config_destroy();
 
     // restore terminal configuration
-    gc_terminal_teardown(stdin);
+    term_teardown(stdin);
 
     // exit
     return 0;

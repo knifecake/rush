@@ -1,3 +1,6 @@
+#ifndef __MESSAGES_H__
+#define __MESSAGES_H__
+
 /*
  * A library for handling messages to the user in our game.
  *
@@ -16,3 +19,4 @@
  * to change where things are output to.
  */
 int show_msg(const char *msg, ...);
+#endif
