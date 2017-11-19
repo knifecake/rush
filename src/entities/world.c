@@ -5,7 +5,7 @@
 #include "world.h"
 
 #include "../lib/error_handling.h"
-#include "../lib/game_controller.h"
+#include "../lib/terminal.h"
 #include "../lib/messages.h"
 #include "../lib/config.h"
 
