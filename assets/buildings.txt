@@ -1,0 +1,36 @@
+3       # number of buildings to load.
+
+524     # int building_id
+3       # current level of the building
+14      # player's level to build it
+
+1599    # building's health points
+550     # (int) buiding's leveling cost
+
+1532        # (int) quantity of resource 1 returned each time
+29032       # (int) quantity of resource 2 returned each time
+45078       # (int) quantity of resource 3 returned each time
+
+
+520     # int building_id
+6      # current level of the building
+1     # player's level to build it
+
+2590    # building's health points
+1500    # (int) buiding's leveling cost
+
+15320        # (int) quantity of resource 1 returned each time
+2032       # (int) quantity of resource 2 returned each time
+450780       # (int) quantity of resource 3 returned each time
+
+
+527     # int building_id
+1       # current level of the building
+10      # player's level to build it
+
+1700    # building's health points
+850     # (int) buiding's leveling cost
+
+15333      # (int) quantity of resource 1 returned each time
+2903       # (int) quantity of resource 2 returned each time
+4078       # (int) quantity of resource 3 returned each time

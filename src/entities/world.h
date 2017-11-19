@@ -51,6 +51,16 @@ World *world_player_turn(World *);
  */
 World *world_ai_turn(World *);
 
+/*
+ * Moves the cursor by one tile in the specified direction.
+ *
+ * See `lib/game_controller.h` for details on possible directions.
+ */
+World *world_move_cursor(World *w, int dir);
+
+/*
+ * Prints what's inside the world for debugging.
+ */
 void world_print(FILE *s, World *w);
 
 #endif

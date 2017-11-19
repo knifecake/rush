@@ -1,0 +1,14 @@
+# MAIN CONFIGURATION FILE
+#
+# Each pair of lines on this file is a key-value pair that will be stored on
+# the global config dictionary. See lib/config.h for more information on how to
+# use this module.
+
+resources db
+assets/resources.txt
+
+tiles db
+assets/tiles.txt
+
+buildings db
+test/assets/example_building_loader.txt

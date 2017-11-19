@@ -1,14 +1,16 @@
 #include <stdio.h>
-#include <termios.h>
 
 #include "../lib/lineread.h"
 
 #include "lib/error_handling.h"
 #include "lib/messages.h"
 #include "lib/cop.h"
+#include "lib/terminal.h"
+#include "lib/config.h"
 
 #include "entities/world.h"
 
+#define CONFIG_FILE "assets/config.txt"
 #define CMD_FILE "assets/cmd.txt"
 
 int do_build(void *w, char *cmd, char **msg, int num_msg)
@@ -19,7 +21,7 @@ int do_build(void *w, char *cmd, char **msg, int num_msg)
     }
 
     show_msg("You executed %s\n", cmd);
-    show_msg(msg[0]);
+    show_msg("%s\n", msg[0]);
 
     return !UINT_ERROR;
 }
@@ -38,32 +40,11 @@ int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
 }
 
 int main(void) {
-    // save term state
-    struct termios initial;
-    tcgetattr(fileno(stdin), &initial);
+    // init terminal (saving previous state)
+    gc_terminal_setup(stdin);
 
-
-    // init terminal
-    struct termios new;
-    new = initial;
-
-    // do not wait for enter to send key presses
-    new.c_lflag &= ~ICANON;
-
-    // do not automatically show typed characters
-    new.c_lflag &= ~ECHO;
-
-    // send characters one at a time, just when they are received
-    new.c_cc[VMIN] = 1;
-
-    // TODO: find out what this does
-    new.c_cc[VTIME] = 0;
-
-    // dicard signals (do not quit on Ctrl-c)
-    /* new.c_lflag &= ~ISIG; */
-
-    // apply settings to the terminal
-    tcsetattr(fileno(stdin), TCSANOW, &new);
+    // load configuration dictionary
+    load_config_from_file(CONFIG_FILE);
 
     // load assets
     World *w = world_new();
@@ -74,7 +55,8 @@ int main(void) {
     CoP *c = cop_new(cf);
     fclose(cf);
 
-    cop_assoc(c, "int_test", do_build);
+    // associate our game commands with it
+    cop_assoc(c, "build", do_build);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
@@ -82,12 +64,12 @@ int main(void) {
     char input;
     char cmd[2];
     while (1) {
-        if ((input = fgetc(stdin))) {
-            show_msg("You pressed %c\n", input);
-
+        if ((input = gc_read_key(stdin))) {
             if (input == 'q') {
                 show_msg("\nExiting...\n");
                 break;
+            } else if (gc_is_arrow_key(input)) {
+                w = world_move_cursor(w, input);
             } else {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
@@ -100,9 +82,10 @@ int main(void) {
 
     // free
     world_destroy(w);
+    config_destroy();
 
     // restore terminal configuration
-    tcsetattr(fileno(stdin), TCSANOW, &initial);
+    gc_terminal_teardown(stdin);
 
     // exit
     return 0;
