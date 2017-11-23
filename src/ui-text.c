@@ -61,7 +61,7 @@ UIList *ui_list_new(void **s, int s_len, ui_get_li_title_fun get_li_title)
 
     for (int i = 0; i < s_len; i++) {
         l->list[i] = _ui_li_new(s[i]);
-        if (l->list[i]) {
+        if (!l->list[i]) {
             HE("could not create list item", "ui_list_new");
             for (int j = 0; j < i; _ui_li_destroy(l->list[j++]));
             free(l->list); free(l);
