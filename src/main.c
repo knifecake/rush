@@ -61,10 +61,10 @@ int main(void) {
         HE("could not load tiles", "main")
         return UINT_ERROR;
     }
-    tile_list_destroy(tiles);
     fclose(tf);
 
     for (int i = 0; tiles[i]; tile_print(stdout, tiles[i++]));
+    tile_list_destroy(tiles);
 
     FILE *sf = fopen(IMAGE_ASSET, "r");
     if (!sf) {
