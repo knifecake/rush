@@ -1,3 +1,6 @@
+#ifndef __MESSAGES_H__
+#define __MESSAGES_H__
+
 /*
  * A library for handling messages to the user in our game.
  *
@@ -15,4 +18,5 @@
  * Handles a message. Pretty much works on the same way as print, but allows us
  * to change where things are output to.
  */
-int show_message(const char *fs, ...);
+int show_msg(const char *msg, ...);
+#endif

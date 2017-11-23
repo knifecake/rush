@@ -21,7 +21,8 @@ void handle_error(const char *error_msg, ...)
         int line_no             = va_arg(args, int);
         va_end(args);
 
-        fprintf(ERROR_LOG_FILE, "%s at %s:%d: %s\n", func_name, file_name, line_no, error_msg);
+        // show header of message in yellow
+        fprintf(ERROR_LOG_FILE, "\e[0;33m%s at %s:%d:\e[0m %s\n", func_name, file_name, line_no, error_msg);
     }
     else
     {
