@@ -186,6 +186,24 @@ World *world_move_cursor(World *w, int dir)
     return w;
 }
 
+// TODO: implement this
+Tile *world_get_current_tile(World *w)
+{
+    return NULL;
+}
+
+// TODO: implement this
+Building **world_get_buildings(World *w)
+{
+    return NULL;
+}
+
+// TODO: implement this
+int world_get_num_buildings(World *w)
+{
+    return 0;
+}
+
 void world_print(FILE *s, World *w)
 {
     if (!s || !w) {

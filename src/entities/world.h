@@ -59,6 +59,22 @@ World *world_ai_turn(World *);
 World *world_move_cursor(World *w, int dir);
 
 /*
+ * Returns a pointer to the tile under the cursor, NULL on error.
+ */
+Tile *world_get_current_tile(World *w);
+
+/*
+ * Returns a pointer to the list of available buildings.
+ */
+Building **world_get_buildings(World *w);
+
+/*
+ * Returns the number of buildings that world_get_buildings returns, UINT_ERROR
+ * in case of failure.
+ */
+int world_get_num_buildings(World *w);
+
+/*
  * Prints what's inside the world for debugging.
  */
 void world_print(FILE *s, World *w);

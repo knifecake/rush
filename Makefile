@@ -5,7 +5,8 @@ LDFLAGS	= -lm -lpng
 BUILD_DIR = build
 EXE				= game
 
-src	= $(wildcard src/**/*.c)
+src	= $(wildcard src/**/*.c) \
+			$(wildcard src/*.c)
 lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)

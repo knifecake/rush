@@ -8,36 +8,13 @@
 #include "lib/terminal.h"
 #include "lib/config.h"
 
+#include "controller.h"
+
 #include "entities/world.h"
 
 #define CONFIG_FILE "assets/config.txt"
 #define CMD_FILE "assets/cmd.txt"
 
-int do_build(void *w, char *cmd, char **msg, int num_msg)
-{
-    if (!w || !cmd || !msg || num_msg < 1) {
-        HE("invalid parameters", "cop_demo");
-        return UINT_ERROR;
-    }
-
-    show_msg("You executed %s\n", cmd);
-    show_msg("%s\n", msg[0]);
-
-    return !UINT_ERROR;
-}
-
-int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
-{
-    if (!w || !cmd || !msg || num_msg < 1) {
-        HE("invalid parameters", "cop_demo");
-        return UINT_ERROR;
-    }
-
-    show_msg(msg[0], cmd);
-    show_msg("\n");
-
-    return !UINT_ERROR;
-}
 
 int main(void) {
     // init terminal (saving previous state)
@@ -56,7 +33,7 @@ int main(void) {
     fclose(cf);
 
     // associate our game commands with it
-    cop_assoc(c, "build", do_build);
+    cop_assoc(c, "build", action_generic);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 

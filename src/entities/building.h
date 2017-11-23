@@ -59,6 +59,8 @@ Building *building_edit_health(Building *, int);
 
 int building_get_id(Building *);
 
+char *building_get_name(Building *);
+
 int building_get_level(Building *);
 
 int building_get_unlocking_level(Building *);
