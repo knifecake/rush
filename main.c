@@ -1,16 +1,16 @@
 #include <stdio.h>
 
-#include "../lib/lineread.h"
+#include "lib/lineread.h"
 
-#include "lib/error_handling.h"
-#include "lib/messages.h"
-#include "lib/cop.h"
-#include "lib/terminal.h"
-#include "lib/config.h"
+#include "src/lib/error_handling.h"
+#include "src/lib/messages.h"
+#include "src/lib/cop.h"
+#include "src/lib/terminal.h"
+#include "src/lib/config.h"
 
-#include "controller.h"
+#include "src/controller.h"
 
-#include "entities/world.h"
+#include "src/entities/world.h"
 
 #define CONFIG_FILE "assets/config.txt"
 #define CMD_FILE "assets/cmd.txt"

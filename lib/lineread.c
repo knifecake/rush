@@ -44,7 +44,7 @@ char *_clean_up_string(char *string) {
   ptr = string + strlen(string);   /* This makes ptr point to the "0" at the end of the string */
   ptr--;
   while( isspace(*ptr) )
-    *ptr--;
+    *ptr = *ptr - 1; // changed this line from *ptr-- to this to silence a waring
   *(ptr+1) = 0;
 
   /* Remove the initial blanks */
