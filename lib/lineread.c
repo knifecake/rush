@@ -44,7 +44,7 @@ char *_clean_up_string(char *string) {
   ptr = string + strlen(string);   /* This makes ptr point to the "0" at the end of the string */
   ptr--;
   while( isspace(*ptr) )
-    *ptr--;
+    *ptr = *ptr - 1; // changed this line from *ptr-- to this to silence a waring
   *(ptr+1) = 0;
 
   /* Remove the initial blanks */
@@ -79,7 +79,7 @@ char *_read_physical_line(FILE *fp) {
   if (ptr != NULL) *ptr = 0;
   ptr = buf + strlen(buf);   /* This makes ptr point to the "0" at the end of buf */
   ptr--;
-  if (ptr <= buf)            /* This is true if the line only had a comment */
+  if (ptr < buf)            /* This is true if the line only had a comment */
     return _read_physical_line(fp);
   while(isspace(*ptr) && ptr > buf)
     ptr--;

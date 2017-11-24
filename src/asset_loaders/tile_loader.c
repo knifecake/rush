@@ -20,6 +20,10 @@ Tile **load_tiles_from_file(FILE *f, int num_resources)
         return NULL;
     }
     num_tiles = atoi(buff); free(buff);
+    if (num_tiles == 0) {
+        HE("refusing to load tiles from an empty or corrupt file", "load_tiles_from_file");
+        return NULL;
+    }
 
     // we'll leave the last pointer set to null, to signal the end of the list
     Tile **tiles = calloc(num_tiles + 1, sizeof(Tile *));
@@ -92,6 +96,6 @@ void tile_list_destroy(Tile **list)
 {
     if (!list) return;
 
-    for (int i = 0; list[i++]; tile_destroy(list[i]));
+    for (int i = 0; list[i]; tile_destroy(list[i++]));
     free(list);
 }

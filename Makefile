@@ -5,7 +5,8 @@ LDFLAGS	= -lm -lpng
 BUILD_DIR = build
 EXE				= game
 
-src	= $(wildcard src/**/*.c)
+src	= $(wildcard src/**/*.c) \
+			$(wildcard src/*.c)
 lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
@@ -21,14 +22,14 @@ test_exes = $(test_sources:.c=.test)
 game: $(BUILD_DIR)/$(EXE)
 
 # actually build the main game executable
-$(BUILD_DIR)/$(EXE): src/main.o $(obj)
+$(BUILD_DIR)/$(EXE): main.o $(obj)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ $(LDFLAGS)
 
 # compiles all tests
 .PHONY: test
 test: $(test_exes)
 	@echo "💁  💁‍♂️  Running the whole test suite... 🙏  🙏\n"
-	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test) 2>/dev/null; echo "";)
+	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test); echo "";)
 
 # compiles whichever test you tell it to
 # TODO: fix this rule to only compile the test_*.o that have changed
@@ -43,7 +44,7 @@ test/minitest.o:
 
 .PHONY: clear
 clear:
-	@rm -rf **/**/*.o **/*.o
+	@rm -rf **/**/*.o **/*.o *.o
 
 .PHONY: clean
 clean: clear

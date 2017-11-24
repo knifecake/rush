@@ -1,0 +1,12 @@
+# command file
+2
+b
+build
+1
+Hello. This command was executed through the CoP.
+
+# This command is run in case the command executed by the user is not defined.
+404_not_found
+error_cmd
+1
+Sorry, I don't know how to %s.

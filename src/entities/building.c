@@ -76,6 +76,18 @@ int building_get_id (Building *bp){
   return bp -> id;
 }
 
+char *building_get_name(Building *bp)
+{
+    if (!bp) {
+        HE("invalid parameters", "building_get_name");
+        return NULL;
+    }
+
+    char *name = calloc(100, sizeof(char));
+    sprintf(name, "Building #%d", bp->id);
+    return name;
+}
+
 int building_get_level (Building *bp){
   if(!bp){
     HE("pointer is NULL", "building_get_level");
