@@ -5,14 +5,160 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct _UIListItem {
-    void *info;
+
+/*
+ * The global UI structure.
+ */
+typedef struct _UI {
+    World *w;
+
+    UIMap *map;
+    UIWorldInfo *wi;
+    UITileInfo *ti;
+} UI;
+
+UI ui;
+
+int ui_setup(World *w)
+{
+    if (!w) {
+        HE("invalid paramenters, no world given", "ui_setup");
+        return UINT_ERROR;
+    }
+
+    ui.w = w;
+
+    ui.map = ui_map_new(ui.w);
+    ui.wi = ui_world_info_new(ui.w);
+
+    // ui tile info is created when the cursor is first moved
+
+    return !UINT_ERROR;
+}
+
+void ui_teardown()
+{
+    // this function does nothing at the moment as the UI is
+    // statically allocated
+    return;
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+/*
+ * UIWorldInfo panel
+ *
+ * A world info panel intended to be displayed on the top of the sidebar.
+ */
+
+struct _UIWorldInfo {
+    // TODO
+    World *w;
 };
+
+UIWorldInfo *ui_world_info_new(World *w)
+{
+    // TODO
+    return NULL;
+}
+
+void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
+{
+    // TODO
+    return;
+}
+
+void ui_world_info_destroy(UIWorldInfo *wi)
+{
+    // TODO
+    return;
+}
+
+// ----------------------------------------------------------------------------
+
+/*
+ * UITileInfo panel
+ *
+ * A tile info panel intended to be displayed on the right of the sidebar.
+ *
+ * Notice: this component's new/destroy functions need to be lightweight as
+ * they will be called every time the cursor is moved. Alternative: design this
+ * component to be reusable and add functionality to update tiles.
+ */
+
+struct _UITileInfo {
+    // TODO
+    Tile *w;
+};
+
+UITileInfo *ui_tile_info_new(Tile *t)
+{
+    // TODO
+    return NULL;
+}
+
+void ui_tile_info_draw(UITileInfo *ti, int x, int y)
+{
+    // TODO
+    return;
+}
+
+void ui_tile_info_destroy(UITileInfo *ti)
+{
+    // TODO
+    return;
+}
+
+// ----------------------------------------------------------------------------
+
+/*
+ * UIMap
+ *
+ * A Map view displayed on the center of the screen.
+ */
+
+struct _UIMap {
+    // TODO
+    Tile **tiles;
+    int previous_cursor;
+};
+
+UIMap *ui_map_new(World *w)
+{
+    // TODO
+    return NULL;
+}
+
+void ui_map_update_cursor(UIMap *m)
+{
+    // TODO
+    return;
+}
+
+void ui_map_redraw_tile(UIMap *m, int tile_index)
+{
+    // TODO
+    return;
+}
+
+void ui_map_destroy(UIMap *m)
+{
+    // TODO
+    return;
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+typedef struct _UIListItem {
+    void *info;
+} UIListItem;
 
 struct _UIList {
     UIListItem **list;
     int len;
-    ui_get_li_title_fun get_li_title;
+    ui_get_li_string_fun get_li_title;
 };
 
 UIListItem *_ui_li_new(void *info)
@@ -39,7 +185,9 @@ void _ui_li_destroy(UIListItem *li)
     free(li);
 }
 
-UIList *ui_list_new(void **s, int s_len, ui_get_li_title_fun get_li_title)
+UIList *ui_list_new(void **s, int s_len,
+        ui_get_li_string_fun get_li_title,
+        ui_get_li_sprite_fun get_li_sprite)
 {
     if (!s || s_len < 0 || !get_li_title) {
         HE("invalid parameters", "ui_list_new");
@@ -86,7 +234,7 @@ void ui_list_destroy(UIList *l)
 }
 
 // TODO: finish implementation
-UIListItem *ui_list_present(UIList *l)
+void *ui_list_present(UIList *l)
 {
     if (!l) {
         HE("invalid parameters", "ui_list_present");
@@ -95,14 +243,4 @@ UIListItem *ui_list_present(UIList *l)
 
     printf("Should present a list");
     return l->list[0];
-}
-
-void *ui_li_get_info(UIListItem *li)
-{
-    if (!li) {
-        HE("invalid parameters", "ui_li_get_info");
-        return NULL;
-    }
-
-    return li->info;
 }
