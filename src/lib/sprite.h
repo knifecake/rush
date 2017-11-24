@@ -53,8 +53,4 @@ int sprite_get_h(Sprite *s);
  * Returns the width of the given sprite, PINT_ERROR on error.
  */
 int sprite_get_w(Sprite *s);
-<<<<<<< HEAD
-=======
-
 #endif
->>>>>>> c88e926a4571709dcb784c05ac38ba49dfb5bf51
