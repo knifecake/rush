@@ -17,7 +17,11 @@ int load_resources_from_file(FILE *f, Resource **resources)
     num_resources = atoi(fgetll(f));
 
     // never load more than MAX_RESOURCES resources
-    num_resources = (num_resources > MAX_RESOURCES) ? MAX_RESOURCES : num_resources;
+    if (num_resources > MAX_RESOURCES) {
+        HE("warning: more resources are present on the file than will be loaded", "load_resources_from_file");
+        handle_error(" -> increase MAX_RESOURCES to be able to fit all the resources you need\n");
+        num_resources = MAX_RESOURCES;
+    }
 
     for (int i = 0; i < num_resources; i++) {
         char *buff = fgetll(f);

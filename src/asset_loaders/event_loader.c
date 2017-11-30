@@ -24,6 +24,19 @@ Event **load_events_from_file(FILE *fp, int num_resources){
   }
   num_events = atoi(buff);free(buff);
 
+  int resource_list_len = 0;
+  buff = fgetll(fp);
+  if (!buff) {
+      HE("cannot determine length of resource multiplier lists", "load_events_from_file");
+      return NULL;
+  }
+
+  resource_list_len = atoi(buff); free(buff);
+  if (resource_list_len != num_resources) {
+      HE("refusing to load event db file with a diferent number of resource multiplier than expected", "load_events_from_file");
+      return NULL;
+  }
+
   Event **events = calloc (num_events + 1, sizeof(Event *));
   if (!events){
     HE("cannot load events, out of memory", "load_events_from_file")

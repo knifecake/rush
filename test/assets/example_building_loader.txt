@@ -1,4 +1,5 @@
 3       # number of buildings to load.
+2       # resource list length
 
 524     # int building_id
 3       # current level of the building
@@ -9,7 +10,6 @@
 
 1532        # (int) quantity of resource 1 returned each time
 29032       # (int) quantity of resource 2 returned each time
-45078       # (int) quantity of resource 3 returned each time
 
 
 520     # int building_id
@@ -21,7 +21,6 @@
 
 15320        # (int) quantity of resource 1 returned each time
 2032       # (int) quantity of resource 2 returned each time
-450780       # (int) quantity of resource 3 returned each time
 
 
 527     # int building_id
@@ -33,4 +32,3 @@
 
 15333      # (int) quantity of resource 1 returned each time
 2903       # (int) quantity of resource 2 returned each time
-4078       # (int) quantity of resource 3 returned each time

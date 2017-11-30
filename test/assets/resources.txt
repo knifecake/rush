@@ -6,7 +6,7 @@
 # the number of resources that must be present on resource lists in tiles
 # and buildings.
 
-7         # number of resources present on this file
+2         # number of resources present on this file
 
 # BEGIN: resource 1
 
@@ -18,35 +18,7 @@ gin       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
 
 # BEGIN: resource 2
 
-1
-chococrispies
+1               # (int) resource ID
+chococrispies   # (string) resource name, must be shorter than MAX_RESOURCE_NAME
 
 # END: resource 2
-
-2
-Basic 3
-
-3
-Special
-
-4
-XP
-
-5
-IP
-
-6
-Soldiers2
-Basic 3
-
-3
-Special
-
-4
-XP
-
-5
-IP
-
-6
-Soldiers

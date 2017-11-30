@@ -14,7 +14,7 @@
 
 int main(void) {
   FILE *ef = fopen(EVENTS_DB, "r");
-  int num_resources = 4;
+  int num_resources = 2;
   float* multipliers;
   if(!ef){
     assert("could not open events_db file", false);
@@ -28,6 +28,9 @@ int main(void) {
   events = load_events_from_file(ef, num_resources);
   fclose(ef);
   assert("can create events from file", events);
+  if (!events) {
+      return failed_tests();
+  }
 
   assert("id read correctly", event_get_id(events[0]) == 1);
 

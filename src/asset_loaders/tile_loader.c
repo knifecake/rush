@@ -25,6 +25,19 @@ Tile **load_tiles_from_file(FILE *f, int num_resources)
         return NULL;
     }
 
+    int resource_list_len = 0;
+    buff = fgetll(f);
+    if (!buff) {
+        HE("cannot determine the length of the resource multiplier / available resources lists", "load_tiles_from_file");
+        return NULL;
+    }
+
+    resource_list_len = atoi(buff); free(buff);
+    if (resource_list_len != num_resources) {
+        HE("refusing to load tile db with more resource list entries than resources present in resources db", "load_tiles_from_file");
+        return NULL;
+    }
+
     // we'll leave the last pointer set to null, to signal the end of the list
     Tile **tiles = calloc(num_tiles + 1, sizeof(Tile *));
     if (!tiles) {
@@ -98,4 +111,17 @@ void tile_list_destroy(Tile **list)
 
     for (int i = 0; list[i]; tile_destroy(list[i++]));
     free(list);
+}
+
+int entity_list_len(void **list)
+{
+    if (!list) {
+        HE("invalid parameters", "tile_list_len");
+        return UINT_ERROR;
+    }
+
+    int i;
+    for (i = 0; list[i]; i++);
+
+    return i;
 }

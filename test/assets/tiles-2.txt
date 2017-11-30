@@ -1,0 +1,4 @@
+# this file should fail as we assume two resources have been loaded
+
+2
+3

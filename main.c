@@ -25,6 +25,13 @@ int main(void) {
 
     // load assets
     World *w = world_new();
+    if (!w) {
+        HE("FATAL: could not load some asset", "main");
+
+        config_destroy();
+        term_teardown(stdin);
+        abort();
+    }
 
     // load cop
     // TODO: decide what to do about error handling

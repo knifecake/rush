@@ -19,7 +19,7 @@ int main(){
     return -1;
   }
 
-  buildings = load_buildings_from_file(f, 3);
+  buildings = load_buildings_from_file(f, 2);
   assert("can load buildings correctly", buildings);
 
   building_list_destroy(buildings);

@@ -1,5 +1,6 @@
 ## Event definition format
-1          #(int) number of events to be loaded
+1          # (int) number of events to be loaded
+7          # (int) length of resource lists
 
 # BEGIN: event 0
 
@@ -9,6 +10,11 @@ earthquake # (char *) name
 
 0.2        # (float) resource 0 multiplier
 0.41       # (float) resource 1 multiplier
+1          # ...
+1
+1
+1
+1
 
 # END: event 0
 
@@ -21,5 +27,10 @@ tsunami    # (char *) name
 
 0.26       # (float) resource 0 multiplier
 0.31       # (float) resource 1 multiplier
+1          # ...
+1
+1
+1
+1
 
 # END: event 1

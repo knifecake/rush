@@ -44,3 +44,10 @@ Tile **load_tiles_from_file(FILE *, int);
  * TODO: consider this a utility function. Maybe it should be somewhere else.
  */
 void tile_list_destroy(Tile **);
+
+/*
+ * Returns the length of a NULL-terminated list of entities.
+ *
+ * TODO: consider Rafa's alternative prototype for asset loaders
+ */
+int entity_list_len(void **);

@@ -5,10 +5,10 @@
 # use this module.
 
 resources db
-assets/resources.txt
+test/assets/resources.txt
 
 tiles db
-assets/tiles.txt
+test/assets/tiles.txt
 
 buildings db
 test/assets/example_building_loader.txt

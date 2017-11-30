@@ -28,7 +28,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     Building **bs = world_get_buildings(w);
 
     // assemble a list that is compatible with the UI-library
-    UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_name, NULL, NULL);
+    UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_name, NULL);
 
     // display the list: passes control to the ui, will return a pointer to the list item that was chosen
     Building *b = ui_list_present(ui_l);

@@ -17,9 +17,22 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
     char *buff = fgetll(f);
     if (!buff) {
         HE("cannot determine the number of buildings to load", "load_buildings_from_file")
-        return NULL;
+        free(buff); return NULL;
     }
     num_buildings = atoi(buff); free(buff);
+
+    int resource_list_len = 0;
+    buff = fgetll(f);
+    if (!buff) {
+        HE("cannot determine the length of resource multiplier lists", "load_buildings_from_file");
+        free(buff); return NULL;
+    }
+
+    resource_list_len = atoi(buff); free(buff);
+    if (resource_list_len != num_resources) {
+        HE("refusing to load a diffrenent number of resource multipliers than resources were loaded", "load_buildings_from_file");
+        return NULL;
+    }
 
     //we'll leave the last pointer set to null, to signal the end of the list
     Building **buildings = calloc(num_buildings + 1, sizeof(Building *));
