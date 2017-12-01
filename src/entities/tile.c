@@ -37,7 +37,7 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
     return NULL;
   }
 
-  Tile *tile = (Tile *)calloc(1, sizeof(Tile));
+  Tile *tile = oopsalloc(1, sizeof(Tile), "tile_new");
 
   if(!tile) {
     HE("cannot create tile, out of memory", "tile_new")

@@ -23,11 +23,7 @@ Resource *resource_new(int id, const char *name)
         return NULL;
     }
 
-    Resource *r = malloc(sizeof(Resource));
-    if (!r) {
-        HE("cannot create resource, out of memory", "resource_new")
-        return NULL;
-    }
+    Resource *r = oopsalloc(1, sizeof(Resource), "resource_new");
 
     r->id = id;
     strcpy(r->name, name);

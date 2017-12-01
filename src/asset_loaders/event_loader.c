@@ -37,11 +37,7 @@ Event **load_events_from_file(FILE *fp, int num_resources){
       return NULL;
   }
 
-  Event **events = calloc (num_events + 1, sizeof(Event *));
-  if (!events){
-    HE("cannot load events, out of memory", "load_events_from_file")
-    return NULL;
-  }
+  Event **events = oopsalloc(num_events + 1, sizeof(Event *), "load_events_from_file");
 
   for (int i = 0; i < num_events; i++){
     buff = fgetll(fp);
@@ -54,7 +50,7 @@ Event **load_events_from_file(FILE *fp, int num_resources){
       event_list_destroy(events); return NULL;
     }
 
-    float *mult = calloc(MAX_RESOURCES, sizeof(float));
+    float *mult = oopsalloc(MAX_RESOURCES, sizeof(float), "load_events_from_file");
     if(!mult){
       HE("could not allocate memory for resources multipliers", "load_events_from_file");
       free(name); event_list_destroy(events);return NULL;

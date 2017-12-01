@@ -14,7 +14,7 @@ Sprite **load_font(char init, char last){
  }
  char buffer[BUFFLEN];
  int range = last - init + 1;
- Sprite **list = calloc(range, sizeof(Sprite *));
+ Sprite **list = oopsalloc(range, sizeof(Sprite *), "load_font");
  if(!list){
    HE("cannot alloc memory for list", "load_font")
    return NULL;

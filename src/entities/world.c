@@ -28,11 +28,7 @@ struct _World {
 World *world_new(void) {
 
     World *w = NULL;
-    w = (World *) calloc(1, sizeof(World));
-    if (!w) {
-        HE("malloc error","world_new");
-        return NULL;
-    }
+    w = oopsalloc(1, sizeof(World), "world_new");
 
     // LOAD RESOURCES
     char *resources_db = config_get("resources db");
@@ -48,12 +44,7 @@ World *world_new(void) {
         return NULL;
     }
 
-    w->resources = malloc(MAX_RESOURCES * sizeof(Resource *));
-    if (!w->resources) {
-        HE("could not allocate memory for resources", "world_new");
-        free(w);
-        return NULL;
-    }
+    w->resources = oopsalloc(MAX_RESOURCES, sizeof(Resource *), "world_new");
 
     w->num_resources = load_resources_from_file(rf, w->resources);
     if (w->num_resources == 0) {

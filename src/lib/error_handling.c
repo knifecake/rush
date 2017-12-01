@@ -52,3 +52,14 @@ void log_msg(const char *msg, ...)
     } else
         handle_error(msg);
 }
+
+void *oopsalloc(size_t num, size_t size, const char *caller)
+{
+    void *ptr = calloc(num, size);
+    if (!ptr) {
+        HE("out of memory! aborting...", caller);
+        exit(OOPSALLOC_ERROR);
+    }
+
+    return ptr;
+}
