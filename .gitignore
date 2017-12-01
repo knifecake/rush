@@ -7,6 +7,7 @@ test/*.test
 assets/img/*.txt
 
 *.swp
+*~
 
 # MacOS directory files
 .DS_Store

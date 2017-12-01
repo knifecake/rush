@@ -1,5 +1,5 @@
 # command file
-2
+2 # number of commands
 b
 build
 1

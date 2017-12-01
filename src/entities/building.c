@@ -124,3 +124,27 @@ int building_get_base_resources (Building *bp, const int resource_id){
   }
   return bp -> base_resources[resource_id];
 }
+
+void building_print(FILE *f, Building *bp)
+{
+	if (!bp) {
+		HE("invalid params", "building_print");
+		return;
+	}
+
+
+	fprintf(f, "Building %d:", bp->id);
+
+	fprintf(f, "\n - level: %d", bp->level);
+	fprintf(f, "\n - unlocking level: %d", bp->unlocking_level);
+	fprintf(f, "\n - health: %d", bp->health);
+	fprintf(f, "\n - cost: %d", bp->cost);
+
+
+    fprintf(f, "\n - resource no.:                 ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", i++));
+
+    fprintf(f, "\n - resources returned each time: ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", bp->base_resources[i++]));
+	fprintf(f, "\n");
+}
