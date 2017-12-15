@@ -35,6 +35,15 @@ void resource_destroy(Resource *r)
     free(r);
 }
 
+char *resource_get_name(Resource *r)
+{
+    if (!r) {
+        HE("invalid arguments", "resource_get_name");
+        return NULL;
+    }
+
+    return r->name;
+}
 
 void resource_print(FILE *s, Resource *r)
 {

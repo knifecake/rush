@@ -97,9 +97,22 @@ void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
         HE("invalid params", "ui_world_info_draw");
         return;
     }
-    printf("hello\n");
-    world_print(stdout, wi->w);
-    return;
+
+    printf("You are at tile %d which is of type %s\n",
+            world_get_cursor(wi->w),
+            tile_get_sprite(world_get_current_tile(wi->w)));
+    printf("You have the following resources:\n");
+    Resource **res = world_get_resources(wi->w);
+    if (!res) {
+        HE("cannot print get resources from world", "ui_world_info_draw");
+        return;
+    }
+
+    for (int i = 0; i < world_get_num_resources(wi->w); i++) {
+        printf("%s: %d\n", resource_get_name(res[i]), world_get_resource_quantity(wi->w, i));
+    }
+
+    printf("\n");
 }
 
 void ui_world_info_destroy(UIWorldInfo *wi)

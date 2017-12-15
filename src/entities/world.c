@@ -199,10 +199,24 @@ World *world_move_cursor(World *w, int dir)
     return w;
 }
 
-// TODO: implement this
+int world_get_cursor(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world_get_cursor");
+        return UINT_ERROR;
+    }
+
+    return w->cursor;
+}
+
 Tile *world_get_current_tile(World *w)
 {
-    return NULL;
+    if (!w) {
+        HE("invalid arguments", "world_get_current_tile");
+        return NULL;
+    }
+
+    return w->map[w->cursor];
 }
 
 // TODO: implement this
@@ -215,6 +229,36 @@ Building **world_get_buildings(World *w)
 int world_get_num_buildings(World *w)
 {
     return 0;
+}
+
+int world_get_num_resources(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world_get_num_resources");
+        return UINT_ERROR;
+    }
+
+    return w->num_resources;
+}
+
+Resource **world_get_resources(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world-get_resource_quantity");
+        return NULL;
+    }
+
+    return w->resources;
+}
+
+int world_get_resource_quantity(World *w, int resource_id)
+{
+    if (!w || resource_id >= w->num_resources) {
+        HE("invalid arguments", "world_get_resource_quantity");
+        return UINT_ERROR;
+    }
+
+    return w->wallet[resource_id];
 }
 
 void world_print(FILE *s, World *w)
