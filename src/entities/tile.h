@@ -62,6 +62,8 @@ int tile_get_enemies (Tile *);
 
 Event *tile_get_event (Tile *tile);
 
+char *tile_get_sprite(Tile *t);
+
 /*Tile *tile_set_id (Tile *, int); Is it useful?*/
 
 /*

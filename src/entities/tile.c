@@ -126,6 +126,16 @@ Event *tile_get_event (Tile *tile){
   return tile->event;
 }
 
+char *tile_get_sprite(Tile *t)
+{
+    if (!t) {
+        HE("invalid arguments", "tile_get_sprite");
+        return NULL;
+    }
+
+    return t->sprite;
+}
+
 /*Tile *tile_set_id (Tile *tile, int id) {
   if(!tile) {
     HE("tile_set_id: invalid tile.\n");
