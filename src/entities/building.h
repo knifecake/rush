@@ -74,4 +74,6 @@ int building_get_cost(Building *);
  * If it fails, returns -1.
  */
 int building_get_base_resources(Building *, const int);
+
+void building_print(FILE *s, Building *bp);
 #endif

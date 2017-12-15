@@ -59,7 +59,7 @@ void ui_teardown();
 
 int ui_update_cursor();
 
-int ui_redraw_tile();
+int ui_redraw_tile(int tile_index);
 
 int ui_update_world_info();
 

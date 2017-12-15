@@ -49,6 +49,11 @@ World *world_player_turn(World *);
 /*
  * Updates the world between turns of the player.
  */
+World *world_next_turn(World *);
+
+/*
+ * Updates the world between turns of the player.
+ */
 World *world_ai_turn(World *);
 
 /*
@@ -77,6 +82,6 @@ int world_get_num_buildings(World *w);
 /*
  * Prints what's inside the world for debugging.
  */
-void world_print(FILE *s, World *w);
+void world_print(FILE *f, World *w);
 
 #endif

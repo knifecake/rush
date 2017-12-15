@@ -1,9 +1,15 @@
 #include <stdbool.h>
 #include <limits.h>
+#include <stdlib.h>
 
 /*
  * Define ERROR handling constants.
  */
+
+/*
+ * Returned by the program if no memory could be allocated.
+ */
+#define OOPSALLOC_ERROR 1
 
 /*
  * UINT_ERROR should be returned by functions that encounter an error and are
@@ -77,3 +83,5 @@ void handle_error(const char *error_msg, ...);
  * declared above.
  */
 void log_msg(const char *msg, ...);
+
+void *oopsalloc(size_t num, size_t size, const char *caller);

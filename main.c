@@ -8,6 +8,7 @@
 #include "src/lib/terminal.h"
 #include "src/lib/config.h"
 
+#include "src/ui.h"
 #include "src/controller.h"
 
 #include "src/entities/world.h"
@@ -32,6 +33,9 @@ int main(void) {
         term_teardown(stdin);
         abort();
     }
+
+    // setup UI
+    ui_setup(w);
 
     // load cop
     // TODO: decide what to do about error handling
@@ -59,12 +63,15 @@ int main(void) {
                 sprintf(cmd, "%c", input);
 
                 cop_exec(c, cmd, w);
+                show_msg("Executed command successfully\n");
+                ui_update_world_info();
             }
         }
     }
     // END GAME LOOP
 
     // free
+    ui_teardown();
     world_destroy(w);
     config_destroy();
 

@@ -30,13 +30,7 @@ Event *event_new (char *name, float *mult, int id, int num_turns){
     return NULL;
   }
 
-  Event *e;
-
-  e = calloc(1, sizeof(Event));
-  if(!e){
-    HE("error on calloc", "event_new")
-    return NULL;
-  }
+  Event *e = oopsalloc(1, sizeof(Event), "event_new");
   e->id = id;
   e->num_turns = num_turns;
   for (size_t i = 0; i < MAX_RESOURCES-1; i++) {

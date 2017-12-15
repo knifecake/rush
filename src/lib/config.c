@@ -29,24 +29,9 @@ ConfigDict *cd;
  */
 ConfigDict *_config_dict_new()
 {
-    ConfigDict *cd = calloc(1, sizeof(ConfigDict));
-    if (!cd) {
-        HE("could not allocate config dictionary", "_config_dict_new");
-        return NULL;
-    }
-
-    cd->keys = calloc(MAX_DICT_SIZE, sizeof(char *));
-    if (!cd->keys) {
-        HE("could not allocate key space", "_config_dict_new");
-        free(cd); return NULL;
-    }
-
-    cd->values = calloc(MAX_DICT_SIZE, sizeof(char *));
-    if (!cd->values) {
-        HE("could not allocate value space", "_config_dict_new");
-        free(cd->keys); free(cd);
-        return NULL;
-    }
+    ConfigDict *cd = oopsalloc(1, sizeof(ConfigDict), "_config_dict_new");
+    cd->keys = oopsalloc(MAX_DICT_SIZE, sizeof(char *), "_config_dict_new");
+    cd->values = oopsalloc(MAX_DICT_SIZE, sizeof(char *), "_config_dict_new");
 
     return cd;
 }
@@ -113,17 +98,8 @@ int config_set(char *key, char *value)
 
         index = cd->size;
 
-        cd->keys[index] = malloc(strlen(key) + 1);
-        if (!cd->keys[index]) {
-            HE("out of memory", "config_set");
-            return UINT_ERROR;
-        }
-
-        cd->values[index] = malloc(strlen(value) + 1);
-        if (!cd->values[index]) {
-            HE("out of memory", "config_set");
-            return UINT_ERROR;
-        }
+        cd->keys[index] = oopsalloc(strlen(key) + 1, sizeof(char), "config_set");
+        cd->values[index] = oopsalloc(strlen(value) + 1, sizeof(char), "config_set");
 
         cd->size++;
     }

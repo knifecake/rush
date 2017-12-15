@@ -15,6 +15,7 @@
 
 struct _World {
     Resource **resources;
+	int wallet[MAX_RESOURCES];
     int num_resources;
 
     Tile **map;
@@ -28,11 +29,7 @@ struct _World {
 World *world_new(void) {
 
     World *w = NULL;
-    w = (World *) calloc(1, sizeof(World));
-    if (!w) {
-        HE("malloc error","world_new");
-        return NULL;
-    }
+    w = oopsalloc(1, sizeof(World), "world_new");
 
     // LOAD RESOURCES
     char *resources_db = config_get("resources db");
@@ -48,12 +45,7 @@ World *world_new(void) {
         return NULL;
     }
 
-    w->resources = malloc(MAX_RESOURCES * sizeof(Resource *));
-    if (!w->resources) {
-        HE("could not allocate memory for resources", "world_new");
-        free(w);
-        return NULL;
-    }
+    w->resources = oopsalloc(MAX_RESOURCES, sizeof(Resource *), "world_new");
 
     w->num_resources = load_resources_from_file(rf, w->resources);
     if (w->num_resources == 0) {
@@ -146,6 +138,27 @@ World *world_player_turn(World *w) {
   return w;
 }
 
+World *world_next_turn(World *w){
+  if(!w){
+    HE("invalid parameters", "world_player_turn");
+    return NULL;
+  }
+
+  for(int i = 0; i < w->num_tiles; i++){
+    int *resources = (int *) calloc(MAX_RESOURCES, sizeof(int));
+    if (!resources) {
+        HE("malloc error","world_next_turn");
+        return NULL;
+    }
+    w->map[i] = tile_next_turn(w->map[i], resources);
+    for(int j = 0; j < w->num_resources; j++){
+      w->wallet[j] += resources[j];
+    }
+    free(resources);
+  }
+  return w;
+}
+
 World *world_ai_turn(World *w){
   if(!w){
     HE("invalid parameters", "world_player_turn");
@@ -208,12 +221,16 @@ void world_print(FILE *s, World *w)
 {
     if (!s || !w) {
         HE("invalid parameters", "world_print");
+	return;
     }
 
     fprintf(s, "World at %p:\n", w);
     fprintf(s, "Resources (%d):\n", w->num_resources);
     for (int i = 0; i < w->num_resources; resource_print(s, w->resources[i++]));
 
-    fprintf(s, "\nTiles (current is at index %d):\n", w->cursor);
+    fprintf(s, "\nTiles:\n");
     for (int i = 0; w->map[i]; tile_print(s, w->map[i++]));
+
+    fprintf(s, "\nBuildings:\n");
+    for (int i = 0; w->buildings[i]; building_print(s, w->buildings[i++]));
 }

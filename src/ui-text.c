@@ -43,6 +43,28 @@ void ui_teardown()
     return;
 }
 
+int ui_update_cursor()
+{
+  // TODO
+  return UINT_ERROR;
+}
+
+int ui_redraw_tile(int tile_index)
+{
+  return UINT_ERROR;
+  // TODO
+}
+
+int ui_update_world_info()
+{
+  ui_world_info_draw(ui.wi, 0, 0);
+  return UINT_ERROR;
+}
+
+// No need to call this after calling update cursor, it gets called automatically.
+int ui_update_tile_info();
+
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
@@ -59,13 +81,24 @@ struct _UIWorldInfo {
 
 UIWorldInfo *ui_world_info_new(World *w)
 {
-    // TODO
-    return NULL;
+    if (!w) {
+        HE("invalid parameters", "ui_world_info_new");
+        return NULL;
+    }
+
+    UIWorldInfo *wi = oopsalloc(1, sizeof(UIWorldInfo), "ui_world_info_new");
+    wi->w = w;
+    return wi;
 }
 
 void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
 {
-    // TODO
+    if (!wi) {
+        HE("invalid params", "ui_world_info_draw");
+        return;
+    }
+    printf("hello\n");
+    world_print(stdout, wi->w);
     return;
 }
 

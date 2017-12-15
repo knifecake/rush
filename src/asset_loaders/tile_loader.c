@@ -39,7 +39,7 @@ Tile **load_tiles_from_file(FILE *f, int num_resources)
     }
 
     // we'll leave the last pointer set to null, to signal the end of the list
-    Tile **tiles = calloc(num_tiles + 1, sizeof(Tile *));
+    Tile **tiles = oopsalloc(num_tiles + 1, sizeof(Tile *), "load_tiles_from_file");
     if (!tiles) {
         HE("cannot load tiles, out of memory", "load_tiles_from_file")
         return NULL;
