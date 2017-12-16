@@ -1,5 +1,5 @@
 #include "ui.h"
-
+#include "entities/building.h"
 #include "lib/error_handling.h"
 #include "lib/config.h"
 #include "lib/dict.h"
@@ -16,6 +16,11 @@ int _relative_coordinates_(int index, int first_index);
 int _get_map_info_from_dict(int *tiles_per_column, int *n_columns);
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name);
+/*
+ * Global variables
+ */
+ static Dict* sprite_dict;
+
 /*
  * The global UI structure.
  */
@@ -51,6 +56,27 @@ void ui_teardown()
     // this function does nothing at the moment as the UI is
     // statically allocated
     return;
+}
+
+int ui_update_cursor(){
+  /*TODO: Implement this*/
+  return !UINT_ERROR;
+}
+
+int ui_redraw_tile(int tile_index){
+  /*TODO: Implement this*/
+  return !UINT_ERROR;
+}
+
+int ui_update_world_info(){
+  /*TODO: Implement this*/
+  return !UINT_ERROR;
+}
+
+// No need to call this after calling update cursor, it gets called automatically.
+int ui_update_tile_info(){
+  /*TODO: Implement this*/
+  return !UINT_ERROR;
 }
 
 // ----------------------------------------------------------------------------
@@ -102,7 +128,7 @@ struct _UITileInfo {
     Tile *w;
 };
 
-UITileInfo *ui_tile_info_new(Tile *t)
+UITileInfo *ui_tile_info_new(World* w)
 {
     // TODO
     return NULL;
@@ -142,18 +168,16 @@ UIMap *ui_map_new(World *w)
 }
 
 void ui_map_update_cursor(UIMap *m, int cursor){
-  if(!map || cursor < 0){
+  if(!m || cursor < 0){
     HE("Input error", "ui_map_update_cursor")
     return;
   }
-  int x, y, coord, tiles_per_column, n_columns, tiles_in_screen;
-
-  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off"){
+  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off")){
     HE("Error drawing sprite in given index", "ui_map_update_cursor");
     return;
   }
 
-  if (UINT_ERROR == _draw_sprite_in_index(m, cursor, "cursor_on"){
+  if (UINT_ERROR == _draw_sprite_in_index(m, cursor, "cursor_on")){
     HE("Error drawing sprite in given index", "ui_map_update_cursor");
     return;
   }
@@ -162,10 +186,23 @@ void ui_map_update_cursor(UIMap *m, int cursor){
   return;
 }
 
-void ui_map_redraw_tile(UIMap *m, int tile_index)
-{
-    // TODO
+void ui_map_redraw_tile(UIMap *m, int tile_index){
+  if(!m || tile_index < 0){
+    HE("Input error", "ui_map_redraw_tile")
     return;
+  }
+  if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, tile_get_sprite(m->tiles[tile_index]))){
+    HE("Error drawing tile given the index", "ui_map_redraw_tile")
+    return;
+  }
+  Building* b;
+  if( (b = tile_get_building(m->tiles[tile_index])) ){
+    if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, building_get_sprite(b))){
+      HE("Error drawing building in the given index", "ui_map_redraw_tile")
+      return;
+    }
+  }
+  return;
 }
 
 void ui_map_destroy(UIMap *m)
@@ -181,28 +218,28 @@ int _coordinates_by_index (int index, int *x, int *y){
   }
   /* This chunk will only get data from config dictionary */
   char *handle;
-  if(handle = config_get("tiles_per_column")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("tiles_per_column"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
   int num_tiles = atoi(config_get(handle));
-  if(handle = config_get("hex_xlen")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("hex_xlen"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
   int xlen = atoi(config_get(handle));
-  if(handle = config_get("hex_ylen")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("hex_ylen"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
   int ylen = atoi(config_get(handle));
-  if(handle = config_get("hex_init")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("hex_init"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
   int init_x = atoi(config_get(handle));
-  if(handle = config_get("hex_init_y")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("hex_init_y"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
   int init_y = atoi(config_get(handle));
@@ -219,12 +256,12 @@ int _coordinates_by_index (int index, int *x, int *y){
 
 int _relative_coordinates (int index, int first_index){
   if(index < 0 || first_index < 0){
-    HE("index or first index is negative", "_relative_coordinates");
+    HE("index or first index is negative", "_relative_coordinates")
     return UINT_ERROR;
   }
   char *handle;
-  if(handle = config_get("tiles_per_column")){
-    HE("Error retrieving tiles_per_column from config dictionary")
+  if((handle = config_get("tiles_per_column"))){
+    HE("Error retrieving tiles_per_column from config dictionary", "_relative_coordinates")
     return UINT_ERROR;
   }
   int num_tiles = atoi(config_get(handle));
@@ -251,8 +288,8 @@ int _get_map_info_from_dict(int *tiles_per_column, int *n_columns){
 }
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
-  int tiles_per_column, n_columns, tiles_in_screen, coord;
-
+  int tiles_per_column, n_columns, tiles_in_screen, coord, x, y;
+  FILE *fp = stdout;
   if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_column, &n_columns)){
     HE("Error retrieving map info from config dictionary", "_draw_sprite_in_index")
     return UINT_ERROR;
@@ -260,7 +297,7 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   tiles_in_screen = tiles_per_column * n_columns;
 
   coord = _relative_coordinates(m->first_index, index);
-  if (coord = UINT_ERROR || coord < 0 || coord >= tiles_in_screen){
+  if ((coord = UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
     HE("Coordinates out of map view", "_draw_sprite_in_index")
     return UINT_ERROR;
   }
