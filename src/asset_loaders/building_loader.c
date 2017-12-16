@@ -35,11 +35,7 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
     }
 
     //we'll leave the last pointer set to null, to signal the end of the list
-    Building **buildings = calloc(num_buildings + 1, sizeof(Building *));
-    if(!buildings) {
-        HE("cannot load buildings, out of memory", "load_buildings_from_file")
-        return NULL;
-    }
+    Building **buildings = oopsalloc(num_buildings + 1, sizeof(Building *), "load_buildings_from_file");
 
     for (int i = 0; i < num_buildings; i++){
         buff = fgetll(f);

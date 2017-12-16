@@ -30,7 +30,7 @@ Sprite *sprite_new(FILE *img)
         return NULL;
     }
 
-    Sprite *s = malloc(sizeof(Sprite));
+    Sprite *s = oopsalloc(1, sizeof(Sprite), "sprite_new");
     s->png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     if (!s->png) {
         HE("cannot create sprite, unable to read png", "sprite_new")
@@ -85,14 +85,10 @@ Sprite *sprite_new(FILE *img)
 
     png_read_update_info(s->png, s->info);
 
-    s->rows = (png_bytep*) malloc(sizeof(png_bytep) * s->height);
-    if (!s->rows) {
-        HE("cannot read png, out of memory", "sprite_new")
-        return NULL;
-    }
+    s->rows = (png_bytep*) oopsalloc(sizeof(png_bytep), s->height, "sprite_new");
 
     for (int y = 0; y < s->height; y++) {
-        s->rows[y] = (png_byte *)malloc(png_get_rowbytes(s->png, s->info));
+        s->rows[y] = (png_byte *)oopsalloc(png_get_rowbytes(s->png, s->info), sizeof(char), "sprite_new");
         if (!s->rows[y]) {
             HE("cannot read png, out of memory", "sprite_new")
             for (int i = 0; i < y; free(s->rows[i++]));

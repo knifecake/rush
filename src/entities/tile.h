@@ -62,6 +62,8 @@ int tile_get_enemies (Tile *);
 
 Event *tile_get_event (Tile *tile);
 
+char *tile_get_sprite(Tile *t);
+
 /*Tile *tile_set_id (Tile *, int); Is it useful?*/
 
 /*
@@ -80,7 +82,7 @@ Tile *tile_set_event (Tile *, Event *);
  *
  * Returns NULL on error. Returns modified tile on success.
  */
-Tile *tile_next_turn (Tile *);
+Tile *tile_next_turn (Tile *, int *);
 /*
  * Given a tile and a building, links them, does not allocate memory.
  * Returns NULL on error. TODO: Should this allocate memory itself?

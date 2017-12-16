@@ -37,11 +37,15 @@ typedef struct _Resource Resource;
  */
 Resource *resource_new(int , const char *);
 
-
 /*
  * Frees the given resource.
  */
 void resource_destroy(Resource *);
+
+/*
+ * Returns a pointer to the resources name.
+ */
+char *resource_get_name(Resource *r);
 
 /*
  * Prints the given resource, for debugging purposes.

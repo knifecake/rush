@@ -13,11 +13,7 @@ struct _Building {
 
 Building *building_new (int id, int level, int unlocking_level, int health,
 int cost, int * base_resources){
-  Building *bp;
-  if (!(bp = calloc(1, sizeof(Building)))) {
-    HE("memory not allocated", "building_new");
-    return NULL;
-  }
+  Building *bp = oopsalloc(1, sizeof(Building), "building_new");
 
   bp -> id = id;
   bp -> level = level;
@@ -83,7 +79,8 @@ char *building_get_name(Building *bp)
         return NULL;
     }
 
-    char *name = calloc(100, sizeof(char));
+    // TODO: change to return the name of building when we define it
+    char *name = oopsalloc(100, sizeof(char), "building_get_name");
     sprintf(name, "Building #%d", bp->id);
     return name;
 }
@@ -126,4 +123,28 @@ int building_get_base_resources (Building *bp, const int resource_id){
     return -1;
   }
   return bp -> base_resources[resource_id];
+}
+
+void building_print(FILE *f, Building *bp)
+{
+	if (!bp) {
+		HE("invalid params", "building_print");
+		return;
+	}
+
+
+	fprintf(f, "Building %d:", bp->id);
+
+	fprintf(f, "\n - level: %d", bp->level);
+	fprintf(f, "\n - unlocking level: %d", bp->unlocking_level);
+	fprintf(f, "\n - health: %d", bp->health);
+	fprintf(f, "\n - cost: %d", bp->cost);
+
+
+    fprintf(f, "\n - resource no.:                 ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", i++));
+
+    fprintf(f, "\n - resources returned each time: ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", bp->base_resources[i++]));
+	fprintf(f, "\n");
 }

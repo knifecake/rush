@@ -126,6 +126,16 @@ Event *tile_get_event (Tile *tile){
   return tile->event;
 }
 
+char *tile_get_sprite(Tile *t)
+{
+    if (!t) {
+        HE("invalid arguments", "tile_get_sprite");
+        return NULL;
+    }
+
+    return t->sprite;
+}
+
 /*Tile *tile_set_id (Tile *tile, int id) {
   if(!tile) {
     HE("tile_set_id: invalid tile.\n");
@@ -160,25 +170,6 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
-Tile *tile_next_turn (Tile *tile){
-  if(!tile){
-    HE("invalid tile", "tile_next_turn")
-    return NULL;
-  }
-  /*TODO: Decide what tile does at the end of the turn*/
-
-  if(tile->event){
-    if(!event_next_turn(tile->event)){
-      HE("error nexting event turn", "tile_next_turn")
-      return NULL;
-    }
-    if(event_get_num_turns(tile->event) == 0){
-      event_destroy(tile->event);
-      tile->event = NULL;
-    }
-  }
-  return tile;
-}
 Tile *tile_build (Tile *tile, Building *bp){
   if (!tile){
     HE("invalid tile", "tile_build")
@@ -211,6 +202,40 @@ int tile_collect_resources(Tile * tile, int resource_id){
   return (int) base_resource * tile->resource_multipliers[resource_id];
 }
 
+Tile *tile_next_turn(Tile *tile, int *resources){
+  if (!tile){
+    HE("invalid tile pointer", "tile_next_turn")
+    return NULL;
+  }
+  if (!resources){
+    HE("invalid resources pointer", "tile_next_turn")
+    return NULL;
+  }
+  int base;
+  float multiplier;
+  if(tile_get_building(tile)){
+    for(int i = 0; i < MAX_RESOURCES; i++){
+      base = tile_collect_resources(tile, i);
+      if (tile->event){
+        multiplier = event_get_mult(tile->event)[i];
+        base = (int)base*multiplier;
+      }
+      resources[i] = base;
+    }
+  }
+  if(tile->event){
+    if(!event_next_turn(tile->event)){
+      HE("error nexting event turn", "tile_next_turn")
+      return NULL;
+    }
+    if(event_get_num_turns(tile->event) == 0){
+      event_destroy(tile->event);
+      tile->event = NULL;
+    }
+  }
+  return tile;
+}
+
 void tile_print(FILE *f, Tile *t) {
     if (!f || !t) {
         HE("invalid arguments", "tile_print")
@@ -230,3 +255,4 @@ void tile_print(FILE *f, Tile *t) {
 
     fprintf(f, "\n - enemies: %d\n", t->enemies);
 }
+

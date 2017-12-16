@@ -23,11 +23,7 @@ Resource *resource_new(int id, const char *name)
         return NULL;
     }
 
-    Resource *r = malloc(sizeof(Resource));
-    if (!r) {
-        HE("cannot create resource, out of memory", "resource_new")
-        return NULL;
-    }
+    Resource *r = oopsalloc(1, sizeof(Resource), "resource_new");
 
     r->id = id;
     strcpy(r->name, name);
@@ -39,6 +35,15 @@ void resource_destroy(Resource *r)
     free(r);
 }
 
+char *resource_get_name(Resource *r)
+{
+    if (!r) {
+        HE("invalid arguments", "resource_get_name");
+        return NULL;
+    }
+
+    return r->name;
+}
 
 void resource_print(FILE *s, Resource *r)
 {
