@@ -57,8 +57,13 @@ int main(void) {
     while (1) {
         if ((input = term_read_key(stdin))) {
             if (input == 'q') {
-                show_msg("\nExiting...\n");
-                break;
+                show_msg("\nDo you want to quit? Type y\n");
+                char *buff = term_read_string(stdin);
+                if(buff[0]=='y'){
+                  show_msg("\nExiting...\n");
+                  break;
+                }
+                continue;
             } else if (term_is_arrow_key(input)) {
                 w = world_move_cursor(w, input);
                 ui_update_tile_info();
