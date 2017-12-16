@@ -27,6 +27,13 @@
 int term_read_key(FILE *s);
 
 /*
+ * Reads a string from the terminal, reprinting each typed character
+ * to show a visual aid. The user is responsible for freeing the
+ * buffer returned by this function.
+ */
+char *term_read_string(FILE *s);
+
+/*
  * Returns true if the given key is one of the macros defined above.
  */
 bool term_is_arrow_key(int k);

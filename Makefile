@@ -1,5 +1,5 @@
 CC			= gcc
-CFLAGS	= -Wall -ggdb -std=c99
+CFLAGS	= -Wall -g3 -std=c99
 LDFLAGS	= -lm -lpng
 
 BUILD_DIR = build
@@ -41,6 +41,10 @@ test_%.test: $(obj) test/minitest.o test/*.c
 # compiles the test library
 test/minitest.o:
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+.PHONY: docker
+docker:
+	docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --rm -ti -v /Users/elias/u2/pprog/game:/var/projects cubuntu
 
 .PHONY: clear
 clear:

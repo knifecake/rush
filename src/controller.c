@@ -30,14 +30,27 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // assemble a list that is compatible with the UI-library
     UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_name, NULL);
 
+    show_msg("\nWhat do you want to build on tile %d?\n", tile_get_id(current_tile));
     // display the list: passes control to the ui, will return a pointer to the list item that was chosen
     Building *b = ui_list_present(ui_l);
 
+    if (!b) {
+        show_msg("Okay, nothing will be built\n");
+        return !UINT_ERROR;
+    }
+
     // update the model (entity) to reflect the changes that took place
-    tile_build(current_tile, b);
+    if (UINT_ERROR == tile_build(current_tile, b)) {
+        HE("could not build on this tile", "action_build");
+        return UINT_ERROR;
+    }
+
+    show_msg("Your building was constructed!\n");
 
     // redraw the current tile. TODO: think about who should do this
     // ui_map_draw_tile(current_tile);
+
+    printf("\n");
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     return !UINT_ERROR;
@@ -64,7 +77,7 @@ int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
     }
 
     show_msg(msg[0], cmd);
-    show_msg("\n");
+    show_msg("\n\n");
 
     return !UINT_ERROR;
 }

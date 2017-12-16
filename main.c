@@ -44,7 +44,7 @@ int main(void) {
     fclose(cf);
 
     // associate our game commands with it
-    cop_assoc(c, "build", action_generic);
+    cop_assoc(c, "build", action_build);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
@@ -58,12 +58,12 @@ int main(void) {
                 break;
             } else if (term_is_arrow_key(input)) {
                 w = world_move_cursor(w, input);
+                ui_update_tile_info();
             } else {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 
                 cop_exec(c, cmd, w);
-                show_msg("Executed command successfully\n");
                 ui_update_world_info();
             }
         }

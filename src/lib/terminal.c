@@ -4,6 +4,8 @@
 #include "terminal.h"
 #include "error_handling.h"
 
+#define MAX_READ_STRING 10
+
 /*
  * Stores the initial terminal configuration.
  */
@@ -37,6 +39,34 @@ int term_read_key(FILE *s)
     }
 
 
+    return buff;
+}
+
+char *term_read_string(FILE *s)
+{
+    if (!s) {
+        HE("invalid arguments", "term_read_string");
+        return NULL;
+    }
+
+    char *buff = oopsalloc(MAX_READ_STRING + 1, sizeof(char), "term_read_string");
+    char key;
+    int i = 0;
+
+    key = fgetc(s);
+    while (key != '\0' && key != '\n') {
+        printf("%c", key);
+
+        buff[i++] = key;
+        if (i >= MAX_READ_STRING) {
+            handle_error("\nSorry, cannot read more letters.\n");
+            return buff;
+        }
+
+        key = fgetc(s);
+    }
+
+    printf("\n");
     return buff;
 }
 
