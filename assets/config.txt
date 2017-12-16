@@ -42,3 +42,6 @@ map height
 
 initial cursor
 10
+
+columns_in_screen
+7
