@@ -53,8 +53,26 @@ char *term_read_string(FILE *s)
     char key;
     int i = 0;
 
+    // TODO: find a cleaner way to write this loop
     key = fgetc(s);
     while (key != '\0' && key != '\n') {
+        // if it is a backspace and this is not the first character,
+        // erase the last character and wait for the next one
+        if (i > 0 && (key == 8 || key == 127)) {
+            printf("\b \b");
+            i--;
+            key = fgetc(s);
+            continue;
+        }
+
+        // only take into account printable characters
+        if (key > '~' || key < ' ') {
+            key = fgetc(s);
+            continue;
+        }
+
+
+        // print the character for visual feedback
         printf("%c", key);
 
         buff[i++] = key;

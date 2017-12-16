@@ -58,6 +58,7 @@
  */
 int action_build(void *world, char *cmd, char **msg, int num_msg);
 
+int action_welcome(void *world, char *cmd, char **msg, int num_msg);
 
 int action_generic(void *w, char *cmd, char **msg, int num_msg);
 

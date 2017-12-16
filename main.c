@@ -48,6 +48,9 @@ int main(void) {
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
+    // show welcome
+    action_welcome(NULL, NULL, NULL, 0);
+
     // GAME LOOP
     char input;
     char cmd[2];

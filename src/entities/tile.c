@@ -170,17 +170,17 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
-Tile *tile_build (Tile *tile, Building *bp){
+int tile_build (Tile *tile, Building *bp){
   if (!tile){
     HE("invalid tile", "tile_build")
-    return NULL;
+    return UINT_ERROR;
   }
   if (!bp){
     HE("invalid building", "tile_build")
-    return NULL;
+    return UINT_ERROR;
   }
   tile->building = bp;
-  return tile;
+  return !UINT_ERROR;
 }
 
 /* In order to calculate the number of resources each tile returns, follow this order:

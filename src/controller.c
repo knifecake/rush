@@ -56,6 +56,20 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     return !UINT_ERROR;
 }
 
+int action_welcome(void *world, char *cmd, char **msg, int num_msg)
+{
+    show_msg("      __        __   _ _       \n");
+    show_msg("      \\ \\      / /__| | |      \n");
+    show_msg("       \\ \\ /\\ / / _ \\ | |      \n");
+    show_msg("        \\ V  V /  __/ | |_ _ _ \n");
+    show_msg("         \\_/\\_/ \\___|_|_(_|_|_)\n");
+
+    show_msg("A game about... well... maybe tomorrow...\n\n");
+
+    show_msg("Instruction:\n\tUse the arrow keys to move trought the map.\n\n");
+    return !UINT_ERROR;
+}
+
 int action_generic(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {

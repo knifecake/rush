@@ -312,7 +312,7 @@ void *ui_list_present(UIList *l)
 
     int index = -1;
     do {
-        printf("Choose from the list by typing a number or type 'e' to exit without choosing: ");
+        printf("Choose from the list by typing a number or type 'q' to exit without choosing: ");
         char *buff = term_read_string(stdin);
 
         if (!buff) {
@@ -320,7 +320,7 @@ void *ui_list_present(UIList *l)
             return NULL;
         }
 
-        if (buff[0] == 'e' || buff[0] == 'E') {
+        if (buff[0] == 'q' || buff[0] == 'Q') {
             printf("Selected nothing.\n");
             return NULL;
         }

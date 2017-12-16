@@ -23,10 +23,10 @@ int main(void) {
     Building *b = building_new(10, 1, 1, 10, 10, res);
 
     assert("can link a tile and a building",
-            t = tile_build(t, b));
+            UINT_ERROR != tile_build(t, b));
 
     assert("tile refuses to link a new building",
-            !tile_build(t, NULL));
+            UINT_ERROR == tile_build(t, NULL));
 
     Event *e = event_new("Earthquake", rm, 1, 1);
 
