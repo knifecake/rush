@@ -21,9 +21,7 @@ void *dict_get(Dict *, void *);
 /*
  * Stores a key-value pair in the config dictionary. Returns UINT_ERROR on
  * error. If the given key was already stored, it's value is overriden by the
- * new one.
- *
- * NOTE: Can this be a private function?
+ * new one. Returns UINT_ERROR on error;
  */
 int dict_set(Dict *, void *key, void *value);
 

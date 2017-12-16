@@ -24,6 +24,10 @@ Dict* dict_new(int size, key_cmp_func kcf, value_cmp_func vcf, value_free_func v
     HE("invalid parameters", "dict_new")
     return NULL;
   }
+  if(size < 0){
+    HE("negative size", "dict_new")
+    return NULL;
+  }
   Dict *d = _dict_allocate_mem(size);
   d->max_size = size;
   d->kcf = kcf;
@@ -53,6 +57,7 @@ int dict_set(Dict *d, void *key, void *value){
   int index;
   if ((index = _dict_key_index(d, key)) != UINT_ERROR){
     d->values[index] = value;
+    return d->current_size;
   }
   if(d->current_size >= d->max_size){
     HE("no more elements fit into the dictionary", "dict_set")
