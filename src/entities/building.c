@@ -1,6 +1,10 @@
+#include <string.h>
+
 #include "building.h"
 
 #include "../lib/error_handling.h"
+
+#define MAX_SPRITE_NAME 32
 
 struct _Building {
   int id;   /* Building id*/
@@ -9,12 +13,21 @@ struct _Building {
   int health; /* Health points of the building */
   int cost;   /*Cost of building or leveling it up*/
   int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
+  char sprite[MAX_SPRITE_NAME + 1];
 };
 
 Building *building_new (int id, int level, int unlocking_level, int health,
-int cost, int * base_resources){
+int cost, int * base_resources, const char *sprite){
+  if(!sprite){
+    HE("cannot create building, missing sprite name", "building_new")
+    return NULL;
+  }
+  if (strlen(sprite) > MAX_SPRITE_NAME){
+    HE("cannot create building, sprite name too long", "building_new")
+    return NULL;
+  }
   Building *bp = oopsalloc(1, sizeof(Building), "building_new");
-
+  strcpy(bp->sprite, sprite);
   bp -> id = id;
   bp -> level = level;
   bp -> unlocking_level = unlocking_level;
@@ -123,6 +136,16 @@ int building_get_base_resources (Building *bp, const int resource_id){
     return -1;
   }
   return bp -> base_resources[resource_id];
+}
+
+char *building_get_sprite(Building *bp)
+{
+    if (!bp) {
+        HE("invalid arguments", "building_get_sprite");
+        return NULL;
+    }
+
+    return bp->sprite;
 }
 
 void building_print(FILE *f, Building *bp)

@@ -2,6 +2,7 @@
 2       # resource list length
 
 524     # int building_id
+mine
 3       # current level of the building
 14      # player's level to build it
 
@@ -13,6 +14,7 @@
 
 
 520     # int building_id
+hello
 6      # current level of the building
 1     # player's level to build it
 
@@ -24,6 +26,7 @@
 
 
 527     # int building_id
+bye
 1       # current level of the building
 10      # player's level to build it
 

@@ -2,6 +2,7 @@
 7       # length of resource lists
 
 524     # int building_id
+sawmill # (char *) sprite
 3       # current level of the building
 14      # player's level to build it
 
@@ -18,6 +19,7 @@
 
 
 520     # int building_id
+mining_camp # (char *) sprite
 6      # current level of the building
 1     # player's level to build it
 
@@ -34,6 +36,7 @@
 
 
 527     # int building_id
+harbour # (char *) sprite
 1       # current level of the building
 10      # player's level to build it
 

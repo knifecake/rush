@@ -1,9 +1,14 @@
 # command file
-2 # number of commands
+3 # number of commands
 b
 build
 1
 Hello. This command was executed through the CoP.
+
+n
+next_turn
+1
+Moving onto the next turn.
 
 # This command is run in case the command executed by the user is not defined.
 404_not_found

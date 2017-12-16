@@ -20,7 +20,7 @@ int main(void) {
             !tile_get_visible(t));
 
     int res[MAX_RESOURCES] = {1, 2, 3};
-    Building *b = building_new(10, 1, 1, 10, 10, res);
+    Building *b = building_new(10, 1, 1, 10, 10, res, "holi");
 
     assert("can link a tile and a building",
             UINT_ERROR != tile_build(t, b));

@@ -13,7 +13,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
         HE("invalid parameters", "action_build");
-        return UINT_ERROR;
+        return CTRL_ERROR;
     }
 
     // get current tile pointer
@@ -30,19 +30,19 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // assemble a list that is compatible with the UI-library
     UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_name, NULL);
 
-    show_msg("\nWhat do you want to build on tile %d?\n", tile_get_id(current_tile));
+    show_msg("\nWhat do you want to build on tile %d?\n", world_get_cursor(w));
     // display the list: passes control to the ui, will return a pointer to the list item that was chosen
     Building *b = ui_list_present(ui_l);
 
     if (!b) {
         show_msg("Okay, nothing will be built\n");
-        return !UINT_ERROR;
+        return CTRL_OK;
     }
 
     // update the model (entity) to reflect the changes that took place
     if (UINT_ERROR == tile_build(current_tile, b)) {
         HE("could not build on this tile", "action_build");
-        return UINT_ERROR;
+        return CTRL_OK;
     }
 
     show_msg("Your building was constructed!\n");
@@ -53,7 +53,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     printf("\n");
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
-    return !UINT_ERROR;
+    return CTRL_OK;
 }
 
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
@@ -67,31 +67,38 @@ int action_welcome(void *world, char *cmd, char **msg, int num_msg)
     show_msg("A game about... well... maybe tomorrow...\n\n");
 
     show_msg("Instruction:\n\tUse the arrow keys to move trought the map.\n\n");
-    return !UINT_ERROR;
+    return CTRL_OK;
+}
+
+int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
+{
+    show_msg("Okay, moving on to the next turn");
+
+    return CTRL_NEXT_TURN;
 }
 
 int action_generic(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
         HE("invalid parameters", "cop_demo");
-        return UINT_ERROR;
+        return CTRL_ERROR;
     }
 
     show_msg("You executed %s\n", cmd);
     show_msg("%s\n", msg[0]);
 
-    return !UINT_ERROR;
+    return CTRL_OK;
 }
 
 int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
         HE("invalid parameters", "cop_demo");
-        return UINT_ERROR;
+        return CTRL_ERROR;
     }
 
     show_msg(msg[0], cmd);
     show_msg("\n\n");
 
-    return !UINT_ERROR;
+    return CTRL_OK;
 }

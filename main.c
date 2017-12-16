@@ -45,6 +45,7 @@ int main(void) {
 
     // associate our game commands with it
     cop_assoc(c, "build", action_build);
+    cop_assoc(c, "next_turn", action_next_turn);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
@@ -71,7 +72,9 @@ int main(void) {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 
-                cop_exec(c, cmd, w);
+                if (CTRL_NEXT_TURN == cop_exec(c, cmd, w))
+                    show_msg("Moving onto the next turn...\n");
+
                 ui_update_world_info();
             }
         }

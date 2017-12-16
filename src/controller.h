@@ -1,6 +1,8 @@
 #ifndef __CONTROLLER_H__
 #define __CONTROLLER_H__
 
+#include "lib/error_handling.h"
+
 /*
  * Game Controller
  *
@@ -47,18 +49,34 @@
  *      3.6. OPTIONAL: the result is announced by calling show_msg("A new
  *      building was constructed").
  *
- *  4. Control is now given back to the main game loop. If no more actions can
- *  be carried out during this turn the turn is finished by calling
- *  world_next_turn.
+ *  4. Control is now given back to the main game loop. Actions can signal
+ *  diferent states by returning different constants. For instance, returning
+ *  CTRL_NEXT_TURN will end this turn and trigger what needs to be done when a
+ *  new turn begins.
  *
  *  To be compatible with the CoP all function on this file must share the same
  *  type: CoP_fun defined in lib/cop.h, that is, int
  *  action_name(void *world, char *cmd, char
  *  **msg_list, int num_msg);
  */
+
+/*
+ * Special return codes for actions.
+ */
+#define CTRL_ERROR UINT_ERROR
+#define CTRL_OK !CTRL_ERROR
+#define CTRL_NEXT_TURN 20
+#define REDRAW_ALL_UI 30
+
+
+/*
+ * Actions to be bound to CoP commands through cop_assoc.
+ */
 int action_build(void *world, char *cmd, char **msg, int num_msg);
 
 int action_welcome(void *world, char *cmd, char **msg, int num_msg);
+
+int action_next_turn(void *world, char *cmd, char **msg, int num_msg);
 
 int action_generic(void *w, char *cmd, char **msg, int num_msg);
 
