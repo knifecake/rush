@@ -1,0 +1,594 @@
+36       # number of buildings to load.
+7       # length of resource lists
+
+#
+# AYUNTAMIENTOS
+#
+
+101         # int building_id
+town_hall1  # (char *) sprite
+1           # current level of the building
+1           # player's level to build it
+
+1000        # building's health points
+0           # (int) buiding's leveling cost
+
+0           # (int) quantity of resource 1 returned each turn
+0           # (int) quantity of resource 2 returned each turn
+0           # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+102         # int building_id
+town_hall2  # (char *) sprite
+2           # current level of the building
+2           # player's level to build it
+
+2000        # building's health points
+7000        # (int) buiding's leveling cost
+
+0           # (int) quantity of resource 1 returned each turn
+0           # (int) quantity of resource 2 returned each turn
+0           # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+103         # int building_id
+town_hall3  # (char *) sprite
+3           # current level of the building
+3           # player's level to build it
+
+4000        # building's health points
+10500       # (int) buiding's leveling cost
+
+0           # (int) quantity of resource 1 returned each turn
+0           # (int) quantity of resource 2 returned each turn
+0           # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+104         # int building_id
+town_hall4  # (char *) sprite
+4           # current level of the building
+4           # player's level to build it
+
+8000        # building's health points
+17500       # (int) buiding's leveling cost
+
+0           # (int) quantity of resource 1 returned each turn
+0           # (int) quantity of resource 2 returned each turn
+0           # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+105         # int building_id
+town_hall5  # (char *) sprite
+5           # current level of the building
+5           # player's level to build it
+
+16000        # building's health points
+28000        # (int) buiding's leveling cost
+
+0           # (int) quantity of resource 1 returned each turn
+0           # (int) quantity of resource 2 returned each turn
+0           # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+
+#
+# RESOURCE MINES
+#
+
+# Basic 1 extractor
+111     # int building_id
+resource_gin_mine # (char *) sprite
+1      # current level of the building
+1     # player's level to build it
+
+250    # building's health points
+1000    # (int) buiding's leveling cost
+
+100        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+112     # int building_id
+resource_gin_mine # (char *) sprite
+2      # current level of the building
+2     # player's level to build it
+
+400    # building's health points
+1500    # (int) buiding's leveling cost
+
+200        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+# Basic 1 extractor
+113     # int building_id
+resource_gin_mine # (char *) sprite
+3      # current level of the building
+2     # player's level to build it
+
+700    # building's health points
+2500    # (int) buiding's leveling cost
+
+350        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+# Basic 1 extractor
+114     # int building_id
+resource_gin_mine # (char *) sprite
+4      # current level of the building
+3     # player's level to build it
+
+1300    # building's health points
+4000    # (int) buiding's leveling cost
+
+500        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+# Basic 1 extractor
+115     # int building_id
+resource_gin_mine # (char *) sprite
+5      # current level of the building
+3     # player's level to build it
+
+2500    # building's health points
+6000    # (int) buiding's leveling cost
+
+700        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+
+# Chococrispies extractor
+121     # int building_id
+resource_chococrispies_mine # (char *) sprite
+1      # current level of the building
+1     # player's level to build it
+
+250    # building's health points
+1000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+100        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+122     # int building_id
+resource_chococrispies_mine # (char *) sprite
+2      # current level of the building
+2     # player's level to build it
+
+400    # building's health points
+1500    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+200        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+123     # int building_id
+resource_chococrispies_mine # (char *) sprite
+3      # current level of the building
+2     # player's level to build it
+
+700    # building's health points
+2500    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+350        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+124     # int building_id
+resource_chococrispies_mine # (char *) sprite
+4      # current level of the building
+3     # player's level to build it
+
+1300    # building's health points
+4000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+500        # (int) quantity of resource 1 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+0
+0
+0
+
+125     # int building_id
+resource_chococrispies_mine # (char *) sprite
+5      # current level of the building
+3     # player's level to build it
+
+2500    # building's health points
+6000    # (int) buiding's leveling cost
+
+0
+700
+0
+0
+0
+0
+0
+
+
+# Basic 3 extractor
+131     # int building_id
+resource_basic_3_mine # (char *) sprite
+1      # current level of the building
+1     # player's level to build it
+
+250    # building's health points
+1000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+100        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+132     # int building_id
+resource_basic_3_mine # (char *) sprite
+2      # current level of the building
+2     # player's level to build it
+
+400    # building's health points
+1500    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+200        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+133     # int building_id
+resource_basic_3_mine # (char *) sprite
+3      # current level of the building
+2     # player's level to build it
+
+700    # building's health points
+2500    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+350        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+134     # int building_id
+resource_basic_3_mine # (char *) sprite
+4      # current level of the building
+3     # player's level to build it
+
+1300    # building's health points
+4000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+500        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+135     # int building_id
+resource_basic_3_mine # (char *) sprite
+5      # current level of the building
+3     # player's level to build it
+
+2500    # building's health points
+6000    # (int) buiding's leveling cost
+
+0
+0
+700
+0
+0
+0
+0
+
+
+# Special extractor
+141     # int building_id
+resource_special_mine # (char *) sprite
+1      # current level of the building
+2     # player's level to build it
+
+250    # building's health points
+3750    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+10        # (int) quantity of resource 1 returned each turn
+0
+0
+0
+
+142     # int building_id
+resource_special_mine # (char *) sprite
+2      # current level of the building
+3     # player's level to build it
+
+400    # building's health points
+6250    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+0           # ...
+20        # (int) quantity of resource 1 returned each turn
+0
+0
+0
+
+143     # int building_id
+resource_special_mine # (char *) sprite
+3      # current level of the building
+2     # player's level to build it
+
+700    # building's health points
+10000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+35        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+144     # int building_id
+resource_special_mine # (char *) sprite
+4      # current level of the building
+3     # player's level to build it
+
+1400    # building's health points
+15000    # (int) buiding's leveling cost
+
+0       # (int) quantity of resource 2 returned each turn
+0       # (int) quantity of resource 3 returned each turn
+50        # (int) quantity of resource 1 returned each turn
+0           # ...
+0
+0
+0
+
+145     # int building_id
+resource_special_mine # (char *) sprite
+5      # current level of the building
+3     # player's level to build it
+
+2500    # building's health points
+25000 # (int) buiding's leveling cost
+
+0
+0
+70
+0
+0
+0
+0
+
+#
+# INFRASTRUCTURE
+#
+
+# harbour
+151
+harbour
+1
+2
+500
+4500
+0
+0
+0
+0
+0
+0
+0
+
+152
+harbour_2
+2
+4
+800
+14000
+0
+0
+0
+0
+0
+0
+0
+
+
+# airport
+161
+airport
+1
+3
+400
+10000
+0
+0
+0
+0
+0
+0
+0
+
+162
+airport_2
+2
+5
+800
+27000
+0
+0
+0
+0
+0
+0
+0
+
+#
+# MILITARY BUILDINGS
+#
+
+# academy
+171
+academy_1
+1
+1
+500
+1500
+0
+0
+0
+0
+0
+0
+5
+
+
+172
+academy_2
+2
+2
+500
+300
+0
+0
+0
+0
+0
+0
+10
+
+
+173
+academy_3
+3
+4
+500
+10000
+0
+0
+0
+0
+0
+0
+20
+
+#
+# OTHER BUILDINGS
+#
+
+181
+library
+1
+2
+500
+3750
+0
+0
+0
+0
+10
+10
+0
+
+182
+library
+2
+4
+500
+12000
+0
+0
+0
+0
+20
+20
+0
+
+191
+university
+1
+3
+500
+7500
+0
+0
+0
+0
+15
+15
+0
+
+
+192
+university
+2
+5
+500
+21000
+0
+0
+0
+0
+30
+30
+0

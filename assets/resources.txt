@@ -36,17 +36,4 @@ XP
 IP
 
 6
-Soldiers2
-Basic 3
-
-3
-Special
-
-4
-XP
-
-5
-IP
-
-6
 Soldiers

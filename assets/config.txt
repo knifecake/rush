@@ -11,7 +11,7 @@ tiles db
 assets/tiles.txt
 
 buildings db
-assets/buildings.txt
+assets/new-buildings.txt
 
 sprite db
 assets/sprites.txt

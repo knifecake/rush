@@ -20,6 +20,7 @@
  *      2           # number of buildings in file
  *
  *      1           # (int) building_id
+ *      hello       # (char *)sprite name
  *      4           # (int) current level of the building
  *      2           # (int) player's level required to build it
  *
