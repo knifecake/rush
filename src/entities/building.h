@@ -32,7 +32,7 @@ typedef struct _Building Building;
  * as an argument, then sets every other value according to the established data
  * If it fails, NULL is returned.
  */
-Building *building_new(int, int, int, int, int, int *);
+Building *building_new(int, int, int, int, int, int *, const char *);
 
 /*
  * Frees memory allocated by building_new, it will only free it if the pointer
@@ -69,6 +69,7 @@ int building_get_health(Building *);
 
 int building_get_cost(Building *);
 
+char *building_get_sprite(Building *);
 /*
  * Returns the base resource of a building given the id of the resource.
  * If it fails, returns -1.

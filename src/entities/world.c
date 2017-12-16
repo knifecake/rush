@@ -15,7 +15,7 @@
 
 struct _World {
     Resource **resources;
-	int wallet[MAX_RESOURCES];
+    int wallet[MAX_RESOURCES];
     int num_resources;
 
     Tile **map;
@@ -24,6 +24,7 @@ struct _World {
 
     Building **buildings;
     int num_buildings;
+    int heigth; /*TODO: Implement this to be filled in world_new*/
 };
 
 World *world_new(void) {
@@ -277,4 +278,12 @@ void world_print(FILE *s, World *w)
 
     fprintf(s, "\nBuildings:\n");
     for (int i = 0; w->buildings[i]; building_print(s, w->buildings[i++]));
+}
+
+int world_get_heigth(World *w){
+  if(!w){
+    HE("invalid input", "world_get_heigth")
+    return UINT_ERROR;
+  }
+  return w->heigth;
 }

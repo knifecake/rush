@@ -22,7 +22,7 @@ test_exes = $(test_sources:.c=.test)
 game: $(BUILD_DIR)/$(EXE)
 
 # actually build the main game executable
-$(BUILD_DIR)/$(EXE): main.o $(obj)
+$(BUILD_DIR)/$(EXE): gui.o $(obj)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ $(LDFLAGS)
 
 # compiles all tests
