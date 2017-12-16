@@ -1,13 +1,10 @@
 #include "ui.h"
 
 #include "lib/error_handling.h"
+#include "lib/config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-
-#define XLEN 68
-#define YLEN 40
-#define NT 8
 
 /* Private functions */
 int _coordinates_by_index_ (int index, int *x, int *y);
@@ -137,7 +134,7 @@ UIMap *ui_map_new(World *w)
     return NULL;
 }
 
-void ui_map_update_cursor(UIMap *m)
+void ui_map_update_cursor(UIMap *m, int cursor)
 {
     // TODO
     return;
@@ -157,15 +154,20 @@ void ui_map_destroy(UIMap *m)
 
 int _coordinates_by_index_ (int index, int *x, int *y){
   if(index < 0){
-    HE("index is negative", "_coordinates_by_index_";)
+    HE("index is negative", "_coordinates_by_index_");
     return UINT_ERROR;
   }
-  if(index%NT < NT/2){
-    *x = 1 + (index/NT) * XLEN;
-    *y = 1 + (YLEN/2) + YLEN * (index%NT);
+  int num_tiles = atoi(config_get("hex_number_tiles"));
+  int xlen = atoi(config_get("hex_xlen"));
+  int ylen = atoi(config_get("hex_ylen"));
+  int init_x = atoi(config_get("hex_init_x"));
+  int init_y = atoi(config_get("hex_init_y"));
+  if(index%num_tiles < num_tiles/2){
+    *x = init_x + (index/num_tiles) * xlen;
+    *y = init_y + (ylen/2) + ylen * (index%num_tiles);
   }else{
-    *x = 1 + (XLEN/2) + (index/NT) * XLEN;
-    *y = 1 + YLEN * ((index%NT) - (NT/2));
+    *x = init_x + (xlen/2) + (index/num_tiles) * xlen;
+    *y = init_y + ylen * ((index%num_tiles) - (num_tiles/2));
   }
   return !UINT_ERROR;
 };
@@ -175,5 +177,6 @@ int _relative_coordinates_ (int index, int first_index){
     HE("index is negative", "_relative_coordinates_");
     return UINT_ERROR;
   }
-  return (index - first_index)+((index - first_index)/world_get_heigth(ui->w)) * (NT/2 - world_get_heigth(ui->w));
+  int num_tiles = atoi(config_get("hex_number_tiles"));
+  return (index - first_index)+((index - first_index)/world_get_heigth(ui.w)) * (num_tiles/2 - world_get_heigth(ui.w));
 }

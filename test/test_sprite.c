@@ -16,7 +16,6 @@ int main(void) {
 
     Sprite *s;
     assert("can load a png from a valid file", s = sprite_new(f));
-
     assert("can return the width of a sprite", sprite_get_w(s) == VALID_SPRITE_W);
     assert("can return the height of a sprite", sprite_get_h(s) == VALID_SPRITE_H);
 

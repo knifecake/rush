@@ -204,6 +204,12 @@ int world_get_num_buildings(World *w)
     return 0;
 }
 
+int world_get_heigth(World *w){
+  // TODO: implement this
+  return 1;
+}
+
+
 void world_print(FILE *s, World *w)
 {
     if (!s || !w) {
