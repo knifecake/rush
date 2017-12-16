@@ -85,9 +85,9 @@ Tile *tile_set_event (Tile *, Event *);
 Tile *tile_next_turn (Tile *, int *);
 /*
  * Given a tile and a building, links them, does not allocate memory.
- * Returns NULL on error. TODO: Should this allocate memory itself?
+ * Returns UINT_ERROR on error. TODO: Should this allocate memory itself?
  */
-Tile *tile_build (Tile *, Building *);
+int tile_build (Tile *, Building *);
 
 /*
  * Given a tile and a resource id, return amount of resources.

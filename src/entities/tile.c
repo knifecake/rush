@@ -170,18 +170,28 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
-Tile *tile_build (Tile *tile, Building *bp){
+int tile_build (Tile *tile, Building *bp){
   if (!tile){
     HE("invalid tile", "tile_build")
-    return NULL;
+    return UINT_ERROR;
   }
   if (!bp){
     HE("invalid building", "tile_build")
-    return NULL;
+    return UINT_ERROR;
   }
   tile->building = bp;
-  return tile;
+  return !UINT_ERROR;
 }
+
+/* In order to calculate the number of resources each tile returns, follow this order:
+        1. First of all, it checks if the remining resource is enough to collect the
+        base resources of its building. If not, it catch all that remains.
+
+        2. After that, it multiply that value with the tile multiplier and converts that
+        value to an int
+
+        3. After that, it checks if an event is active in that tile. If that is the case,
+        it multiplies the previous value to an int again */
 
 int tile_collect_resources(Tile * tile, int resource_id){
   if (!tile){

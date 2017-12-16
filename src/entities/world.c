@@ -182,13 +182,13 @@ World *world_move_cursor(World *w, int dir)
     switch (dir) {
         case DOWN_ARROW:
             if (w->cursor < w->num_tiles - 1)
-                show_msg("you moved down, now at tile %d\n", ++w->cursor);
+                w->cursor++;
             else
                 show_msg("cannot move further down\n");
             break;
         case UP_ARROW:
             if (w->cursor > 0)
-                show_msg("you moved up, now at tile %d\n", --w->cursor);
+                w->cursor--;
             else
                 show_msg("cannot move further up\n");
             break;
@@ -222,29 +222,19 @@ Tile *world_get_current_tile(World *w)
 // TODO: implement this
 Building **world_get_buildings(World *w)
 {
-    return NULL;
+    return w->buildings;
 }
 
 // TODO: implement this
 int world_get_num_buildings(World *w)
 {
-    return 0;
-}
-
-int world_get_num_resources(World *w)
-{
-    if (!w) {
-        HE("invalid arguments", "world_get_num_resources");
-        return UINT_ERROR;
-    }
-
-    return w->num_resources;
+    return w->num_buildings;
 }
 
 Resource **world_get_resources(World *w)
 {
     if (!w) {
-        HE("invalid arguments", "world-get_resource_quantity");
+        HE("invalid arguments", "world-get_resources");
         return NULL;
     }
 
@@ -259,6 +249,16 @@ int world_get_resource_quantity(World *w, int resource_id)
     }
 
     return w->wallet[resource_id];
+}
+
+int world_get_num_resources(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world_get_num_resources");
+        return UINT_ERROR;
+    }
+
+    return w->num_resources;
 }
 
 void world_print(FILE *s, World *w)

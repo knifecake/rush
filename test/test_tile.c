@@ -23,10 +23,10 @@ int main(void) {
     Building *b = building_new(10, 1, 1, 10, 10, res);
 
     assert("can link a tile and a building",
-            t = tile_build(t, b));
+            UINT_ERROR != tile_build(t, b));
 
     assert("tile refuses to link a new building",
-            !tile_build(t, NULL));
+            UINT_ERROR == tile_build(t, NULL));
 
     Event *e = event_new("Earthquake", rm, 1, 1);
 
@@ -46,9 +46,12 @@ int main(void) {
     assert("refuses to collect a resource with an invalid id",
             INT_ERROR == tile_collect_resources(t, MAX_RESOURCES + 1));
 
-
+            int resources[MAX_RESOURCES]= {0, 0, 0};
     assert("event finishes when number of turns reaches 0",
-            tile_next_turn(t) && !tile_get_event(t));
+            tile_next_turn(t, resources) && !tile_get_event(t));
+
+    assert("tile_next_turn return the correct number of resources",
+            resources[0]==0 && resources[1]==228 && resources[2]==300);
 
     building_destroy(b);
     tile_destroy(t);

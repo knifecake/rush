@@ -1,6 +1,7 @@
 #include "ui.h"
 
 #include "lib/error_handling.h"
+#include "lib/terminal.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -30,6 +31,7 @@ int ui_setup(World *w)
 
     ui.map = ui_map_new(ui.w);
     ui.wi = ui_world_info_new(ui.w);
+    ui.ti = ui_tile_info_new(ui.w);
 
     // ui tile info is created when the cursor is first moved
 
@@ -58,11 +60,15 @@ int ui_redraw_tile(int tile_index)
 int ui_update_world_info()
 {
   ui_world_info_draw(ui.wi, 0, 0);
-  return UINT_ERROR;
+  return !UINT_ERROR;
 }
 
 // No need to call this after calling update cursor, it gets called automatically.
-int ui_update_tile_info();
+int ui_update_tile_info()
+{
+    ui_tile_info_draw(ui.ti, 0, 0);
+    return !UINT_ERROR;
+}
 
 
 // ----------------------------------------------------------------------------
@@ -75,7 +81,6 @@ int ui_update_tile_info();
  */
 
 struct _UIWorldInfo {
-    // TODO
     World *w;
 };
 
@@ -117,7 +122,7 @@ void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
 
 void ui_world_info_destroy(UIWorldInfo *wi)
 {
-    // TODO
+    free(wi);
     return;
 }
 
@@ -134,26 +139,40 @@ void ui_world_info_destroy(UIWorldInfo *wi)
  */
 
 struct _UITileInfo {
-    // TODO
-    Tile *w;
+    World *w;
 };
 
-UITileInfo *ui_tile_info_new(Tile *t)
+UITileInfo *ui_tile_info_new(World *w)
 {
-    // TODO
-    return NULL;
+    if (!w) {
+        HE("invalid arguments", "ui_tile_info_new");
+        return NULL;
+    }
+
+    UITileInfo *ti = oopsalloc(1, sizeof(UITileInfo), "ui_tile_info_new");
+    ti->w = w;
+    return ti;
 }
 
 void ui_tile_info_draw(UITileInfo *ti, int x, int y)
 {
-    // TODO
-    return;
+    if (!ti) {
+        HE("invalid arguments", "ui_tile_info_draw");
+        return;
+    }
+
+    printf("You are at tile %d\n", world_get_cursor(ti->w));
+
+    Building *b;
+    if (!(b = tile_get_building(world_get_current_tile(ti->w))))
+        printf("There is nothing built on this tile. To build something press b.\n");
+    else
+        printf("There is a building on this tile: %s\n", building_get_name(b));
 }
 
 void ui_tile_info_destroy(UITileInfo *ti)
 {
-    // TODO
-    return;
+    free(ti);
 }
 
 // ----------------------------------------------------------------------------
@@ -287,6 +306,27 @@ void *ui_list_present(UIList *l)
         return NULL;
     }
 
-    printf("Should present a list");
-    return l->list[0];
+    for (int i = 0; i < l->len; i++)
+        printf("[%2d]: %s\n", i + 1, l->get_li_title(l->list[i]));
+
+
+    int index = -1;
+    do {
+        printf("Choose from the list by typing a number or type 'q' to exit without choosing: ");
+        char *buff = term_read_string(stdin);
+
+        if (!buff) {
+            HE("could not read from stdin", "ui_list_present");
+            return NULL;
+        }
+
+        if (buff[0] == 'q' || buff[0] == 'Q') {
+            printf("Selected nothing.\n");
+            return NULL;
+        }
+
+        index = atoi(buff);
+    } while (index <= 0 || index > l->len);
+
+    return l->list[index - 1];
 }

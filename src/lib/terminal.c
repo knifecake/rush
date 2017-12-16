@@ -4,6 +4,8 @@
 #include "terminal.h"
 #include "error_handling.h"
 
+#define MAX_READ_STRING 10
+
 /*
  * Stores the initial terminal configuration.
  */
@@ -37,6 +39,52 @@ int term_read_key(FILE *s)
     }
 
 
+    return buff;
+}
+
+char *term_read_string(FILE *s)
+{
+    if (!s) {
+        HE("invalid arguments", "term_read_string");
+        return NULL;
+    }
+
+    char *buff = oopsalloc(MAX_READ_STRING + 1, sizeof(char), "term_read_string");
+    char key;
+    int i = 0;
+
+    // TODO: find a cleaner way to write this loop
+    key = fgetc(s);
+    while (key != '\0' && key != '\n') {
+        // if it is a backspace and this is not the first character,
+        // erase the last character and wait for the next one
+        if (i > 0 && (key == 8 || key == 127)) {
+            printf("\b \b");
+            i--;
+            key = fgetc(s);
+            continue;
+        }
+
+        // only take into account printable characters
+        if (key > '~' || key < ' ') {
+            key = fgetc(s);
+            continue;
+        }
+
+
+        // print the character for visual feedback
+        printf("%c", key);
+
+        buff[i++] = key;
+        if (i >= MAX_READ_STRING) {
+            handle_error("\nSorry, cannot read more letters.\n");
+            return buff;
+        }
+
+        key = fgetc(s);
+    }
+
+    printf("\n");
     return buff;
 }
 

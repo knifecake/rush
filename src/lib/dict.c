@@ -24,7 +24,7 @@ Dict* dict_new(int size, key_cmp_func kcf, value_cmp_func vcf, value_free_func v
     HE("invalid parameters", "dict_new")
     return NULL;
   }
-  if(size < 0){
+  if(size <= 0){
     HE("negative size", "dict_new")
     return NULL;
   }
@@ -81,11 +81,11 @@ void dict_destroy(Dict *d){
   free(d);
 }
 
-int string_cmp(void *p1, void *p2){
+int cmp_string(void *p1, void *p2){
   return strcmp((char *) p1, (char *) p2);
 }
 
-int sprite_cmp(void *s1, void *s2){
+int cmp_sprite(void *s1, void *s2){
   return s1-s2;
 }
 

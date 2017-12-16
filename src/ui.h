@@ -121,7 +121,7 @@ typedef struct _UITileInfo UITileInfo;
 /*
  * Creates a new tile info panel UI component.
  */
-UITileInfo *ui_tile_info_new(Tile *t);
+UITileInfo *ui_tile_info_new(World *w);
 
 /*
  * Draws a new tile info panel starting from (x,y).
