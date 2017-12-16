@@ -261,6 +261,36 @@ int world_get_resource_quantity(World *w, int resource_id)
     return w->wallet[resource_id];
 }
 
+int world_get_num_resources(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world_get_num_resources");
+        return UINT_ERROR;
+    }
+
+    return w->num_resources;
+}
+
+Resource **world_get_resources(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world-get_resource_quantity");
+        return NULL;
+    }
+
+    return w->resources;
+}
+
+int world_get_resource_quantity(World *w, int resource_id)
+{
+    if (!w || resource_id >= w->num_resources) {
+        HE("invalid arguments", "world_get_resource_quantity");
+        return UINT_ERROR;
+    }
+
+    return w->wallet[resource_id];
+}
+
 void world_print(FILE *s, World *w)
 {
     if (!s || !w) {
