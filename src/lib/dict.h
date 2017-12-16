@@ -35,5 +35,7 @@ void dict_destroy(Dict *);
 /* Compare functions */
 int cmp_string(void *, void *);
 int cmp_sprite(void *, void *);
+int cmp_int(void *, void *);
 /* Value free functions */
 void free_sprite(void *);
+void free_int(void *);

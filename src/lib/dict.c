@@ -67,6 +67,10 @@ int dict_set(Dict *d, void *key, void *value){
 
 void dict_destroy(Dict *d){
   if(!d) return;
+  for(int i = 0; i<d->current_size; ++i){
+    d->vff(d->values[i]);
+    free(d->keys[i]);
+  }
   free(d->values);
   free(d->keys);
   free(d);
@@ -80,8 +84,17 @@ int sprite_cmp(void *s1, void *s2){
   return s1-s2;
 }
 
+int cmp_int(void *i1, void *i2){
+  int *x1 = (int *)i1, *x2 = (int *)i2;
+  return *x1 - *x2;
+}
+
 void free_sprite(void *spr){
   sprite_destroy((Sprite *) spr);
+}
+
+void free_int(void *i){
+  free(i);
 }
 /*------------------------------*/
 
@@ -95,8 +108,8 @@ int _dict_key_index(Dict *d, void *key){
 
 Dict *_dict_allocate_mem(int size){
   if (!size) return NULL;
-  /*Dict *d = oopsalloc(1, sizeof(Dict), "_dict_allocate_mem");
+  Dict *d = oopsalloc(1, sizeof(Dict), "_dict_allocate_mem");
   d->keys = oopsalloc(size, sizeof(void *),"_dict_allocate_mem");
   d->values = oopsalloc(size, sizeof(void *),"_dict_allocate_mem");
-  return d;*/return NULL;
+  return d;
 }
