@@ -158,7 +158,7 @@ UIMap *ui_map_new(World *w);
  * where the previous cursor was and read where the cursor is now by calling
  * World getters.
  */
-void ui_map_update_cursor(UIMap *m);
+void ui_map_update_cursor(UIMap *, int);
 
 /*
  * Redraws a spectific Tile (if visible) on the map. This function gets called,

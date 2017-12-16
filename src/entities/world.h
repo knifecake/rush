@@ -103,6 +103,8 @@ Building **world_get_buildings(World *w);
  */
 int world_get_num_buildings(World *w);
 
+/* Returns the heigth of the map */
+int world_get_heigth(World *w);
 /*
  * Prints what's inside the world for debugging.
  */

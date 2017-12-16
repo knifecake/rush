@@ -13,3 +13,20 @@ assets/tiles.txt
 buildings db
 assets/buildings.txt
 
+sprite db
+assets/sprites.txt
+
+hex_xlen
+64
+
+hex_ylen
+22
+
+hex_init_x
+11
+
+hex_init_y
+3
+
+hex_number_tiles
+12

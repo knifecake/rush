@@ -195,7 +195,7 @@ UIMap *ui_map_new(World *w)
     return NULL;
 }
 
-void ui_map_update_cursor(UIMap *m)
+void ui_map_update_cursor(UIMap *m, int cursor)
 {
     // TODO
     return;
