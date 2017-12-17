@@ -13,9 +13,11 @@ int _coordinates_by_index_ (int index, int *x, int *y);
 
 int _relative_coordinates_(int index, int first_index);
 
-int _get_map_info_from_dict(int *tiles_per_column, int *n_columns);
+int _get_map_info_from_dict(int *tiles_per_double_column, int *n_columns);
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name);
+
+int _center_screen_index(int central_index);
 /*
  * Global variables
  */
@@ -161,10 +163,31 @@ struct _UIMap {
     int previous_cursor;
 };
 
-UIMap *ui_map_new(World *w)
-{
-    // TODO
+UIMap *ui_map_new(World *w){
+  if(!w){
+    HE("Input error", "ui_map_new")
     return NULL;
+  }
+  UIMap* m = oopsalloc(1, sizeof(UIMap), "ui_map_new");
+  
+  m->previous_cursor = world_get_cursor(ui.w);
+  if(m->previous_cursor < 0){
+    HE("Error retrieving cursor from world", "ui_map_new")
+    return NULL;
+  }
+
+  m->first_index = _center_screen_index(m->previous_cursor);
+  if(m->first_index < 0){
+    HE("Error retrieving index for first tile in screen", "ui_map_new")
+    return NULL;
+  }
+
+  m->tiles = world_get_tiles(ui.w);
+  if(!m->tiles){
+    HE("Error retrieving tile list from world", "ui_map_new")
+    return NULL;
+  }
+  return m;
 }
 
 void ui_map_update_cursor(UIMap *m, int cursor){
@@ -216,33 +239,35 @@ int _coordinates_by_index (int index, int *x, int *y){
     HE("index is negative", "_coordinates_by_index");
     return UINT_ERROR;
   }
-  /* This chunk will only get data from config dictionary */
+  /*
+   * This chunk will only get data from config dictionary
+   */
   char *handle;
-  if((handle = config_get("tiles_per_column"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
+  if((handle = config_get("tiles_per_double_column"))){
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
-  int num_tiles = atoi(config_get(handle));
+  int num_tiles = atoi(handle);
   if((handle = config_get("hex_xlen"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
-  int xlen = atoi(config_get(handle));
+  int xlen = atoi(handle);
   if((handle = config_get("hex_ylen"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
-  int ylen = atoi(config_get(handle));
+  int ylen = atoi(handle);
   if((handle = config_get("hex_init"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
-  int init_x = atoi(config_get(handle));
+  int init_x = atoi(handle);
   if((handle = config_get("hex_init_y"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_coordinates_by_index")
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
-  int init_y = atoi(config_get(handle));
+  int init_y = atoi(handle);
   /*******************************************/
   if(index%num_tiles < num_tiles/2){
     *x = init_x + (index/num_tiles) * xlen;
@@ -260,23 +285,23 @@ int _relative_coordinates (int index, int first_index){
     return UINT_ERROR;
   }
   char *handle;
-  if((handle = config_get("tiles_per_column"))){
-    HE("Error retrieving tiles_per_column from config dictionary", "_relative_coordinates")
+  if((handle = config_get("tiles_per_double_column"))){
+    HE("Error retrieving tiles_per_double_column from config dictionary", "_relative_coordinates")
     return UINT_ERROR;
   }
-  int num_tiles = atoi(config_get(handle));
+  int num_tiles = atoi(handle);
   return (index - first_index)+((index - first_index)/world_get_heigth(ui.w)) * (num_tiles/2 - world_get_heigth(ui.w));
 }
 
 
-int _get_map_info_from_dict(int *tiles_per_column, int *n_columns){
+int _get_map_info_from_dict(int *tiles_per_double_column, int *n_columns){
   char *handle;
-  handle = config_get("tiles_per_column");
+  handle = config_get("tiles_per_double_column");
   if(!handle){
-    HE("Error getting tiles_per_column value", "_get_map_info_from_dict");
+    HE("Error getting tiles_per_double_column value", "_get_map_info_from_dict");
     return UINT_ERROR;
   }
-  *tiles_per_column = atoi(handle);
+  *tiles_per_double_column = atoi(handle);
 
   handle = config_get("columns_in_screen");
   if(!handle){
@@ -288,13 +313,13 @@ int _get_map_info_from_dict(int *tiles_per_column, int *n_columns){
 }
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
-  int tiles_per_column, n_columns, tiles_in_screen, coord, x, y;
+  int tiles_per_double_column, n_columns, tiles_in_screen, coord, x, y;
   FILE *fp = stdout;
-  if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_column, &n_columns)){
+  if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_double_column, &n_columns)){
     HE("Error retrieving map info from config dictionary", "_draw_sprite_in_index")
     return UINT_ERROR;
   }
-  tiles_in_screen = tiles_per_column * n_columns;
+  tiles_in_screen = tiles_per_double_column * n_columns + tiles_per_double_column/2;
 
   coord = _relative_coordinates(m->first_index, index);
   if ((coord = UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
@@ -314,4 +339,24 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   }
   sprite_draw(fp, s, x, y);
   return !UINT_ERROR;
+}
+
+int _center_screen_index(int central_index){
+  if(central_index < 0){
+    HE("index cannot be negative", "_center_screen_index")
+    return UINT_ERROR;
+  }
+
+  int tiles_per_double_column, n_columns;
+  if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_double_column, &n_columns)){
+    HE("Error retrieving map info from config dictionary", "_draw_sprite_in_index")
+    return UINT_ERROR;
+  }
+
+  int height = world_get_heigth(ui.w);
+  if(height == UINT_ERROR){
+    HE("Error retrieving world height","_center_screen_index")
+    return UINT_ERROR;
+  }
+  return central_index - height * (n_columns/2) - (tiles_per_double_column/4);
 }

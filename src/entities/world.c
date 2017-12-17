@@ -226,6 +226,9 @@ Building **world_get_buildings(World *w)
     return w->buildings;
 }
 
+Tile **world_get_tiles(World *w){
+  return w->map;
+}
 // TODO: implement this
 int world_get_num_buildings(World *w)
 {

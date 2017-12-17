@@ -28,8 +28,8 @@ hex_init_x
 hex_init_y
 3
 
-tiles_per_column
+tiles_per_double_column
 12
 
 columns_in_screen
-4
+3
