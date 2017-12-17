@@ -8,7 +8,19 @@
 #include "entities/world.h"
 #include "entities/tile.h"
 
-// TODO: add proper error handling and finish implementation
+char *building_get_desc(Building *b)
+{
+    if (!b) {
+        HE("invalid arguments", "building_get_desc");
+        return NULL;
+    }
+
+    char *buff = oopsalloc(100, sizeof(char), "building_get_desc");
+
+    sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b));
+    return buff;
+}
+
 int action_build(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
@@ -28,7 +40,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     Building **bs = world_get_buildings(w);
 
     // assemble a list that is compatible with the UI-library
-    UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_name, NULL);
+    UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_desc, NULL);
 
     show_msg("\nWhat do you want to build on tile %d?\n", world_get_cursor(w));
     // display the list: passes control to the ui, will return a pointer to the list item that was chosen
@@ -45,7 +57,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         return CTRL_OK;
     }
 
-    show_msg("Your building was constructed!\n");
+    show_msg("Your building '%s' was constructed!\n", building_get_name(b));
 
     // redraw the current tile. TODO: think about who should do this
     // ui_map_draw_tile(current_tile);
@@ -72,8 +84,6 @@ int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 
 int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
 {
-    show_msg("Okay, moving on to the next turn");
-
     return CTRL_NEXT_TURN;
 }
 

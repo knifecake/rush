@@ -55,7 +55,7 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
         buff = fgetll(f);
         int cost = atoi(buff); free(buff);
 
-        int base_resources[MAX_RESOURCES];
+        int base_resources[MAX_RESOURCES] = { 0 };
         for(int j = 0; j < num_resources; j++){
             buff = fgetll(f);
             base_resources[j] = atoi(buff); free(buff);
@@ -63,6 +63,7 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
 
         buildings[i] = building_new(id, level, unlocking_level, health, cost,
           base_resources, sprite);
+
         free(sprite);
     }
     return buildings;

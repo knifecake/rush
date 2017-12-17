@@ -92,10 +92,7 @@ char *building_get_name(Building *bp)
         return NULL;
     }
 
-    // TODO: change to return the name of building when we define it
-    char *name = oopsalloc(100, sizeof(char), "building_get_name");
-    sprintf(name, "Building #%d", bp->id);
-    return name;
+    return bp->sprite;
 }
 
 int building_get_level (Building *bp){

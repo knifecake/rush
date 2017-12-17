@@ -20,7 +20,17 @@ int main(){
   }
 
   buildings = load_buildings_from_file(f, 2);
-  assert("can load buildings correctly", buildings);
+  assert("can load buildings", buildings);
+
+  assert("correctly loads the id", building_get_id(buildings[0]) == 524);
+
+  assert("correctly loads the level", building_get_level(buildings[0]) == 3);
+
+  assert("correctly loads the unlocking level", building_get_unlocking_level(buildings[0]) == 14);
+
+  assert("correctly loads the health", building_get_health(buildings[0]) == 1599);
+
+  assert("correctly loads the cost", building_get_cost(buildings[0]) == 550);
 
   building_list_destroy(buildings);
   fclose(f);

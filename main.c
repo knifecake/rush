@@ -51,29 +51,43 @@ int main(void) {
 
     // show welcome
     action_welcome(NULL, NULL, NULL, 0);
+    ui_update_world_info();
+    ui_update_tile_info();
 
     // GAME LOOP
     char input;
     char cmd[2];
     while (1) {
         if ((input = term_read_key(stdin))) {
+            // check if we want to quit
             if (input == 'q') {
                 show_msg("\nDo you want to quit? Type y\n");
+
                 char *buff = term_read_string(stdin);
                 if(buff[0]=='y'){
-                  show_msg("\nExiting...\n");
-                  break;
+                    show_msg("\nExiting...\n");
+                    free(buff);
+                    break;
                 }
+                free(buff);
                 continue;
-            } else if (term_is_arrow_key(input)) {
+            }
+
+            // check if we're moving the cursor
+            else if (term_is_arrow_key(input)) {
                 w = world_move_cursor(w, input);
                 ui_update_tile_info();
-            } else {
+            }
+
+            // handle more complex cases such as building or attacking
+            else {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 
-                if (CTRL_NEXT_TURN == cop_exec(c, cmd, w))
+                if (CTRL_NEXT_TURN == cop_exec(c, cmd, w)) {
                     show_msg("Moving onto the next turn...\n");
+                    world_next_turn(w);
+                }
 
                 ui_update_world_info();
             }

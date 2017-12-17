@@ -103,9 +103,6 @@ void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
         return;
     }
 
-    printf("You are at tile %d which is of type %s\n",
-            world_get_cursor(wi->w),
-            tile_get_sprite(world_get_current_tile(wi->w)));
     printf("You have the following resources:\n");
     Resource **res = world_get_resources(wi->w);
     if (!res) {
@@ -167,7 +164,7 @@ void ui_tile_info_draw(UITileInfo *ti, int x, int y)
     if (!(b = tile_get_building(world_get_current_tile(ti->w))))
         printf("There is nothing built on this tile. To build something press b.\n");
     else
-        printf("There is a building on this tile: %s\n", building_get_name(b));
+        printf("There is a building on this tile: %s\n", building_get_sprite(b));
 }
 
 void ui_tile_info_destroy(UITileInfo *ti)
@@ -259,18 +256,9 @@ UIList *ui_list_new(void **s, int s_len,
         return NULL;
     }
 
-    UIList *l = calloc(1, sizeof(UIList));
-    if (!l) {
-        HE("could not allocate memory", "ui_list_new");
-        return NULL;
-    }
+    UIList *l = oopsalloc(1, sizeof(UIList), "ui_list_new");
 
-    l->list = calloc(s_len, sizeof(UIListItem *));
-    if (!l->list) {
-        HE("could not allocate memory for list", "ui_list_new");
-        free(l);
-        return NULL;
-    }
+    l->list = oopsalloc(s_len, sizeof(UIListItem *), "ui_list_new");
 
     for (int i = 0; i < s_len; i++) {
         l->list[i] = _ui_li_new(s[i]);
@@ -306,8 +294,9 @@ void *ui_list_present(UIList *l)
         return NULL;
     }
 
-    for (int i = 0; i < l->len; i++)
-        printf("[%2d]: %s\n", i + 1, l->get_li_title(l->list[i]));
+    for (int i = 0; i < l->len; i++) {
+        printf("[%2d]: %s\n", i + 1, l->get_li_title(l->list[i]->info));
+    }
 
 
     int index = -1;
@@ -328,5 +317,5 @@ void *ui_list_present(UIList *l)
         index = atoi(buff);
     } while (index <= 0 || index > l->len);
 
-    return l->list[index - 1];
+    return l->list[index - 1]->info;
 }

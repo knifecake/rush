@@ -104,6 +104,7 @@ World *world_new(void) {
         tile_list_destroy(w->map); free(w);
         return NULL;
     }
+
     fclose(bf);
 
     // count tiles and buildings
@@ -145,11 +146,7 @@ World *world_next_turn(World *w){
   }
 
   for(int i = 0; i < w->num_tiles; i++){
-    int *resources = (int *) calloc(MAX_RESOURCES, sizeof(int));
-    if (!resources) {
-        HE("malloc error","world_next_turn");
-        return NULL;
-    }
+    int *resources = (int *) oopsalloc(MAX_RESOURCES, sizeof(int), "world_next_turn");
     w->map[i] = tile_next_turn(w->map[i], resources);
     for(int j = 0; j < w->num_resources; j++){
       w->wallet[j] += resources[j];
