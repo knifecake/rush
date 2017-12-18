@@ -1,5 +1,5 @@
 ## Event definition format
-1          #(int) number of events to be loaded
+2          #(int) number of events to be loaded
 2          # (int) resource multiplier list length
 
 # BEGIN: event 0

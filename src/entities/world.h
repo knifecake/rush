@@ -37,24 +37,16 @@ World *world_new(void);
 void world_destroy(World *);
 
 /*
- * Constructs the internal map for the world, chosing from the available tiles.
- */
-World *world_load_map(World *);
-
-/*
- * Lets player perform actions.
- */
-World *world_player_turn(World *);
-
-/*
  * Updates the world between turns of the player.
  */
 World *world_next_turn(World *);
 
+
 /*
- * Updates the world between turns of the player.
+ * Returns the wallet of the player
  */
-World *world_ai_turn(World *);
+
+int *world_get_wallet(World *);
 
 /*
  * Moves the cursor by one tile in the specified direction.
@@ -105,6 +97,29 @@ int world_get_num_buildings(World *w);
 
 /* Returns the heigth of the map */
 int world_get_heigth(World *w);
+/*
+ * Returns a pointer to the list of available tiles.
+ */
+ Tile **world_get_tiles(World *w);
+
+ /*
+  * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
+  * in case of failure.
+  */
+ int world_get_num_tiles(World *w);
+
+ /*
+  * Returns a pointer to the list of available events.
+  */
+  Event **world_get_events(World *w);
+
+  /*
+   * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
+   * in case of failure.
+   */
+  int world_get_num_events(World *w);
+
+
 /*
  * Prints what's inside the world for debugging.
  */
