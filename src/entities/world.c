@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../lib/lineread.h"
+
 #include "world.h"
 
 #include "../lib/error_handling.h"
@@ -29,6 +31,48 @@ struct _World {
     Event **events;
     int num_events;
 };
+
+int _world_load_game_state(World *w, char *game_state_file)
+{
+    if (!w || !game_state_file) {
+        HE("invalid arguments", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+
+    FILE *gs = fopen(game_state_file, "r");
+    if (!gs) {
+        HE("cannot open game state file", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+
+    // read number of resources
+    char *buff = fgetll(gs);
+    if (!buff) {
+        HE("could not read number of resources", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+    int nres = atoi(buff); free(buff);
+    if (nres != w->num_resources) {
+        HE("refusing to load game state with different number of resources than are defined", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+
+    for (int i = 0; i < w->num_resources; i++) {
+        // read the quentity of the i-th resource
+        buff = fgetll(gs);
+        if (!buff) {
+            HE("could not read quantity of a resource", "_world_load_game_state");
+            return UINT_ERROR;
+        }
+
+        // add it to our wallet
+        w->wallet[i] = atoi(buff); free(buff);
+    }
+
+    fclose(gs);
+
+    return !UINT_ERROR;
+}
 
 World *world_new(void) {
 
@@ -145,7 +189,17 @@ World *world_new(void) {
     for (w->num_buildings = 0; w->buildings[w->num_buildings]; w->num_buildings++);
     for (w->num_events = 0; w->events[w->num_events]; w->num_events++);
 
-     return w;
+    // load initial game state
+    char *initial_game_state = config_get("initial game state");
+    if (!initial_game_state) {
+        HE("don't know where to load initial game state from, not loading anything", "world_new");
+    } else {
+        if (UINT_ERROR == _world_load_game_state(w, initial_game_state)) {
+            HE("initial game state could not be loaded", "world_new");
+        }
+    }
+
+    return w;
 }
 
 void world_destroy(World *w) {

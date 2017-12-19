@@ -19,6 +19,9 @@ assets/sprites.txt
 events db
 assets/events.txt
 
+initial game state
+assets/initial_game_state.txt
+
 hex_xlen
 64
 

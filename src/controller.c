@@ -78,7 +78,10 @@ int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 
     show_msg("A game about... well... maybe tomorrow...\n\n");
 
-    show_msg("Instruction:\n\tUse the arrow keys to move trought the map.\n\n");
+    show_msg("Instructions:\n");
+    show_msg("\tUse the arrow keys to move trought the map.\n");
+    show_msg("\tPress 'n' to move onto the next turn\n");
+    show_msg("\n");
     return CTRL_OK;
 }
 
