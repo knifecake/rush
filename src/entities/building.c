@@ -145,6 +145,21 @@ char *building_get_sprite(Building *bp)
     return bp->sprite;
 }
 
+int building_is_townhall(Building *bp)
+{
+    if (!bp) {
+        HE("invalid arguments", "building_is_townhall");
+        return 0;
+    }
+
+    // TODO: change this to be loaded from config
+    if (bp->id >= 101 && bp->id <= 105) {
+        return 1;
+    }
+
+    return 0;
+}
+
 void building_print(FILE *f, Building *bp)
 {
 	if (!bp) {

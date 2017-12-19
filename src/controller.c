@@ -28,14 +28,6 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         return CTRL_ERROR;
     }
 
-    // get current tile pointer
-    Tile *current_tile = world_get_current_tile(w);
-
-    // check if the player can build to that tile
-    /* if (!tile_can_build(current_tile)) { */
-    /*     show_msg("You cannot build on that tile!\n"); */
-    /* } */
-
     // get a list of available buildings for that tile
     Building **bs = world_get_buildings(w);
 
@@ -47,13 +39,13 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     Building *b = ui_list_present(ui_l);
 
     if (!b) {
-        show_msg("Okay, nothing will be built\n");
+        show_msg("Okay, nothing will be built\n\nn");
         return CTRL_OK;
     }
 
     // update the model (entity) to reflect the changes that took place
-    if (UINT_ERROR == tile_build(current_tile, b)) {
-        HE("could not build on this tile", "action_build");
+    if (UINT_ERROR == world_build_on_current_tile(w, b)) {
+        show_msg("Nothing was built\n\n");
         return CTRL_OK;
     }
 

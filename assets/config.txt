@@ -34,5 +34,5 @@ hex_init_x
 hex_init_y
 3
 
-hex_number_tiles
+tiles_per_double_column
 12

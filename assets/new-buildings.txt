@@ -8,7 +8,7 @@
 101         # int building_id
 town_hall1  # (char *) sprite
 1           # current level of the building
-1           # player's level to build it
+0           # player's level to build it
 
 1000        # building's health points
 0           # (int) buiding's leveling cost
@@ -24,7 +24,7 @@ town_hall1  # (char *) sprite
 102         # int building_id
 town_hall2  # (char *) sprite
 2           # current level of the building
-2           # player's level to build it
+1           # player's level to build it
 
 2000        # building's health points
 7000        # (int) buiding's leveling cost
@@ -40,7 +40,7 @@ town_hall2  # (char *) sprite
 103         # int building_id
 town_hall3  # (char *) sprite
 3           # current level of the building
-3           # player's level to build it
+2           # player's level to build it
 
 4000        # building's health points
 10500       # (int) buiding's leveling cost
@@ -56,7 +56,7 @@ town_hall3  # (char *) sprite
 104         # int building_id
 town_hall4  # (char *) sprite
 4           # current level of the building
-4           # player's level to build it
+3           # player's level to build it
 
 8000        # building's health points
 17500       # (int) buiding's leveling cost
@@ -72,7 +72,7 @@ town_hall4  # (char *) sprite
 105         # int building_id
 town_hall5  # (char *) sprite
 5           # current level of the building
-5           # player's level to build it
+4           # player's level to build it
 
 16000        # building's health points
 28000        # (int) buiding's leveling cost
@@ -92,7 +92,7 @@ town_hall5  # (char *) sprite
 
 # Basic 1 extractor
 111     # int building_id
-resource_gin_mine # (char *) sprite
+money_mine # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -108,7 +108,7 @@ resource_gin_mine # (char *) sprite
 0
 
 112     # int building_id
-resource_gin_mine # (char *) sprite
+money_mine # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -125,7 +125,7 @@ resource_gin_mine # (char *) sprite
 
 # Basic 1 extractor
 113     # int building_id
-resource_gin_mine # (char *) sprite
+money_mine # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -142,7 +142,7 @@ resource_gin_mine # (char *) sprite
 
 # Basic 1 extractor
 114     # int building_id
-resource_gin_mine # (char *) sprite
+money_mine # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -159,7 +159,7 @@ resource_gin_mine # (char *) sprite
 
 # Basic 1 extractor
 115     # int building_id
-resource_gin_mine # (char *) sprite
+money_mine # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -177,7 +177,7 @@ resource_gin_mine # (char *) sprite
 
 # Chococrispies extractor
 121     # int building_id
-resource_chococrispies_mine # (char *) sprite
+ginebrita_mine # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -193,7 +193,7 @@ resource_chococrispies_mine # (char *) sprite
 0
 
 122     # int building_id
-resource_chococrispies_mine # (char *) sprite
+ginebrita_mine # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -209,7 +209,7 @@ resource_chococrispies_mine # (char *) sprite
 0
 
 123     # int building_id
-resource_chococrispies_mine # (char *) sprite
+ginebrita_mine # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -225,7 +225,7 @@ resource_chococrispies_mine # (char *) sprite
 0
 
 124     # int building_id
-resource_chococrispies_mine # (char *) sprite
+ginebrita_mine # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -241,7 +241,7 @@ resource_chococrispies_mine # (char *) sprite
 0
 
 125     # int building_id
-resource_chococrispies_mine # (char *) sprite
+ginebrita_mine # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -259,7 +259,7 @@ resource_chococrispies_mine # (char *) sprite
 
 # Basic 3 extractor
 131     # int building_id
-resource_basic_3_mine # (char *) sprite
+chococrispies_mine # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -275,7 +275,7 @@ resource_basic_3_mine # (char *) sprite
 0
 
 132     # int building_id
-resource_basic_3_mine # (char *) sprite
+chococrispies_mine # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -291,7 +291,7 @@ resource_basic_3_mine # (char *) sprite
 0
 
 133     # int building_id
-resource_basic_3_mine # (char *) sprite
+chococrispies_mine # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -307,7 +307,7 @@ resource_basic_3_mine # (char *) sprite
 0
 
 134     # int building_id
-resource_basic_3_mine # (char *) sprite
+chococrispies_mine # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -323,7 +323,7 @@ resource_basic_3_mine # (char *) sprite
 0
 
 135     # int building_id
-resource_basic_3_mine # (char *) sprite
+chococrispies_mine # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -341,7 +341,7 @@ resource_basic_3_mine # (char *) sprite
 
 # Special extractor
 141     # int building_id
-resource_special_mine # (char *) sprite
+special_mine # (char *) sprite
 1      # current level of the building
 2     # player's level to build it
 
@@ -357,7 +357,7 @@ resource_special_mine # (char *) sprite
 0
 
 142     # int building_id
-resource_special_mine # (char *) sprite
+special_mine # (char *) sprite
 2      # current level of the building
 3     # player's level to build it
 
@@ -373,7 +373,7 @@ resource_special_mine # (char *) sprite
 0
 
 143     # int building_id
-resource_special_mine # (char *) sprite
+special_mine # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -389,7 +389,7 @@ resource_special_mine # (char *) sprite
 0
 
 144     # int building_id
-resource_special_mine # (char *) sprite
+special_mine # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -405,7 +405,7 @@ resource_special_mine # (char *) sprite
 0
 
 145     # int building_id
-resource_special_mine # (char *) sprite
+special_mine # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 

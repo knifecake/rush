@@ -11,7 +11,7 @@
 # BEGIN: resource 1
 
 0         # (int) resource ID
-gin       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
+$       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
 
 # END: resource 1
 
@@ -19,12 +19,12 @@ gin       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
 # BEGIN: resource 2
 
 1
-chococrispies
+gin
 
 # END: resource 2
 
 2
-Basic 3
+chococrispies
 
 3
 Special

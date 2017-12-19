@@ -4,6 +4,9 @@
 #include "tile.h"
 #include "building.h"
 
+#define COST_RESOURCE 0
+
+
 /*
  * world.h
  *
@@ -124,5 +127,20 @@ int world_get_heigth(World *w);
  * Prints what's inside the world for debugging.
  */
 void world_print(FILE *f, World *w);
+
+/*
+ * Modifies the quantity of a resource held in the wallet by delta (can be
+ * positive or negative). Returns UINT_ERROR on error.
+ */
+int world_wallet_delta(World *w, int resource_id, int delta);
+
+/*
+ * Builds on the current tile if the following are met:
+ *  - Player has building unlocking level
+ *  - Player has money
+ *
+ *  returns UINT_ERROR if an error ocurred or the criteria are not met.
+ */
+int world_build_on_current_tile(World *w, Building *b);
 
 #endif

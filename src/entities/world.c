@@ -30,6 +30,7 @@ struct _World {
 
     Event **events;
     int num_events;
+    int level;
 };
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -400,4 +401,55 @@ void world_print(FILE *s, World *w)
 
     fprintf(s, "\nBuildings:\n");
     for (int i = 0; w->buildings[i]; building_print(s, w->buildings[i++]));
+}
+
+int world_wallet_delta(World *w, int resource_id, int delta)
+{
+    if (!w || resource_id < 0 || resource_id >= w->num_resources) {
+        HE("invalid arguments", "world_wallet_delta");
+        return UINT_ERROR;
+    }
+
+    w->wallet[resource_id] += delta;
+
+    return UINT_ERROR;
+}
+
+int world_build_on_current_tile(World *w, Building *b)
+{
+    if (!w || !b) {
+        HE("invalid arguments", "world_build_on_current_tile");
+        return UINT_ERROR;
+    }
+
+    // check if building can be build at the player's current level
+    int unlock_level = building_get_unlocking_level(b);
+    if (unlock_level > w->level) {
+        show_msg("You can't build this until you reach level %d\n", unlock_level);
+        return UINT_ERROR;
+    }
+
+    // check the player has enough money
+    int cost = building_get_cost(b);
+    if (cost > w->wallet[COST_RESOURCE]) {
+        show_msg("You don't have enough money to build: save %d more\n", cost - w->wallet[COST_RESOURCE]);
+        return UINT_ERROR;
+    }
+
+    // link building to tile
+    if (UINT_ERROR == tile_build(w->map[w->cursor], b)) {
+        HE("could not build for some reason", "world_build_on_current_tile");
+        return UINT_ERROR;
+    }
+
+    // substract money from wallet
+    w->wallet[COST_RESOURCE] -= cost;
+
+    // if building is a town hall, increase level
+    if (building_is_townhall(b)) {
+        w->level = building_get_level(b);
+        show_msg("You leveled up! You are now in level %d and can build more awesome things\n", w->level);
+    }
+
+    return !UINT_ERROR;
 }

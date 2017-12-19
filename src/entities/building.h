@@ -76,5 +76,10 @@ char *building_get_sprite(Building *);
  */
 int building_get_base_resources(Building *, const int);
 
+/*
+ * Returns true if the building is a town hall.
+ */
+int building_is_townhall(Building *bp);
+
 void building_print(FILE *s, Building *bp);
 #endif

@@ -4,10 +4,10 @@
 
 ## Inital resource quantities
 7 # number of resources that follow
-1000 # quantity of resource 1
-2000 # quantity of resource 2
-3000 # ...
-500
+5000 # quantity of resource 1
+5000 # quantity of resource 2
+5000 # ...
 0
 0
-10
+0
+0
