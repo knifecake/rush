@@ -12,3 +12,6 @@ test/assets/tiles.txt
 
 buildings db
 test/assets/example_building_loader.txt
+
+events db
+test/assets/example_event_loader.txt

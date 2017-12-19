@@ -1,18 +1,21 @@
-2
-2
+## Tile definition format
+2         # (int) number of tiles to be loaded
+2         # (int) length of resource multipliers / available resources lists
 
+# BEGIN tile 0
 
-1
-forest
+1         # (int) tile_id
+forest    # (char *) sprite
 
--10.5
-3.75
+-10.5     # (float) resource 0 multiplier
+3.75      # (float) resource 1 multiplier
 
-177261
-12001
+177261    # (int) quantity of resource 0 available
+12001     # (int) quantity of resource 1 available
 
-120
+120       # number of enemies
 
+# END TILE 0
 
 2
 forest

@@ -10,7 +10,7 @@
 /*
  * A test specification for Event loader.
  */
-#define EVENTS_DB "test/assets/test_event_asset.txt"
+#define EVENTS_DB "test/assets/example_event_loader.txt"
 
 int main(void) {
   FILE *ef = fopen(EVENTS_DB, "r");

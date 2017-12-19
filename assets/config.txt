@@ -16,6 +16,9 @@ assets/new-buildings.txt
 sprite db
 assets/sprites.txt
 
+events db
+assets/events.txt
+
 hex_xlen
 64
 

@@ -12,10 +12,11 @@
 #include "../asset_loaders/resource_loader.h"
 #include "../asset_loaders/tile_loader.h"
 #include "../asset_loaders/building_loader.h"
+#include "../asset_loaders/event_loader.h"
 
 struct _World {
     Resource **resources;
-	int wallet[MAX_RESOURCES];
+	  int wallet[MAX_RESOURCES];
     int num_resources;
 
     Tile **map;
@@ -24,6 +25,9 @@ struct _World {
 
     Building **buildings;
     int num_buildings;
+
+    Event **events;
+    int num_events;
 };
 
 World *world_new(void) {
@@ -107,11 +111,41 @@ World *world_new(void) {
 
     fclose(bf);
 
-    // count tiles and buildings
+    // LOAD EVENTS
+    char *events_db = config_get("events db");
+    if (!events_db) {
+        HE("don't know where to load events from, set up an 'event db' entry in config", "world_new");
+        resource_list_destroy(w->resources, w->num_resources);
+        tile_list_destroy(w->map);
+        building_list_destroy(w->buildings); free(w);
+        return NULL;
+    }
+
+    FILE *ef = fopen(events_db, "r");
+    if (!bf) {
+        HE("could not open buildings db file", "world_new");
+        resource_list_destroy(w->resources, w->num_resources);
+        tile_list_destroy(w->map);
+        building_list_destroy(w->buildings); free(w);
+        return NULL;
+    }
+
+    w->events = load_events_from_file(bf, w->num_resources);
+    if (!w->events) {
+        HE("could not load events", "world_new");
+        resource_list_destroy(w->resources, w->num_resources);
+        tile_list_destroy(w->map);
+        building_list_destroy(w->buildings); free(w);
+        return NULL;
+    }
+    fclose(ef);
+
+    // count tiles, buildings and events
     for (w->num_tiles = 0; w->map[w->num_tiles]; w->num_tiles++);
     for (w->num_buildings = 0; w->buildings[w->num_buildings]; w->num_buildings++);
+    for (w->num_events = 0; w->events[w->num_events]; w->num_events++);
 
-    return w;
+     return w;
 }
 
 void world_destroy(World *w) {
@@ -122,23 +156,12 @@ void world_destroy(World *w) {
 
   building_list_destroy(w->buildings);
   tile_list_destroy(w->map);
+  event_list_destroy(w->events);
   resource_list_destroy(w->resources, w->num_resources);
   free(w);
 }
 
-World *world_player_turn(World *w) {
-  if(!w){
-    HE("invalid parameters", "world_player_turn");
-    return NULL;
-  }
-  /*
-
-
-
-  */
-  return w;
-}
-
+//Maybe we need to call some other functions like create events
 World *world_next_turn(World *w){
   if(!w){
     HE("invalid parameters", "world_player_turn");
@@ -156,18 +179,16 @@ World *world_next_turn(World *w){
   return w;
 }
 
-World *world_ai_turn(World *w){
-  if(!w){
-    HE("invalid parameters", "world_player_turn");
+int *world_get_wallet(World *w)
+{
+  if(!w) {
+    HE("invalid parameters", "world_get_wallet");
     return NULL;
   }
-  /*
 
-
-
-  */
-  return w;
+  return w->wallet;
 }
+
 
 World *world_move_cursor(World *w, int dir)
 {
@@ -216,16 +237,46 @@ Tile *world_get_current_tile(World *w)
     return w->map[w->cursor];
 }
 
-// TODO: implement this
 Building **world_get_buildings(World *w)
 {
-    return w->buildings;
+  if (!w) {
+      HE("invalid parameters", "world_get_buildings");
+      return NULL;
+  }
+
+  return w->buildings;
 }
 
-// TODO: implement this
+
 int world_get_num_buildings(World *w)
 {
-    return w->num_buildings;
+  if (!w) {
+      HE("invalid parameters", "world_get_num_buildings");
+      return UINT_ERROR;
+  }
+
+  return w->num_buildings;
+}
+
+Tile **world_get_tiles(World *w)
+{
+  if (!w) {
+      HE("invalid parameters", "world_get_tiles");
+      return NULL;
+  }
+
+  return w->map;
+}
+
+
+int world_get_num_tiles(World *w)
+{
+  if (!w) {
+      HE("invalid parameters", "world_get_num_tiles");
+      return UINT_ERROR;
+  }
+
+  return w->num_tiles;
 }
 
 Resource **world_get_resources(World *w)
@@ -256,6 +307,27 @@ int world_get_num_resources(World *w)
     }
 
     return w->num_resources;
+}
+
+Event **world_get_events(World *w)
+{
+  if (!w) {
+      HE("invalid parameters", "world_get_events");
+      return NULL;
+  }
+
+  return w->events;
+}
+
+
+int world_get_num_events(World *w)
+{
+  if (!w) {
+      HE("invalid parameters", "world_get_num_events");
+      return UINT_ERROR;
+  }
+
+  return w->num_events;
 }
 
 void world_print(FILE *s, World *w)
