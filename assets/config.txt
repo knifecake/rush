@@ -36,3 +36,9 @@ hex_init_y
 
 tiles_per_double_column
 12
+
+map height
+4
+
+initial cursor
+10

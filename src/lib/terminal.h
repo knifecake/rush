@@ -15,7 +15,7 @@
  * Returned by term_read_key in case it finds something that looks like an arrow
  * key but isn't.
  */
-#define HERE        -5
+#define HERE_ARROW  -5
 
 /*
  * Reads a key from the file stream given (normally stdin)

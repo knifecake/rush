@@ -1,5 +1,6 @@
 CC			= gcc
 CFLAGS	= -Wall -g3 -std=c99
+DISTCFLAGS = -Wnone -O3
 LDFLAGS	= -lm -lpng
 
 BUILD_DIR = build

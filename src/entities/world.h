@@ -52,23 +52,6 @@ World *world_next_turn(World *);
 int *world_get_wallet(World *);
 
 /*
- * Moves the cursor by one tile in the specified direction.
- *
- * See `lib/game_controller.h` for details on possible directions.
- */
-World *world_move_cursor(World *w, int dir);
-
-/*
- * Returns the current tile's index in the array of tiles, a.k.a. the cursor. Returns UINT_ERROR on error.
- */
-int world_get_cursor(World *w);
-
-/*
- * Returns a pointer to the tile under the cursor, NULL on error.
- */
-Tile *world_get_current_tile(World *w);
-
-/*
  * Returns the number of resources in World or
  * UINT_ERROR on error.
  */
@@ -103,24 +86,24 @@ int world_get_heigth(World *w);
 /*
  * Returns a pointer to the list of available tiles.
  */
- Tile **world_get_tiles(World *w);
+Tile **world_get_tiles(World *w);
 
- /*
-  * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
-  * in case of failure.
-  */
- int world_get_num_tiles(World *w);
+/*
+ * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
+ * in case of failure.
+ */
+int world_get_num_tiles(World *w);
 
- /*
-  * Returns a pointer to the list of available events.
-  */
-  Event **world_get_events(World *w);
+/*
+ * Returns a pointer to the list of available events.
+ */
+Event **world_get_events(World *w);
 
-  /*
-   * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
-   * in case of failure.
-   */
-  int world_get_num_events(World *w);
+/*
+ * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
+ * in case of failure.
+ */
+int world_get_num_events(World *w);
 
 
 /*
@@ -135,12 +118,17 @@ void world_print(FILE *f, World *w);
 int world_wallet_delta(World *w, int resource_id, int delta);
 
 /*
+ * Returns the tile at the given index, NULL on error.
+ */
+Tile *world_tile_at_index(World *w, int tile_index);
+
+/*
  * Builds on the current tile if the following are met:
  *  - Player has building unlocking level
  *  - Player has money
  *
  *  returns UINT_ERROR if an error ocurred or the criteria are not met.
  */
-int world_build_on_current_tile(World *w, Building *b);
+int world_build_on_tile(World *w, int tile_index, Building *b);
 
 #endif

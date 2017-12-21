@@ -57,7 +57,10 @@ void ui_teardown();
  * below.
  */
 
-int ui_update_cursor();
+
+int ui_move_cursor(int input);
+
+int ui_get_cursor();
 
 int ui_redraw_tile(int tile_index);
 
@@ -129,7 +132,7 @@ UITileInfo *ui_tile_info_new(World *w);
  * Before drawing all the values displayed are updated by calling getters on
  * the World entity.
  */
-void ui_tile_info_draw(UITileInfo *ti, int x, int y);
+void ui_tile_info_draw(UITileInfo *ti, int tile_index, int x, int y);
 
 /*
  * Frees all the memory associated with a UITileInfo component that was
@@ -154,11 +157,24 @@ typedef struct _UIMap UIMap;
 UIMap *ui_map_new(World *w);
 
 /*
- * Deletes the previous cursor and redraws the new one. Needs to keep track of
- * where the previous cursor was and read where the cursor is now by calling
- * World getters.
+ * A list of possible directions to move to.
  */
-void ui_map_update_cursor(UIMap *, int);
+typedef enum { UP, LEFT, DOWN, RIGHT, HERE } UIMapVector;
+
+/*
+ * Moves the cursor if it's possible to do so.
+ */
+int ui_map_move_cursor(UIMap *m, UIMapVector dir);
+
+/*
+ * Deletes the previous cursor and draws the new one.
+ */
+void ui_map_update_cursor(UIMap *, int cursor);
+
+/*
+ * Returns the focused tile's index or UINT_ERROR on error.
+ */
+int ui_map_get_cursor(UIMap *m);
 
 /*
  * Redraws a spectific Tile (if visible) on the map. This function gets called,

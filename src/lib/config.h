@@ -25,6 +25,13 @@ int config_set(char *key, char *value);
 char *config_get(char *key);
 
 /*
+ * Returns the value associated with the given key, but casted to an int.
+ *
+ * Casting is done by calling atoi(). On error, 0 will be returned.
+ */
+int config_get_int(char *key);
+
+/*
  * Loads configuration from the given filename. Returns UINT_ERROR on error.
  */
 int load_config_from_file(const char *config_file);

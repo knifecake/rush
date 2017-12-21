@@ -35,7 +35,10 @@ int main(void) {
     }
 
     // setup UI
-    ui_setup(w);
+    if (UINT_ERROR == ui_setup(w)) {
+        fprintf(stderr, "FATAL: could not instantiate UI\n");
+        abort();
+    }
 
     // load cop
     // TODO: decide what to do about error handling
@@ -75,7 +78,9 @@ int main(void) {
 
             // check if we're moving the cursor
             else if (term_is_arrow_key(input)) {
-                w = world_move_cursor(w, input);
+                if (UINT_ERROR == ui_move_cursor(input)) {
+                    show_msg("cannot move further in that direction\n");
+                }
                 ui_update_tile_info();
             }
 

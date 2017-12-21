@@ -22,7 +22,6 @@ struct _World {
     int num_resources;
 
     Tile **map;
-    int cursor;
     int num_tiles;
 
     Building **buildings;
@@ -244,54 +243,6 @@ int *world_get_wallet(World *w)
   return w->wallet;
 }
 
-
-World *world_move_cursor(World *w, int dir)
-{
-    if (!w) {
-        HE("invalid parameters", "world_move_cursor");
-        return NULL;
-    }
-
-    switch (dir) {
-        case DOWN_ARROW:
-            if (w->cursor < w->num_tiles - 1)
-                w->cursor++;
-            else
-                show_msg("cannot move further down\n");
-            break;
-        case UP_ARROW:
-            if (w->cursor > 0)
-                w->cursor--;
-            else
-                show_msg("cannot move further up\n");
-            break;
-        default:
-            show_msg("that direction is not yet supported\n");
-    }
-
-    return w;
-}
-
-int world_get_cursor(World *w)
-{
-    if (!w) {
-        HE("invalid arguments", "world_get_cursor");
-        return UINT_ERROR;
-    }
-
-    return w->cursor;
-}
-
-Tile *world_get_current_tile(World *w)
-{
-    if (!w) {
-        HE("invalid arguments", "world_get_current_tile");
-        return NULL;
-    }
-
-    return w->map[w->cursor];
-}
-
 Building **world_get_buildings(World *w)
 {
   if (!w) {
@@ -415,9 +366,19 @@ int world_wallet_delta(World *w, int resource_id, int delta)
     return UINT_ERROR;
 }
 
-int world_build_on_current_tile(World *w, Building *b)
+Tile *world_tile_at_index(World *w, int tile_index)
 {
-    if (!w || !b) {
+    if (!w || tile_index < 0 || tile_index >= w->num_tiles) {
+        HE("invalid arguments", "world_tile_at_index");
+        return NULL;
+    }
+
+    return w->map[tile_index];
+}
+
+int world_build_on_tile(World *w, int tile_index, Building *b)
+{
+    if (!w || tile_index < 0 || tile_index >= w->num_tiles || !b) {
         HE("invalid arguments", "world_build_on_current_tile");
         return UINT_ERROR;
     }
@@ -437,7 +398,7 @@ int world_build_on_current_tile(World *w, Building *b)
     }
 
     // link building to tile
-    if (UINT_ERROR == tile_build(w->map[w->cursor], b)) {
+    if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
         HE("could not build for some reason", "world_build_on_current_tile");
         return UINT_ERROR;
     }

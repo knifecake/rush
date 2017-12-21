@@ -132,6 +132,17 @@ char *config_get(char *key)
     return NULL;
 }
 
+int config_get_int(char *key)
+{
+    char *val = config_get(key);
+    if (!val) {
+        HE("key not found", "config_get_int");
+        return 0;
+    }
+
+    return atoi(val);
+}
+
 int load_config_from_file(const char *config_file)
 {
     if (!config_file) {

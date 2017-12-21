@@ -34,7 +34,7 @@ int term_read_key(FILE *s)
             case('D'):
                 return LEFT_ARROW;
             default:
-                return HERE;
+                return HERE_ARROW;
         }
     }
 
@@ -90,7 +90,7 @@ char *term_read_string(FILE *s)
 
 bool term_is_arrow_key(int k)
 {
-    return (k == UP_ARROW || k == DOWN_ARROW || k == LEFT_ARROW || k == RIGHT_ARROW || k == HERE);
+    return (k == UP_ARROW || k == DOWN_ARROW || k == LEFT_ARROW || k == RIGHT_ARROW || k == HERE_ARROW);
 }
 
 void term_setup(FILE *s)
