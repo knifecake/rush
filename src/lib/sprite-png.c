@@ -125,6 +125,8 @@ void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
         HE("invalid params", "sprite_draw")
         return;
     }
+    x0++;
+    y0++;
     x0 *= 2;
     x0--;
 

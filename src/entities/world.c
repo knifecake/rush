@@ -22,6 +22,9 @@ struct _World {
     int num_resources;
 
     Tile **map;
+    int map_tiles;
+
+    Tile **tiles;
     int num_tiles;
 
     Building **buildings;
@@ -31,6 +34,18 @@ struct _World {
     int num_events;
     int level;
 };
+
+int _aleat_num (int inf, int sup){
+  int temp, r;
+  if (inf > sup){
+    temp = inf;
+    inf = sup;
+    sup = temp;
+  }
+  sup++;
+  r = (int) inf + rand() / (RAND_MAX / (sup - inf) + 1);
+  return r;
+}
 
 int _world_load_game_state(World *w, char *game_state_file)
 {
@@ -119,8 +134,8 @@ World *world_new(void) {
         return NULL;
     }
 
-    w->map = load_tiles_from_file(tf, w->num_resources);
-    if (!w->map) {
+    w->tiles = load_tiles_from_file(tf, w->num_resources);
+    if (!w->tiles) {
         HE("could not load tiles", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
         free(w);
@@ -185,10 +200,18 @@ World *world_new(void) {
     fclose(ef);
 
     // count tiles, buildings and events
-    for (w->num_tiles = 0; w->map[w->num_tiles]; w->num_tiles++);
+    for (w->num_tiles = 0; w->tiles[w->num_tiles]; w->num_tiles++);
     for (w->num_buildings = 0; w->buildings[w->num_buildings]; w->num_buildings++);
     for (w->num_events = 0; w->events[w->num_events]; w->num_events++);
 
+    //Create the map
+    int height  = config_get_int("map height");
+    int columns = config_get_int("map columns");
+    w->map_tiles = height * columns;
+    w->map = oopsalloc(w->map_tiles, sizeof(Tile *),"world_new");
+    for (int i=0; i < w->map_tiles; i++){
+      w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles-1)]);
+    }
     // load initial game state
     char *initial_game_state = config_get("initial game state");
     if (!initial_game_state) {
@@ -210,6 +233,7 @@ void world_destroy(World *w) {
 
   building_list_destroy(w->buildings);
   tile_list_destroy(w->map);
+  tile_list_destroy(w->tiles);
   event_list_destroy(w->events);
   resource_list_destroy(w->resources, w->num_resources);
   free(w);
@@ -222,7 +246,7 @@ World *world_next_turn(World *w){
     return NULL;
   }
 
-  for(int i = 0; i < w->num_tiles; i++){
+  for(int i = 0; i < w->map_tiles; i++){
     int *resources = (int *) oopsalloc(MAX_RESOURCES, sizeof(int), "world_next_turn");
     w->map[i] = tile_next_turn(w->map[i], resources);
     for(int j = 0; j < w->num_resources; j++){
@@ -271,9 +295,18 @@ Tile **world_get_tiles(World *w)
       return NULL;
   }
 
-  return w->map;
+  return w->tiles;
 }
 
+Tile **world_get_map(World *w)
+{
+  if (!w) {
+      HE("invalid parameters", "world_get_tiles");
+      return NULL;
+  }
+
+  return w->map;
+}
 
 int world_get_num_tiles(World *w)
 {

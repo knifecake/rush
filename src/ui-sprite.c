@@ -4,6 +4,7 @@
 #include "lib/config.h"
 #include "lib/dict.h"
 #include "lib/sprite.h"
+#include "asset_loaders/sprite_repository.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -54,8 +55,13 @@ int ui_setup(World *w)
     ui.map = ui_map_new(ui.w);
     ui.wi = ui_world_info_new(ui.w);
 
+    sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
+    if(!sprite_dict){
+      HE("Error creating the sprite dictionary", "ui_setup")
+      return UINT_ERROR;
+    }
     // ui tile info is created when the cursor is first moved
-
+    ui_map_draw(ui.map);
     return !UINT_ERROR;
 }
 
@@ -192,7 +198,7 @@ UIMap *ui_map_new(World *w){
     return NULL;
   }
 
-  m->tiles = world_get_tiles(ui.w);
+  m->tiles = world_get_map(ui.w);
   if(!m->tiles){
     HE("Error retrieving tile list from world", "ui_map_new")
     return NULL;
@@ -202,6 +208,12 @@ UIMap *ui_map_new(World *w){
   m->twice_screen_height = config_get_int("tiles_per_double_column");
   m->screen_columns = config_get_int("columns_in_screen");
   m->screen_tiles = m->screen_columns * m->twice_screen_height/2;
+
+  m->first_index = _center_screen_index(m, m->previous_cursor);
+  if(m->first_index < 0){
+    HE("Error retrieving index for first tile in screen", "ui_map_new")
+    return NULL;
+  }
   return m;
 }
 
@@ -249,7 +261,7 @@ void ui_map_draw(UIMap *m){
 
 void ui_map_destroy(UIMap *m)
 {
-    // TODO
+    free(m);
     return;
 }
 
@@ -295,7 +307,7 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   tiles_in_screen = m->screen_tiles;
 
   coord = _relative_coordinates(m, index);
-  if ((coord = UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
+  if ((coord == UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
     HE("Coordinates out of map view", "_draw_sprite_in_index")
     return UINT_ERROR;
   }

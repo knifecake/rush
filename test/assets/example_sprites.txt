@@ -1,0 +1,9 @@
+8
+castle4
+background
+cursor_on
+cursor_off
+forest
+interphace
+quarry
+water

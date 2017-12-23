@@ -246,6 +246,19 @@ Tile *tile_next_turn(Tile *tile, int *resources){
   return tile;
 }
 
+Tile *tile_copy(Tile* src){
+  if(!src){
+    HE("Input error", "tile_copy")
+    return NULL;
+  }
+  Tile *dest = tile_new(src->id,src->sprite, src->resource_multipliers, src->remaining_resources, src->enemies);
+  if(!dest){
+    HE("Error copying the tile", "tile_copy")
+    return NULL;
+  }
+  return dest;
+}
+
 void tile_print(FILE *f, Tile *t) {
     if (!f || !t) {
         HE("invalid arguments", "tile_print")
@@ -265,4 +278,3 @@ void tile_print(FILE *f, Tile *t) {
 
     fprintf(f, "\n - enemies: %d\n", t->enemies);
 }
-
