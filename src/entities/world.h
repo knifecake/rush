@@ -76,13 +76,15 @@ int world_get_resource_quantity(World *w, int resource_id);
 Building **world_get_buildings(World *w);
 
 /*
+ * Returns a pointer to the list of available tiles.
+ */
+Tile **world_get_tiles(World *w);
+/*
  * Returns the number of buildings that world_get_buildings returns, UINT_ERROR
  * in case of failure.
  */
 int world_get_num_buildings(World *w);
 
-/* Returns the heigth of the map */
-int world_get_heigth(World *w);
 /*
  * Returns a pointer to the list of available tiles.
  */

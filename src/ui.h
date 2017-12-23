@@ -183,6 +183,13 @@ int ui_map_get_cursor(UIMap *m);
 void ui_map_redraw_tile(UIMap *m, int tile_index);
 
 /*
+* Draws a new map starting from (x,y).
+*
+* Before drawing, you should update the UIMap yourself.
+*/
+void ui_map_draw(UIMap *m);
+
+/*
  * Frees all memory allocated by ui_map_new.
  */
 void ui_map_destroy(UIMap *m);
