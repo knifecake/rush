@@ -15,9 +15,11 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         HE("invalid parameters", "action_build");
         return UINT_ERROR;
     }
-
+    //TODO: IMPLEMENT THIS
     // get current tile pointer
-    Tile *current_tile = world_get_current_tile(w);
+
+    //NOTE THIS LINE BELOW SHOULDN'T BE COMMENTED
+    /*Tile *current_tile = world_get_current_tile(w);*/
 
     // check if the player can build to that tile
     /* if (!tile_can_build(current_tile)) { */
@@ -25,7 +27,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     /* } */
 
     // get a list of available buildings for that tile
-    Building **bs = world_get_buildings(w);
+    //Building **bs = world_get_buildings(w);
 
     return !UINT_ERROR;
 }

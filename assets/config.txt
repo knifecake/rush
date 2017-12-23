@@ -38,7 +38,10 @@ tiles_per_double_column
 12
 
 map height
-4
+10
+
+map columns
+10
 
 initial cursor
 10

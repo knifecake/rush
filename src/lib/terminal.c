@@ -5,6 +5,7 @@
 #include "error_handling.h"
 
 #define MAX_READ_STRING 10
+#define _POSIX_C_SOURCE 1
 
 /*
  * Stores the initial terminal configuration.

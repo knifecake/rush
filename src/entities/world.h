@@ -85,8 +85,6 @@ Tile **world_get_tiles(World *w);
  */
 int world_get_num_buildings(World *w);
 
-/* Returns the heigth of the map */
-int world_get_heigth(World *w);
 /*
  * Returns a pointer to the list of available tiles.
  */

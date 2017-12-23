@@ -30,7 +30,6 @@ struct _World {
     Event **events;
     int num_events;
     int level;
-    int height;
 };
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -414,12 +413,4 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     }
 
     return !UINT_ERROR;
-}
-
-int world_get_heigth(World *w){
-  if(!w){
-    HE("invalid input", "world_get_heigth")
-    return UINT_ERROR;
-  }
-  return w->heigth;
 }

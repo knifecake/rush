@@ -57,7 +57,7 @@ int main(void) {
                 show_msg("\nExiting...\n");
                 break;
             } else if (term_is_arrow_key(input)) {
-                w = world_move_cursor(w, input);
+                //w = world_move_cursor(w, input);
                 // ui_update_tile_info();
             } else {
                 // turn the given command into a string

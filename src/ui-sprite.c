@@ -9,15 +9,21 @@
 #include <stdio.h>
 
 /* Private functions */
-int _coordinates_by_index_ (int index, int *x, int *y);
+int _coordinates_by_index_ (UIMap *m, int index, int *x, int *y);
 
-int _relative_coordinates_(int index, int first_index);
-
-int _get_map_info_from_dict(int *tiles_per_double_column, int *n_columns);
+int _relative_coordinates_(UIMap *m, int index);
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name);
 
-int _center_screen_index(int central_index);
+int _center_screen_index(UIMap *m, int central_index);
+
+void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2);
+
+int _calculate_cursor(int cursor, UIMapVector dir, int height);
+
+void _draw_map(UIMap *m);
+
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns);
 /*
  * Global variables
  */
@@ -136,7 +142,7 @@ UITileInfo *ui_tile_info_new(World* w)
     return NULL;
 }
 
-void ui_tile_info_draw(UITileInfo *ti, int x, int y)
+void ui_tile_info_draw(UITileInfo *ti, int tile_index, int x, int y)
 {
     // TODO
     return;
@@ -157,11 +163,20 @@ void ui_tile_info_destroy(UITileInfo *ti)
  */
 
 struct _UIMap {
-    // TODO
     Tile **tiles;
+
     int first_index;
     int previous_cursor;
+    /*int cursor;*/
+
+    int true_n_columns;
+    int height;
+
+    int num_tiles; /* Tiles visibles in screen */
+    int tiles_per_double_column; /* Twice the number of tiles in one screen column */
+    int n_columns; /*Screen columns*/
 };
+
 
 UIMap *ui_map_new(World *w){
   if(!w){
@@ -169,14 +184,10 @@ UIMap *ui_map_new(World *w){
     return NULL;
   }
   UIMap* m = oopsalloc(1, sizeof(UIMap), "ui_map_new");
-  
-  m->previous_cursor = world_get_cursor(ui.w);
-  if(m->previous_cursor < 0){
-    HE("Error retrieving cursor from world", "ui_map_new")
-    return NULL;
-  }
 
-  m->first_index = _center_screen_index(m->previous_cursor);
+  m->previous_cursor = atoi(config_get("initial_cursor"));
+
+  m->first_index = _center_screen_index(m, m->previous_cursor);
   if(m->first_index < 0){
     HE("Error retrieving index for first tile in screen", "ui_map_new")
     return NULL;
@@ -187,26 +198,27 @@ UIMap *ui_map_new(World *w){
     HE("Error retrieving tile list from world", "ui_map_new")
     return NULL;
   }
+  m->true_n_columns = atoi(config_get("map columns"));
+  m->height = atoi(config_get("map height"));
+  m->tiles_per_double_column = atoi(config_get("tiles_per_double_column"));
+  m->n_columns = atoi(config_get("columns_in_screen"));
+  m->num_tiles = m->n_columns * m->tiles_per_double_column/2;
   return m;
 }
 
-void ui_map_update_cursor(UIMap *m, int cursor){
-  if(!m || cursor < 0){
-    HE("Input error", "ui_map_update_cursor")
-    return;
+int ui_map_move_cursor(UIMap *m, UIMapVector dir){
+  if(!m || dir < UP || dir > HERE){
+    HE("Input error", "ui_map_update_cursor");
+    return UINT_ERROR;
   }
-  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off")){
-    HE("Error drawing sprite in given index", "ui_map_update_cursor");
-    return;
+  UIMapVector true_edge1, true_edge2, rel_edge1, rel_edge2;
+  _calculate_edge(m, &true_edge1, &true_edge2, m->height, m->true_n_columns);
+  if(dir == true_edge1 || dir == true_edge2){
+    return UINT_ERROR;
   }
-
-  if (UINT_ERROR == _draw_sprite_in_index(m, cursor, "cursor_on")){
-    HE("Error drawing sprite in given index", "ui_map_update_cursor");
-    return;
-  }
-
-  m->previous_cursor = cursor;
-  return;
+  _calculate_edge(m, &rel_edge1, &rel_edge2, m->tiles_per_double_column/2, m->n_columns);
+  _move(m, dir, rel_edge1, rel_edge2);
+  return !UINT_ERROR;
 }
 
 void ui_map_redraw_tile(UIMap *m, int tile_index){
@@ -234,7 +246,7 @@ void ui_map_destroy(UIMap *m)
     return;
 }
 
-int _coordinates_by_index (int index, int *x, int *y){
+int _coordinates_by_index (UIMap* m, int index, int *x, int *y){
   if(index < 0){
     HE("index is negative", "_coordinates_by_index");
     return UINT_ERROR;
@@ -243,11 +255,7 @@ int _coordinates_by_index (int index, int *x, int *y){
    * This chunk will only get data from config dictionary
    */
   char *handle;
-  if((handle = config_get("tiles_per_double_column"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
-    return UINT_ERROR;
-  }
-  int num_tiles = atoi(handle);
+  int num_tiles = m->tiles_per_double_column;
   if((handle = config_get("hex_xlen"))){
     HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
@@ -258,7 +266,7 @@ int _coordinates_by_index (int index, int *x, int *y){
     return UINT_ERROR;
   }
   int ylen = atoi(handle);
-  if((handle = config_get("hex_init"))){
+  if((handle = config_get("hex_init_x"))){
     HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
   }
@@ -279,54 +287,29 @@ int _coordinates_by_index (int index, int *x, int *y){
   return !UINT_ERROR;
 };
 
-int _relative_coordinates (int index, int first_index){
-  if(index < 0 || first_index < 0){
+int _relative_coordinates (UIMap* m, int index){
+  if(index < 0 || !m){
     HE("index or first index is negative", "_relative_coordinates")
     return UINT_ERROR;
   }
-  char *handle;
-  if((handle = config_get("tiles_per_double_column"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_relative_coordinates")
-    return UINT_ERROR;
-  }
-  int num_tiles = atoi(handle);
-  return (index - first_index)+((index - first_index)/world_get_heigth(ui.w)) * (num_tiles/2 - world_get_heigth(ui.w));
-}
-
-
-int _get_map_info_from_dict(int *tiles_per_double_column, int *n_columns){
-  char *handle;
-  handle = config_get("tiles_per_double_column");
-  if(!handle){
-    HE("Error getting tiles_per_double_column value", "_get_map_info_from_dict");
-    return UINT_ERROR;
-  }
-  *tiles_per_double_column = atoi(handle);
-
-  handle = config_get("columns_in_screen");
-  if(!handle){
-    HE("Error getting columns_in_screen value", "_get_map_info_from_dict");
-    return UINT_ERROR;
-  }
-  *n_columns = atoi(handle);
-  return !UINT_ERROR;
+  int first_index = m->first_index;
+  int num_tiles = m->tiles_per_double_column;
+  int height = m->height;
+  return (index - first_index)+((index - first_index)/height) * (num_tiles/2 - height);
 }
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
-  int tiles_per_double_column, n_columns, tiles_in_screen, coord, x, y;
+  int tiles_in_screen, coord, x, y;
   FILE *fp = stdout;
-  if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_double_column, &n_columns)){
-    HE("Error retrieving map info from config dictionary", "_draw_sprite_in_index")
-    return UINT_ERROR;
-  }
-  tiles_in_screen = tiles_per_double_column * n_columns + tiles_per_double_column/2;
 
-  coord = _relative_coordinates(m->first_index, index);
+  tiles_in_screen = m->num_tiles;
+
+  coord = _relative_coordinates(m, index);
   if ((coord = UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
     HE("Coordinates out of map view", "_draw_sprite_in_index")
     return UINT_ERROR;
   }
-  if(UINT_ERROR == _coordinates_by_index(coord, &x, &y)){
+  if(UINT_ERROR == _coordinates_by_index(m, coord, &x, &y)){
     HE("Error while calculating index Coordinates", "_draw_sprite_in_index")
     return UINT_ERROR;
   };
@@ -341,22 +324,105 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   return !UINT_ERROR;
 }
 
-int _center_screen_index(int central_index){
+int _center_screen_index(UIMap* m, int central_index){
   if(central_index < 0){
     HE("index cannot be negative", "_center_screen_index")
     return UINT_ERROR;
   }
 
-  int tiles_per_double_column, n_columns;
-  if (UINT_ERROR == _get_map_info_from_dict(&tiles_per_double_column, &n_columns)){
-    HE("Error retrieving map info from config dictionary", "_draw_sprite_in_index")
-    return UINT_ERROR;
+  int tiles_per_double_column = m->tiles_per_double_column;
+  int n_columns = m->n_columns;
+  int height = m->height;
+
+  return central_index - height * (n_columns/2) - (tiles_per_double_column/4);
+}
+
+void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
+  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off")){
+    HE("Error drawing sprite in given index", "ui_map_update_cursor");
+    return;
   }
 
-  int height = world_get_heigth(ui.w);
-  if(height == UINT_ERROR){
-    HE("Error retrieving world height","_center_screen_index")
-    return UINT_ERROR;
+  if (dir == edge1 || dir == edge2){
+    m->first_index = _calculate_cursor(m->first_index, dir, m->height);
+
+    _draw_map(m);
+
   }
-  return central_index - height * (n_columns/2) - (tiles_per_double_column/4);
+  m->previous_cursor = _calculate_cursor(m->previous_cursor, dir, m->height);
+
+  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_on")){
+    HE("Error drawing sprite in given index", "ui_map_update_cursor");
+    return;
+  }
+}
+
+int _calculate_cursor(int cursor, UIMapVector dir, int height){
+  switch (dir) {
+    case UP:
+      return cursor -= 1;
+    case LEFT:
+      return cursor -= height;
+    case DOWN:
+      return cursor += 1;
+    case RIGHT:
+      return cursor += height;
+    default:
+      HE("Something weird happened", "_calculate_cursor")
+      return UINT_ERROR;
+  }
+}
+
+void _draw_map(UIMap *m){
+  if (!m){
+    HE("Map is null", "_draw_map")
+    return;
+  }
+  int screen_tiles = m->tiles_per_double_column/2;
+  int initial_tile = m->first_index;
+
+  Sprite *background;
+  background = dict_get(sprite_dict, "background");
+  sprite_draw(stdout, background, 0, 0);
+
+  for(int i = m->first_index, j=0, count=0; count < m->num_tiles; count++){
+    ui_map_redraw_tile(m, i);
+    if(j == screen_tiles - 1){
+      initial_tile += m->height;
+      i = initial_tile;
+      j = 0;
+    }else{
+      ++i;
+      ++j;
+    }
+  }
+}
+
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns){
+  if(!m || !edge1 || !edge2){
+    HE("Map is null", "_calculate_edge")
+    return;
+  }
+  *edge1 = *edge2 = HERE;
+  if(m->previous_cursor % height == 0){
+    *edge1 = UP;
+  }
+  if(m->previous_cursor % height == height-1){
+    *edge1 = DOWN;
+  }
+  if(m->previous_cursor / height == 0){
+    if(*edge1 == HERE){
+      *edge1 = LEFT;
+    }else{
+      *edge2 = LEFT;
+    }
+  }
+  if(m->previous_cursor / height == n_columns - 1){
+    if(*edge1 == HERE){
+      *edge1 = RIGHT;
+    }else{
+      *edge2 = RIGHT;
+    }
+  }
+  return;
 }
