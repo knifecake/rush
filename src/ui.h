@@ -187,7 +187,7 @@ void ui_map_redraw_tile(UIMap *m, int tile_index);
 *
 * Before drawing, you should update the UIMap yourself.
 */
-void ui_map_draw(UIMap *m, int x, int y);
+void ui_map_draw(UIMap *m);
 
 /*
  * Frees all memory allocated by ui_map_new.
