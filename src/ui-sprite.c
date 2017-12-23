@@ -184,7 +184,7 @@ UIMap *ui_map_new(World *w){
   }
   UIMap* m = oopsalloc(1, sizeof(UIMap), "ui_map_new");
 
-  m->previous_cursor = atoi(config_get("initial_cursor"));
+  m->previous_cursor = config_get_int("initial cursor");
 
   m->first_index = _center_screen_index(m, m->previous_cursor);
   if(m->first_index < 0){
@@ -197,10 +197,10 @@ UIMap *ui_map_new(World *w){
     HE("Error retrieving tile list from world", "ui_map_new")
     return NULL;
   }
-  m->true_n_columns = atoi(config_get("map columns"));
-  m->true_height = atoi(config_get("map height"));
-  m->twice_screen_height = atoi(config_get("tiles_per_double_column"));
-  m->screen_columns = atoi(config_get("columns_in_screen"));
+  m->true_n_columns = config_get_int("map columns");
+  m->true_height = config_get_int("map height");
+  m->twice_screen_height = config_get_int("tiles_per_double_column");
+  m->screen_columns = config_get_int("columns_in_screen");
   m->screen_tiles = m->screen_columns * m->twice_screen_height/2;
   return m;
 }
@@ -239,6 +239,14 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
   return;
 }
 
+void ui_map_draw(UIMap *m){
+  if(!m){
+    HE("Map is null", "ui_map_draw")
+    return;
+  }
+  _draw_map(m);
+}
+
 void ui_map_destroy(UIMap *m)
 {
     // TODO
@@ -253,28 +261,11 @@ int _coordinates_by_index (UIMap* m, int index, int *x, int *y){
   /*
    * This chunk will only get data from config dictionary
    */
-  char *handle;
   int num_tiles = m->twice_screen_height;
-  if((handle = config_get("hex_xlen"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
-    return UINT_ERROR;
-  }
-  int xlen = atoi(handle);
-  if((handle = config_get("hex_ylen"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
-    return UINT_ERROR;
-  }
-  int ylen = atoi(handle);
-  if((handle = config_get("hex_init_x"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
-    return UINT_ERROR;
-  }
-  int init_x = atoi(handle);
-  if((handle = config_get("hex_init_y"))){
-    HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
-    return UINT_ERROR;
-  }
-  int init_y = atoi(handle);
+  int xlen = config_get_int("hex_xlen");
+  int ylen = config_get_int("hex_ylen");
+  int init_x = config_get_int("hex_init_x");
+  int init_y = config_get_int("hex_init_y");
   /*******************************************/
   if(index%num_tiles < num_tiles/2){
     *x = init_x + (index/num_tiles) * xlen;
