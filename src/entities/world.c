@@ -18,12 +18,14 @@
 
 struct _World {
     Resource **resources;
-	  int wallet[MAX_RESOURCES];
+	int wallet[MAX_RESOURCES];
     int num_resources;
 
+    // holds an array of copies of canonical tiles created randomly on startup
     Tile **map;
     int map_tiles;
 
+    // keeps a canonical copy of each type of tile
     Tile **tiles;
     int num_tiles;
 
@@ -170,7 +172,7 @@ World *world_new(void) {
 
     fclose(bf);
 
-    // LOAD EVENTS
+    // load events
     char *events_db = config_get("events db");
     if (!events_db) {
         HE("don't know where to load events from, set up an 'event db' entry in config", "world_new");
@@ -204,14 +206,19 @@ World *world_new(void) {
     for (w->num_buildings = 0; w->buildings[w->num_buildings]; w->num_buildings++);
     for (w->num_events = 0; w->events[w->num_events]; w->num_events++);
 
-    //Create the map
+    // create the map
     int height  = config_get_int("map height");
     int columns = config_get_int("map columns");
     w->map_tiles = height * columns;
-    w->map = oopsalloc(w->map_tiles, sizeof(Tile *),"world_new");
+
+    // as always, list of entities are null terminated
+    w->map = oopsalloc(w->map_tiles + 1, sizeof(Tile *),"world_new");
+
+    // choose a tile type at random from the list of tiles for each cell in the map
     for (int i=0; i < w->map_tiles; i++){
       w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles-1)]);
     }
+
     // load initial game state
     char *initial_game_state = config_get("initial game state");
     if (!initial_game_state) {

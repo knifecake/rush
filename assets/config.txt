@@ -17,7 +17,7 @@ sprite db
 assets/sprites.txt
 
 sprite dir
-assets/img/
+test/assets/img/
 
 events db
 assets/events.txt
@@ -47,7 +47,7 @@ map columns
 10
 
 initial cursor
-10
+55
 
 columns_in_screen
 7

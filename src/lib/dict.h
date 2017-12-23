@@ -1,3 +1,6 @@
+#ifndef __DICT_H__
+#define __DICT_H__
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,3 +40,5 @@ int cmp_int(void *, void *);
 /* Value free functions */
 void free_sprite(void *);
 void free_int(void *);
+
+#endif
