@@ -94,6 +94,51 @@ bool term_is_arrow_key(int k)
     return (k == UP_ARROW || k == DOWN_ARROW || k == LEFT_ARROW || k == RIGHT_ARROW || k == HERE_ARROW);
 }
 
+void term_resize_hint(FILE *s, int height, int width, FILE *input)
+{
+    if (!s)
+    {
+        HE("invalid arguments", "term_resize_hint");
+        return;
+    }
+
+    // print instructions
+    fprintf(s, "This game needs the screen to be of a certain size.\n"
+            "Please, do the following:\n"
+            "\t1. Enter fullscreen if your terminal allows it\n"
+            "\t2. Reduce the font size until you can see a square on the screen\n"
+            "\t3. Press any key when you are able to see the square to begin playing\n"
+            "Ready? (press any key to continue)");
+
+    // wait for user confirmation
+    term_read_key(input);
+
+    // erase screen and move to the top left corner
+    fprintf(s, "\033[2J\033[1;1H");
+
+    // draw a square
+    for (int i = 0; i < width; i++)
+        fprintf(s, "+");
+
+    for (int i = 0; i < height - 1; i++) {
+        fprintf(s, "\n+");
+        for (int j = 0; j < width - 1; j++)
+            fprintf(s, " ");
+        fprintf(s, "+");
+    }
+
+    fprintf(s, "\n");
+
+    for (int i = 0; i < width; i++)
+        fprintf(s, "+");
+
+    // wait for user confirmation
+    term_read_key(input);
+
+    // clear and move to the top left
+    fprintf(s, "\033[2J\033[1;1H");
+}
+
 void term_setup(FILE *s)
 {
     if (!s) {

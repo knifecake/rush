@@ -34,6 +34,9 @@ int main(void) {
         abort();
     }
 
+    // instruct user to resize the screen
+    term_resize_hint(stdout, config_get_int("screen_height"), config_get_int("screen_width"), stdin);
+
     // setup UI
     ui_setup(w);
 
