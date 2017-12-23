@@ -1,16 +1,18 @@
 CC			= gcc
 CFLAGS	= -Wall -g3 -std=c99
-DISTCFLAGS = -Wnone -O3
 LDFLAGS	= -lm -lpng
 
 BUILD_DIR = build
-EXE				= game
 
-src	= $(wildcard src/**/*.c) \
-			$(wildcard src/*.c)
+src	= $(wildcard src/**/*.c)
 lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
+
+gui_src = gui.c src/gui-controller.c src/ui-sprite.c
+gui_obj = $(gui_src:.c=.o)
+tui_src = tui.c src/tui-controller.c src/ui-text.c
+tui_obj = $(tui_src:.c=.o)
 
 test_sources = $(wildcard test/test_*.c)
 test_exes = $(test_sources:.c=.test)
@@ -20,11 +22,13 @@ test_exes = $(test_sources:.c=.test)
 # care of not compiling anything that was already compiled, thus saving time.
 #
 .PHONY: game
-game: $(BUILD_DIR)/$(EXE)
+game: $(BUILD_DIR)/tui $(BUILD_DIR)/gui
 
-# actually build the main game executable
-$(BUILD_DIR)/$(EXE): gui.o $(obj)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(EXE) $^ $(LDFLAGS)
+$(BUILD_DIR)/tui: $(tui_obj) $(obj)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(BUILD_DIR)/gui: $(gui_obj) $(obj)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # compiles all tests
 .PHONY: test
