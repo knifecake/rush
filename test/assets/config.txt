@@ -15,3 +15,36 @@ test/assets/example_building_loader.txt
 
 events db
 test/assets/example_event_loader.txt
+
+sprite db
+test/assets/example_sprites.txt
+
+sprite dir
+test/assets/img/
+
+hex_xlen
+64
+
+hex_ylen
+22
+
+hex_init_x
+11
+
+hex_init_y
+3
+
+tiles_per_double_column
+12
+
+map height
+10
+
+map columns
+10
+
+initial cursor
+55
+
+columns_in_screen
+7

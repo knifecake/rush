@@ -96,6 +96,10 @@ int tile_build (Tile *, Building *);
 int tile_collect_resources(Tile *, int);
 
 /*
+ * Returns a copy of the given tile or NULL on error.
+ */
+ Tile *tile_copy(Tile*);
+/*
  * Prints a Tile, for DEBUG purposes.
  */
 void tile_print(FILE *, Tile *);
