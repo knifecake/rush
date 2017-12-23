@@ -167,14 +167,13 @@ struct _UIMap {
 
     int first_index;
     int previous_cursor;
-    /*int cursor;*/
 
     int true_n_columns;
-    int height;
+    int true_height;
 
-    int num_tiles; /* Tiles visibles in screen */
-    int tiles_per_double_column; /* Twice the number of tiles in one screen column */
-    int n_columns; /*Screen columns*/
+    int screen_tiles; /* Tiles visibles in screen */
+    int twice_screen_height; /* Twice the number of tiles in one screen column */
+    int screen_columns; /*Screen columns*/
 };
 
 
@@ -199,10 +198,10 @@ UIMap *ui_map_new(World *w){
     return NULL;
   }
   m->true_n_columns = atoi(config_get("map columns"));
-  m->height = atoi(config_get("map height"));
-  m->tiles_per_double_column = atoi(config_get("tiles_per_double_column"));
-  m->n_columns = atoi(config_get("columns_in_screen"));
-  m->num_tiles = m->n_columns * m->tiles_per_double_column/2;
+  m->true_height = atoi(config_get("map height"));
+  m->twice_screen_height = atoi(config_get("tiles_per_double_column"));
+  m->screen_columns = atoi(config_get("columns_in_screen"));
+  m->screen_tiles = m->screen_columns * m->twice_screen_height/2;
   return m;
 }
 
@@ -212,11 +211,11 @@ int ui_map_move_cursor(UIMap *m, UIMapVector dir){
     return UINT_ERROR;
   }
   UIMapVector true_edge1, true_edge2, rel_edge1, rel_edge2;
-  _calculate_edge(m, &true_edge1, &true_edge2, m->height, m->true_n_columns);
+  _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns);
   if(dir == true_edge1 || dir == true_edge2){
     return UINT_ERROR;
   }
-  _calculate_edge(m, &rel_edge1, &rel_edge2, m->tiles_per_double_column/2, m->n_columns);
+  _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns);
   _move(m, dir, rel_edge1, rel_edge2);
   return !UINT_ERROR;
 }
@@ -255,7 +254,7 @@ int _coordinates_by_index (UIMap* m, int index, int *x, int *y){
    * This chunk will only get data from config dictionary
    */
   char *handle;
-  int num_tiles = m->tiles_per_double_column;
+  int num_tiles = m->twice_screen_height;
   if((handle = config_get("hex_xlen"))){
     HE("Error retrieving tiles_per_double_column from config dictionary", "_coordinates_by_index")
     return UINT_ERROR;
@@ -293,8 +292,8 @@ int _relative_coordinates (UIMap* m, int index){
     return UINT_ERROR;
   }
   int first_index = m->first_index;
-  int num_tiles = m->tiles_per_double_column;
-  int height = m->height;
+  int num_tiles = m->twice_screen_height;
+  int height = m->true_height;
   return (index - first_index)+((index - first_index)/height) * (num_tiles/2 - height);
 }
 
@@ -302,7 +301,7 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   int tiles_in_screen, coord, x, y;
   FILE *fp = stdout;
 
-  tiles_in_screen = m->num_tiles;
+  tiles_in_screen = m->screen_tiles;
 
   coord = _relative_coordinates(m, index);
   if ((coord = UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
@@ -330,9 +329,9 @@ int _center_screen_index(UIMap* m, int central_index){
     return UINT_ERROR;
   }
 
-  int tiles_per_double_column = m->tiles_per_double_column;
-  int n_columns = m->n_columns;
-  int height = m->height;
+  int tiles_per_double_column = m->twice_screen_height;
+  int n_columns = m->screen_columns;
+  int height = m->true_height;
 
   return central_index - height * (n_columns/2) - (tiles_per_double_column/4);
 }
@@ -344,12 +343,12 @@ void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
   }
 
   if (dir == edge1 || dir == edge2){
-    m->first_index = _calculate_cursor(m->first_index, dir, m->height);
+    m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
 
     _draw_map(m);
 
   }
-  m->previous_cursor = _calculate_cursor(m->previous_cursor, dir, m->height);
+  m->previous_cursor = _calculate_cursor(m->previous_cursor, dir, m->true_height);
 
   if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_on")){
     HE("Error drawing sprite in given index", "ui_map_update_cursor");
@@ -378,17 +377,17 @@ void _draw_map(UIMap *m){
     HE("Map is null", "_draw_map")
     return;
   }
-  int screen_tiles = m->tiles_per_double_column/2;
+  int screen_tiles = m->twice_screen_height/2;
   int initial_tile = m->first_index;
 
   Sprite *background;
   background = dict_get(sprite_dict, "background");
   sprite_draw(stdout, background, 0, 0);
 
-  for(int i = m->first_index, j=0, count=0; count < m->num_tiles; count++){
+  for(int i = m->first_index, j=0, count=0; count < m->screen_tiles; count++){
     ui_map_redraw_tile(m, i);
     if(j == screen_tiles - 1){
-      initial_tile += m->height;
+      initial_tile += m->true_height;
       i = initial_tile;
       j = 0;
     }else{
