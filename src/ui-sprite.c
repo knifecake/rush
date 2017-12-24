@@ -257,6 +257,10 @@ void ui_map_draw(UIMap *m){
     return;
   }
   _draw_map(m);
+  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_on")){
+    HE("Error drawing sprite in given index", "ui_map_update_cursor");
+    return;
+  }
 }
 
 void ui_map_destroy(UIMap *m)
@@ -321,6 +325,10 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   if(!s){
     HE("Error retrieving sprite data from sprite dictionary", "_draw_sprite_in_index");
     return UINT_ERROR;
+  }
+  if(strcmp(sprite_name, "cursor_on") == 0 || strcmp(sprite_name, "cursor_off") == 0){
+    x -= 2;
+    y -= 2;
   }
   sprite_draw(fp, s, x, y);
   return !UINT_ERROR;
