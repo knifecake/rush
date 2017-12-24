@@ -28,7 +28,7 @@ forest    # (char *) sprite
 # END TILE 0
 
 2
-forest
+quarry
 
 10.5
 3.75
@@ -49,7 +49,7 @@ forest
 120
 
 3
-forest
+water
 
 10.5
 3.75

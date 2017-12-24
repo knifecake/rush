@@ -59,10 +59,15 @@ int main(void) {
             if (input == 'q') {
                 show_msg("\nExiting...\n");
                 break;
-            } else if (term_is_arrow_key(input)) {
-                //w = world_move_cursor(w, input);
-                // ui_update_tile_info();
-            } else {
+            }
+            // check if we're moving the cursor
+            else if (term_is_arrow_key(input)) {
+                if (UINT_ERROR == ui_move_cursor(input)) {
+                    show_msg("cannot move further in that direction\n");
+                }
+                ui_update_tile_info();
+            }
+            else {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 

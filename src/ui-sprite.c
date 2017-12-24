@@ -4,11 +4,13 @@
 #include "lib/config.h"
 #include "lib/dict.h"
 #include "lib/sprite.h"
+#include "lib/terminal.h"
 #include "asset_loaders/sprite_repository.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* Private functions */
 int _coordinates_by_index_ (UIMap *m, int index, int *x, int *y);
@@ -25,7 +27,7 @@ int _calculate_cursor(int cursor, UIMapVector dir, int height);
 
 void _draw_map(UIMap *m);
 
-void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns);
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real);
 /*
  * Global variables
  */
@@ -73,9 +75,30 @@ void ui_teardown()
     return;
 }
 
-int ui_update_cursor(){
-  /*TODO: Implement this*/
-  return !UINT_ERROR;
+UIMapVector _ui_keypress_to_vector(int input)
+{
+    switch (input) {
+        case UP_ARROW:
+            return UP;
+        case LEFT_ARROW:
+            return LEFT;
+        case DOWN_ARROW:
+            return DOWN;
+        case RIGHT_ARROW:
+            return RIGHT;
+        default:
+            return HERE;
+    }
+}
+
+int ui_move_cursor(int input)
+{
+    return ui_map_move_cursor(ui.map, _ui_keypress_to_vector(input));
+}
+
+int ui_get_cursor()
+{
+    return ui_map_get_cursor(ui.map);
 }
 
 int ui_redraw_tile(int tile_index){
@@ -223,12 +246,13 @@ int ui_map_move_cursor(UIMap *m, UIMapVector dir){
     HE("Input error", "ui_map_update_cursor");
     return UINT_ERROR;
   }
+
   UIMapVector true_edge1, true_edge2, rel_edge1, rel_edge2;
-  _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns);
+  _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns, true);
   if(dir == true_edge1 || dir == true_edge2){
     return UINT_ERROR;
   }
-  _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns);
+  _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns, false);
   _move(m, dir, rel_edge1, rel_edge2);
   return !UINT_ERROR;
 }
@@ -250,6 +274,16 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
     }
   }
   return;
+}
+
+int ui_map_get_cursor(UIMap *m)
+{
+    if (!m) {
+        HE("invalid arguments", "ui_map_update_cursor");
+        return UINT_ERROR;
+    }
+
+    return m->previous_cursor;
 }
 
 void ui_map_draw(UIMap *m){
@@ -328,8 +362,8 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
     return UINT_ERROR;
   }
   if(strcmp(sprite_name, "cursor_on") == 0 || strcmp(sprite_name, "cursor_off") == 0){
-    x -= 2;
-    y -= 2;
+    x -= 3;
+    y -= 3;
   }
   sprite_draw(fp, s, x, y);
   return !UINT_ERROR;
@@ -356,7 +390,9 @@ void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
 
   if (dir == edge1 || dir == edge2){
     m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
-
+    if(dir == LEFT || dir == RIGHT){
+      m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
+    }
     _draw_map(m);
 
   }
@@ -409,26 +445,32 @@ void _draw_map(UIMap *m){
   }
 }
 
-void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns){
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real){
   if(!m || !edge1 || !edge2){
     HE("Map is null", "_calculate_edge")
     return;
   }
+  int current_cursor;
+  if(real){
+    current_cursor=m->previous_cursor;
+  }else{
+    current_cursor=_relative_coordinates(m, m->previous_cursor);
+  }
   *edge1 = *edge2 = HERE;
-  if(m->previous_cursor % height == 0){
+  if(current_cursor % height == 0){
     *edge1 = UP;
   }
-  if(m->previous_cursor % height == height-1){
+  if(current_cursor % height == height-1){
     *edge1 = DOWN;
   }
-  if(m->previous_cursor / height == 0){
+  if(current_cursor / height == 0){
     if(*edge1 == HERE){
       *edge1 = LEFT;
     }else{
       *edge2 = LEFT;
     }
   }
-  if(m->previous_cursor / height == n_columns - 1){
+  if(current_cursor / height == n_columns - 1){
     if(*edge1 == HERE){
       *edge1 = RIGHT;
     }else{
