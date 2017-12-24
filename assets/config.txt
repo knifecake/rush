@@ -17,7 +17,7 @@ sprite db
 assets/sprites.txt
 
 sprite dir
-test/assets/img/
+assets/img/
 
 events db
 assets/events.txt
@@ -37,19 +37,29 @@ hex_init_x
 hex_init_y
 3
 
-tiles_per_double_column
+tiles_per_double_column # This must be a multiple of 4
 12
 
 map height
 10
 
-map columns
-10
+map columns # This must be of the form columns_in_screen + 2*n, in this case 7+2*n
+11
 
+# The initial cursor must belong to an ODD column between ceil(columns_in_screen/2)
+# and (map columns - ceil(columns_in_screen/2)).
+#
+# To check if this is true, calculate floor(initial cursor / map height). This
+# value will be the column number and must be odd.
+#
+# Also, check inital cursor % map height, this must be a number between tiles_per_double_column/4 + 1
+# and map height - (tiles_per_double_column/4 + 1).
+#
+# TODO: THESE SHOULD BE TESTED AT THE BEGINNING OF THE GAME.
 initial cursor
 55
 
-columns_in_screen
+columns_in_screen #This must be an odd number
 7
 
 screen_width

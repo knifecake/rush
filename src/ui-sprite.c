@@ -390,7 +390,9 @@ void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
 
   if (dir == edge1 || dir == edge2){
     m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
-
+    if(dir == LEFT || dir == RIGHT){
+      m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
+    }
     _draw_map(m);
 
   }
