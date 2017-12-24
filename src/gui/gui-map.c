@@ -130,7 +130,7 @@ void ui_map_draw(UIMap *m){
   }
 
   Sprite *background;
-  background = dict_get(sprite_dict, "background");
+  background = dict_get(ui_get_sprite_dict(), "background");
   sprite_draw(stdout, background, 0, 0);
 
   _draw_map(m);
