@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* Private functions */
 int _coordinates_by_index_ (UIMap *m, int index, int *x, int *y);
@@ -26,7 +27,7 @@ int _calculate_cursor(int cursor, UIMapVector dir, int height);
 
 void _draw_map(UIMap *m);
 
-void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns);
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real);
 /*
  * Global variables
  */
@@ -247,11 +248,11 @@ int ui_map_move_cursor(UIMap *m, UIMapVector dir){
   }
 
   UIMapVector true_edge1, true_edge2, rel_edge1, rel_edge2;
-  _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns);
+  _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns, true);
   if(dir == true_edge1 || dir == true_edge2){
     return UINT_ERROR;
   }
-  _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns);
+  _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns, false);
   _move(m, dir, rel_edge1, rel_edge2);
   return !UINT_ERROR;
 }
@@ -442,26 +443,32 @@ void _draw_map(UIMap *m){
   }
 }
 
-void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns){
+void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real){
   if(!m || !edge1 || !edge2){
     HE("Map is null", "_calculate_edge")
     return;
   }
+  int current_cursor;
+  if(real){
+    current_cursor=m->previous_cursor;
+  }else{
+    current_cursor=_relative_coordinates(m, m->previous_cursor);
+  }
   *edge1 = *edge2 = HERE;
-  if(m->previous_cursor % height == 0){
+  if(current_cursor % height == 0){
     *edge1 = UP;
   }
-  if(m->previous_cursor % height == height-1){
+  if(current_cursor % height == height-1){
     *edge1 = DOWN;
   }
-  if(m->previous_cursor / height == 0){
+  if(current_cursor / height == 0){
     if(*edge1 == HERE){
       *edge1 = LEFT;
     }else{
       *edge2 = LEFT;
     }
   }
-  if(m->previous_cursor / height == n_columns - 1){
+  if(current_cursor / height == n_columns - 1){
     if(*edge1 == HERE){
       *edge1 = RIGHT;
     }else{
