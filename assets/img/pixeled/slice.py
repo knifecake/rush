@@ -1,10 +1,10 @@
 import xml.etree.ElementTree as et
 from subprocess import call
 
-SPRITESHEET = 'pixeled_regular_10.PNG'
-SLICESHEET = 'pixeled_regular_10-line.xml'
+SPRITESHEET = 'pixeled_regular_5.PNG'
+SLICESHEET = 'pixeled_regular_5.xml'
 
-e = et.parse('pixeled_regular_10-line.xml').getroot()
+e = et.parse(SLICESHEET).getroot()
 
 for char in e.findall('Char'):
     rect = char.get('rect').split(' ')

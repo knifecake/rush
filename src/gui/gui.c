@@ -39,7 +39,6 @@ int ui_setup(World *w)
 
     ui->map = ui_map_new(ui->w);
     ui->wi = ui_world_info_new(ui->w);
-    ui->tp = ui_text_panel_new(0, 0, 100, 20, config_get("font path"));
 
     ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
     if(!ui->sprite_dict){
@@ -49,6 +48,7 @@ int ui_setup(World *w)
 
     // ui tile info is created when the cursor is first moved
     ui_map_draw(ui->map);
+    ui->tp = ui_text_panel_new(9, 149, 450, 75, config_get("font path"));
     return !UINT_ERROR;
 }
 
