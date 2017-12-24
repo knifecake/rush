@@ -22,6 +22,7 @@ struct _UI {
     UIMap *map;
     UIWorldInfo *wi;
     UITileInfo *ti;
+    UITextPanel *tp;
     Dict *sprite_dict;
 };
 
@@ -38,12 +39,14 @@ int ui_setup(World *w)
 
     ui->map = ui_map_new(ui->w);
     ui->wi = ui_world_info_new(ui->w);
+    ui->tp = ui_text_panel_new(0, 0, 100, 20, config_get("font path"));
 
     ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
     if(!ui->sprite_dict){
       HE("Error creating the sprite dictionary", "ui_setup")
       return UINT_ERROR;
     }
+
     // ui tile info is created when the cursor is first moved
     ui_map_draw(ui->map);
     return !UINT_ERROR;
