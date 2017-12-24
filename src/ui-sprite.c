@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* Private functions */
 int _coordinates_by_index_ (UIMap *m, int index, int *x, int *y);
