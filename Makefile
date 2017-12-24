@@ -4,14 +4,16 @@ LDFLAGS	= -lm -lpng
 
 BUILD_DIR = build
 
-src	= $(wildcard src/**/*.c)
+src	= $(wildcard src/entities/*.c) \
+			$(wildcard src/lib/*.c) \
+			$(wildcard src/asset_loaders/*.c)
 lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
-gui_src = gui.c src/gui-controller.c src/ui-sprite.c
+gui_src = gui.c $(wildcard src/gui/*.c)
 gui_obj = $(gui_src:.c=.o)
-tui_src = tui.c src/tui-controller.c src/ui-text.c
+tui_src = tui.c $(wildcard src/tui/*.c)
 tui_obj = $(tui_src:.c=.o)
 
 test_sources = $(wildcard test/test_*.c)

@@ -409,7 +409,7 @@ int world_wallet_delta(World *w, int resource_id, int delta)
 
 Tile *world_tile_at_index(World *w, int tile_index)
 {
-    if (!w || tile_index < 0 || tile_index >= w->num_tiles) {
+    if (!w || tile_index < 0 || tile_index >= w->map_tiles) {
         HE("invalid arguments", "world_tile_at_index");
         return NULL;
     }
@@ -419,8 +419,8 @@ Tile *world_tile_at_index(World *w, int tile_index)
 
 int world_build_on_tile(World *w, int tile_index, Building *b)
 {
-    if (!w || tile_index < 0 || tile_index >= w->num_tiles || !b) {
-        HE("invalid arguments", "world_build_on_current_tile");
+    if (!w || tile_index < 0 || tile_index >= w->map_tiles || !b) {
+        HE("invalid arguments", "world_build_on_tile");
         return UINT_ERROR;
     }
 
@@ -440,7 +440,7 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
 
     // link building to tile
     if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
-        HE("could not build for some reason", "world_build_on_current_tile");
+        HE("could not build for some reason", "world_build_on_tile");
         return UINT_ERROR;
     }
 

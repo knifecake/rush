@@ -1,12 +1,12 @@
-#include "controller.h"
+#include "../controller.h"
 
-#include "ui.h"
+#include "../ui.h"
 
-#include "lib/error_handling.h"
-#include "lib/messages.h"
+#include "../lib/error_handling.h"
+#include "../lib/messages.h"
 
-#include "entities/world.h"
-#include "entities/tile.h"
+#include "../entities/world.h"
+#include "../entities/tile.h"
 
 char *building_get_desc(Building *b)
 {

@@ -15,22 +15,17 @@
  * component is interactive, such as with a list.
  */
 #include "lib/sprite.h"
+#include "lib/dict.h"
 
 #include "entities/world.h"
 #include "entities/tile.h"
 
 /*
- * These function types are designed to bind UI strings to information on
- * Entities. Instead of directly touching the entity, reusable UI components
- * can receive these as parameters and use them to get the values they need to
- * draw.
+ * The global UI structure.
  */
-typedef char *(*ui_get_li_string_fun)(void *);
+typedef struct _UI UI;
 
-typedef int (*ui_get_li_int_fun)(void *);
-
-typedef Sprite *(*ui_get_li_sprite_fun)(void *);
-
+UI *ui;
 
 /*
  * GENERAL UI FUNCTIONS
@@ -66,8 +61,10 @@ int ui_redraw_tile(int tile_index);
 
 int ui_update_world_info();
 
-// No need to call this after calling update cursor, it gets called automatically.
 int ui_update_tile_info();
+
+// TODO: esto cada vez me da más asco
+Dict *ui_get_sprite_dict();
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -82,120 +79,11 @@ int ui_update_tile_info();
  * block the main game loop to listen for input.
  */
 
-/*
- * UIWorldInfo panel
- *
- * A world info panel intended to be displayed on the top of the sidebar.
- */
-typedef struct _UIWorldInfo UIWorldInfo;
+#include "ui-world-info.h"
 
-/*
- * Creates a new world info panel UI component.
- */
-UIWorldInfo *ui_world_info_new(World *w);
+#include "ui-tile-info.h"
 
-/*
- * Draws a new world info panel starting from (x,y).
- *
- * Before drawing all the values displayed are updated by calling getters on
- * the World entity.
- */
-void ui_world_info_draw(UIWorldInfo *wi, int x, int y);
-
-/*
- * Frees all the memory associated with a UIWorldInfo component that was
- * allocated by ui_world_info_new.
- */
-void ui_world_info_destroy(UIWorldInfo *wi);
-
-// ----------------------------------------------------------------------------
-
-/*
- * UITileInfo panel
- *
- * A tile info panel intended to be displayed on the right of the sidebar.
- *
- * Notice: this component's new/destroy functions need to be lightweight as
- * they will be called every time the cursor is moved. Alternative: design this
- * component to be reusable and add functionality to update tiles.
- */
-typedef struct _UITileInfo UITileInfo;
-
-/*
- * Creates a new tile info panel UI component.
- */
-UITileInfo *ui_tile_info_new(World *w);
-
-/*
- * Draws a new tile info panel starting from (x,y).
- *
- * Before drawing all the values displayed are updated by calling getters on
- * the World entity.
- */
-void ui_tile_info_draw(UITileInfo *ti, int tile_index, int x, int y);
-
-/*
- * Frees all the memory associated with a UITileInfo component that was
- * allocated by ui_tile_info_new.
- */
-void ui_tile_info_destroy(UITileInfo *ti);
-
-// ----------------------------------------------------------------------------
-
-/*
- * UIMap
- *
- * A Map view displayed on the center of the screen.
- */
-typedef struct _UIMap UIMap;
-
-/*
- * Creates a new map component bound the the given world. Maybe additional
- * getters are needed on World to be able to access the internal world map
- * structure.
- */
-UIMap *ui_map_new(World *w);
-
-/*
- * A list of possible directions to move to.
- */
-typedef enum { UP, LEFT, DOWN, RIGHT, HERE } UIMapVector;
-
-/*
- * Moves the cursor if it's possible to do so.
- */
-int ui_map_move_cursor(UIMap *m, UIMapVector dir);
-
-/*
- * Deletes the previous cursor and draws the new one.
- */
-void ui_map_update_cursor(UIMap *, int cursor);
-
-/*
- * Returns the focused tile's index or UINT_ERROR on error.
- */
-int ui_map_get_cursor(UIMap *m);
-
-/*
- * Redraws a spectific Tile (if visible) on the map. This function gets called,
- * for instance, when a building is constructed in one of the tiles.
- */
-void ui_map_redraw_tile(UIMap *m, int tile_index);
-
-/*
-* Draws a new map starting from (x,y).
-*
-* Before drawing, you should update the UIMap yourself.
-*/
-void ui_map_draw(UIMap *m);
-
-/*
- * Frees all memory allocated by ui_map_new.
- */
-void ui_map_destroy(UIMap *m);
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
+#include "ui-map.h"
 
 /*
  * GENERIC UI COMPONENTS:
@@ -207,32 +95,6 @@ void ui_map_destroy(UIMap *m);
  * block the main game loop and listen for player input.
  */
 
-/*
- * A generic list, created from a list of objects. When presented to the user
- * takes controll of the input and allows the player to select a list item.
- * Should include special items for an empty selection / exiting.
- */
-typedef struct _UIList UIList;
-
-/*
- * Generates a new UIList from the generic list of objects s of length len_s.
- * Also receives a pointer to a function able to retrieve a string from each of
- * the objects making up s used for displaying in the list.
- */
-UIList *ui_list_new(void **s, int s_len,
-        ui_get_li_string_fun get_li_title,
-        ui_get_li_sprite_fun get_li_sprite);
-
-/*
- * Destroys a UIList.
- */
-void ui_list_destroy(UIList *l);
-
-/*
- * Displays a UI list and waits for user to select input.
- *
- * Returns a pointer to the selected list item on success, NULL on error.
- */
-void *ui_list_present(UIList *l);
+#include "ui-list.h"
 
 #endif
