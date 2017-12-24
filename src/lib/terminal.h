@@ -39,6 +39,12 @@ char *term_read_string(FILE *s);
 bool term_is_arrow_key(int k);
 
 /*
+ * Displays instructions to resize the terminal until it's at least height rows
+ * and width columns in size.
+ */
+void term_resize_hint(FILE *s, int height, int width, FILE *input);
+
+/*
  * Saves current terminal state and adjusts terminal to enable gameplay.
  */
 void term_setup(FILE *s);

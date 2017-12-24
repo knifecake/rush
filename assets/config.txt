@@ -51,3 +51,9 @@ initial cursor
 
 columns_in_screen
 7
+
+screen_width
+620
+
+screen_height
+180

@@ -4,6 +4,7 @@
 #include "lib/config.h"
 #include "lib/dict.h"
 #include "lib/sprite.h"
+#include "lib/terminal.h"
 #include "asset_loaders/sprite_repository.h"
 
 #include <stdlib.h>
@@ -73,9 +74,30 @@ void ui_teardown()
     return;
 }
 
-int ui_update_cursor(){
-  /*TODO: Implement this*/
-  return !UINT_ERROR;
+UIMapVector _ui_keypress_to_vector(int input)
+{
+    switch (input) {
+        case UP_ARROW:
+            return UP;
+        case LEFT_ARROW:
+            return LEFT;
+        case DOWN_ARROW:
+            return DOWN;
+        case RIGHT_ARROW:
+            return RIGHT;
+        default:
+            return HERE;
+    }
+}
+
+int ui_move_cursor(int input)
+{
+    return ui_map_move_cursor(ui.map, _ui_keypress_to_vector(input));
+}
+
+int ui_get_cursor()
+{
+    return ui_map_get_cursor(ui.map);
 }
 
 int ui_redraw_tile(int tile_index){
@@ -223,6 +245,7 @@ int ui_map_move_cursor(UIMap *m, UIMapVector dir){
     HE("Input error", "ui_map_update_cursor");
     return UINT_ERROR;
   }
+
   UIMapVector true_edge1, true_edge2, rel_edge1, rel_edge2;
   _calculate_edge(m, &true_edge1, &true_edge2, m->true_height, m->true_n_columns);
   if(dir == true_edge1 || dir == true_edge2){
@@ -250,6 +273,16 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
     }
   }
   return;
+}
+
+int ui_map_get_cursor(UIMap *m)
+{
+    if (!m) {
+        HE("invalid arguments", "ui_map_update_cursor");
+        return UINT_ERROR;
+    }
+
+    return m->previous_cursor;
 }
 
 void ui_map_draw(UIMap *m){
