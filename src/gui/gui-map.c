@@ -128,6 +128,11 @@ void ui_map_draw(UIMap *m){
     HE("Map is null", "ui_map_draw")
     return;
   }
+
+  Sprite *background;
+  background = dict_get(sprite_dict, "background");
+  sprite_draw(stdout, background, 0, 0);
+
   _draw_map(m);
   if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_on")){
     HE("Error drawing sprite in given index", "ui_map_update_cursor");
@@ -231,7 +236,6 @@ void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
       m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
     }
     _draw_map(m);
-
   }
   m->previous_cursor = _calculate_cursor(m->previous_cursor, dir, m->true_height);
 
