@@ -4,7 +4,7 @@
 #include "../lib/sprite.h"
 
 #include <string.h>
-#include <uinstd.h>
+#include <unistd.h>
 
 /*
  * UITextPanel

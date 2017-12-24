@@ -217,7 +217,7 @@ World *world_new(void) {
     // choose a tile type at random from the list of tiles for each cell in the map
     for (int i=0; i < w->map_tiles; i++){
       //w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles-1)]);
-      w->map[i] = tile_copy(w->tiles[_aleat_num(0, 2)]);
+      w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles - 1)]);
     }
 
     // load initial game state

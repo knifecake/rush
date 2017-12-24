@@ -19,7 +19,7 @@
 
 int main(void) {
     // init terminal (saving previous state)
-    term_setup(stdin);
+    term_setup(stdin, stdout);
 
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
@@ -30,12 +30,12 @@ int main(void) {
         HE("FATAL: could not load some asset", "main");
 
         config_destroy();
-        term_teardown(stdin);
+        term_teardown(stdin, stdout);
         abort();
     }
 
     // instruct user to resize the screen
-    term_resize_hint(stdout, config_get_int("screen_height"), config_get_int("screen_width"), stdin);
+    term_resize_hint(stdin, stdout, config_get_int("screen_height"), config_get_int("screen_width"));
 
     // setup UI
     ui_setup(w);
@@ -84,7 +84,7 @@ int main(void) {
     config_destroy();
 
     // restore terminal configuration
-    term_teardown(stdin);
+    term_teardown(stdin, stdout);
 
     // exit
     return 0;
