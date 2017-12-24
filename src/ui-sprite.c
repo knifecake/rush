@@ -328,8 +328,8 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
     return UINT_ERROR;
   }
   if(strcmp(sprite_name, "cursor_on") == 0 || strcmp(sprite_name, "cursor_off") == 0){
-    x -= 2;
-    y -= 2;
+    x -= 3;
+    y -= 3;
   }
   sprite_draw(fp, s, x, y);
   return !UINT_ERROR;
