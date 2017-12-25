@@ -45,12 +45,12 @@ void sprite_destroy(Sprite *s);
 void sprite_draw(FILE *f, Sprite *s, int x, int y);
 
 /*
- * Returns the height of the given sprite, PINT_ERROR on error.
+ * Returns the height of the given sprite, UINT_ERROR on error.
  */
 int sprite_get_h(Sprite *s);
 
 /*
- * Returns the width of the given sprite, PINT_ERROR on error.
+ * Returns the width of the given sprite, UINT_ERROR on error.
  */
 int sprite_get_w(Sprite *s);
 #endif

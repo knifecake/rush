@@ -19,7 +19,7 @@
 
 int main(void) {
     // init terminal (saving previous state)
-    term_setup(stdin);
+    term_setup(stdin, stdout);
 
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
@@ -30,7 +30,7 @@ int main(void) {
         HE("FATAL: could not load some asset", "main");
 
         config_destroy();
-        term_teardown(stdin);
+        term_teardown(stdin, stdout);
         abort();
     }
 
@@ -66,7 +66,7 @@ int main(void) {
             if (input == 'q') {
                 show_msg("\nDo you want to quit? Type y\n");
 
-                char *buff = term_read_string(stdin);
+                char *buff = term_read_string(stdin, stdout);
                 if(buff[0]=='y'){
                     show_msg("\nExiting...\n");
                     free(buff);
@@ -106,7 +106,7 @@ int main(void) {
     config_destroy();
 
     // restore terminal configuration
-    term_teardown(stdin);
+    term_teardown(stdin, stdout);
 
     // exit
     return 0;

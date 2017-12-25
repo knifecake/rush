@@ -12,18 +12,18 @@
  */
 static struct termios term_initial;
 
-int term_read_key(FILE *s)
+int term_read_key(FILE *in)
 {
-    if (!s) {
+    if (!in) {
         HE("invalid arguments", "term_read_key");
         return 0;
     }
 
-    char buff = fgetc(s);
+    char buff = fgetc(in);
 
     // handle arrow keys
-    if (buff == 27 && fgetc(stdin) == '[') {
-        buff = fgetc(stdin);
+    if (buff == 27 && fgetc(in) == '[') {
+        buff = fgetc(in);
 
         switch(buff) {
             case('A'):
@@ -43,9 +43,9 @@ int term_read_key(FILE *s)
     return buff;
 }
 
-char *term_read_string(FILE *s)
+char *term_read_string(FILE *in, FILE *out)
 {
-    if (!s) {
+    if (!in) {
         HE("invalid arguments", "term_read_string");
         return NULL;
     }
@@ -55,26 +55,26 @@ char *term_read_string(FILE *s)
     int i = 0;
 
     // TODO: find a cleaner way to write this loop
-    key = fgetc(s);
+    key = fgetc(in);
     while (key != '\0' && key != '\n') {
         // if it is a backspace and this is not the first character,
         // erase the last character and wait for the next one
         if (i > 0 && (key == 8 || key == 127)) {
-            printf("\b \b");
+            fprintf(out, "\b \b");
             i--;
-            key = fgetc(s);
+            key = fgetc(in);
             continue;
         }
 
         // only take into account printable characters
         if (key > '~' || key < ' ') {
-            key = fgetc(s);
+            key = fgetc(in);
             continue;
         }
 
 
         // print the character for visual feedback
-        printf("%c", key);
+        fprintf(out, "%c", key);
 
         buff[i++] = key;
         if (i >= MAX_READ_STRING) {
@@ -82,10 +82,10 @@ char *term_read_string(FILE *s)
             return buff;
         }
 
-        key = fgetc(s);
+        key = fgetc(in);
     }
 
-    printf("\n");
+    fprintf(out, "\n");
     return buff;
 }
 
@@ -94,16 +94,16 @@ bool term_is_arrow_key(int k)
     return (k == UP_ARROW || k == DOWN_ARROW || k == LEFT_ARROW || k == RIGHT_ARROW || k == HERE_ARROW);
 }
 
-void term_resize_hint(FILE *s, int height, int width, FILE *input)
+void term_resize_hint(FILE *in, FILE *out, int height, int width)
 {
-    if (!s)
+    if (!in || !out)
     {
         HE("invalid arguments", "term_resize_hint");
         return;
     }
 
     // print instructions
-    fprintf(s, "This game needs the screen to be of a certain size.\n"
+    fprintf(out, "This game needs the screen to be of a certain size.\n"
             "Please, do the following:\n"
             "\t1. Enter fullscreen if your terminal allows it\n"
             "\t2. Reduce the font size until you can see a square on the screen\n"
@@ -111,42 +111,42 @@ void term_resize_hint(FILE *s, int height, int width, FILE *input)
             "Ready? (press any key to continue)");
 
     // wait for user confirmation
-    term_read_key(input);
+    term_read_key(in);
 
     // erase screen and move to the top left corner
-    fprintf(s, "\033[2J\033[1;1H");
+    fprintf(out, "\033[2J\033[1;1H");
 
     // draw a square
     for (int i = 0; i < width; i++)
-        fprintf(s, "+");
+        fprintf(out, "+");
 
     for (int i = 0; i < height - 1; i++) {
-        fprintf(s, "\n+");
+        fprintf(out, "\n+");
         for (int j = 0; j < width - 1; j++)
-            fprintf(s, " ");
-        fprintf(s, "+");
+            fprintf(out, " ");
+        fprintf(out, "+");
     }
 
-    fprintf(s, "\n");
+    fprintf(out, "\n");
 
     for (int i = 0; i < width; i++)
-        fprintf(s, "+");
+        fprintf(out, "+");
 
     // wait for user confirmation
-    term_read_key(input);
+    term_read_key(in);
 
     // clear and move to the top left
-    fprintf(s, "\033[2J\033[1;1H");
+    fprintf(out, "\033[2J\033[1;1H");
 }
 
-void term_setup(FILE *s)
+void term_setup(FILE *in, FILE *out)
 {
-    if (!s) {
+    if (!in || !out) {
         HE("invalid arguments", "term_terminal_teardown");
         return;
     }
 
-    tcgetattr(fileno(stdin), &term_initial);
+    tcgetattr(fileno(in), &term_initial);
 
     // init terminal
     struct termios new;
@@ -168,17 +168,20 @@ void term_setup(FILE *s)
     new.c_lflag &= ~ISIG;
 
     // apply settings to the terminal
-    tcsetattr(fileno(stdin), TCSANOW, &new);
+    tcsetattr(fileno(in), TCSANOW, &new);
 
 
 }
 
-void term_teardown(FILE *s)
+void term_teardown(FILE *in, FILE *out)
 {
-    if (!s) {
+    if (!in || !out) {
         HE("invalid arguments", "term_terminal_teardown");
         return;
     }
 
-    tcsetattr(fileno(stdin), TCSANOW, &term_initial);
+    // clear the screen
+    fprintf(out, "\033[2J\033[0;0H");
+
+    tcsetattr(fileno(in), TCSANOW, &term_initial);
 }

@@ -85,6 +85,8 @@ Dict *ui_get_sprite_dict();
 
 #include "ui-map.h"
 
+#include "ui-text-panel.h"
+
 /*
  * GENERIC UI COMPONENTS:
  *

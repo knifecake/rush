@@ -92,7 +92,7 @@ void *ui_list_present(UIList *l)
     int index = -1;
     do {
         printf("Choose from the list by typing a number or type 'q' to exit without choosing: ");
-        char *buff = term_read_string(stdin);
+        char *buff = term_read_string(stdin, stdout);
 
         if (!buff) {
             HE("could not read from stdin", "ui_list_present");

@@ -25,6 +25,9 @@ assets/events.txt
 initial game state
 assets/initial_game_state.txt
 
+font path
+assets/img/pixeled
+
 hex_xlen
 64
 

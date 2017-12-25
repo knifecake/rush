@@ -31,7 +31,7 @@ int term_read_key(FILE *s);
  * to show a visual aid. The user is responsible for freeing the
  * buffer returned by this function.
  */
-char *term_read_string(FILE *s);
+char *term_read_string(FILE *in, FILE *out);
 
 /*
  * Returns true if the given key is one of the macros defined above.
@@ -42,16 +42,16 @@ bool term_is_arrow_key(int k);
  * Displays instructions to resize the terminal until it's at least height rows
  * and width columns in size.
  */
-void term_resize_hint(FILE *s, int height, int width, FILE *input);
+void term_resize_hint(FILE *in, FILE *out, int height, int width);
 
 /*
  * Saves current terminal state and adjusts terminal to enable gameplay.
  */
-void term_setup(FILE *s);
+void term_setup(FILE *in, FILE *out);
 
 /*
  * Restores initial terminal state.
  */
-void term_teardown(FILE *s);
+void term_teardown(FILE *in, FILE *out);
 
 #endif
