@@ -76,7 +76,6 @@ void ui_list_destroy(UIList *l)
     free(l);
 }
 
-// TODO: finish implementation
 void *ui_list_present(UIList *l)
 {
     if (!l) {

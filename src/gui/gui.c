@@ -47,7 +47,7 @@ int ui_setup(World *w)
     }
 
     // ui tile info is created when the cursor is first moved
-    ui_map_draw(ui->map);
+    /* ui_map_draw(ui->map); */
     ui->tp = ui_text_panel_new(0, 150, 250, 30, config_get("font path"));
     return !UINT_ERROR;
 }
