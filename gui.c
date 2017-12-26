@@ -47,7 +47,7 @@ int main(void) {
     fclose(cf);
 
     // associate our game commands with it
-    // cop_assoc(c, "build", action_build);
+    cop_assoc(c, "build", action_build);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
@@ -57,13 +57,13 @@ int main(void) {
     while (1) {
         if ((input = term_read_key(stdin))) {
             if (input == 'q') {
-                show_msg("\nExiting...\n");
+                ui_show_msg("\nExiting...\n");
                 break;
             }
             // check if we're moving the cursor
             else if (term_is_arrow_key(input)) {
                 if (UINT_ERROR == ui_move_cursor(input)) {
-                    show_msg("cannot move further in that direction\n");
+                    ui_show_msg("cannot move further in that direction\n");
                 }
                 ui_update_tile_info();
             }

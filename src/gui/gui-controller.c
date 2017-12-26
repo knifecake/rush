@@ -17,6 +17,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     }
     //TODO: IMPLEMENT THIS
     // get current tile pointer
+    show_msg("Building needs to be implemented");
 
     //NOTE THIS LINE BELOW SHOULDN'T BE COMMENTED
     /*Tile *current_tile = world_get_current_tile(w);*/
@@ -44,8 +45,7 @@ int action_generic(void *w, char *cmd, char **msg, int num_msg)
         return UINT_ERROR;
     }
 
-    show_msg("You executed %s\n", cmd);
-    show_msg("%s\n", msg[0]);
+    show_msg("You executed %s.\n%s\n", cmd, msg[0]);
 
     return !UINT_ERROR;
 }
@@ -58,7 +58,6 @@ int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg)
     }
 
     show_msg(msg[0], cmd);
-    show_msg("\n\n");
 
     return !UINT_ERROR;
 }

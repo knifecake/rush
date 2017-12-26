@@ -48,14 +48,17 @@ int ui_setup(World *w)
 
     // ui tile info is created when the cursor is first moved
     ui_map_draw(ui->map);
-    ui->tp = ui_text_panel_new(9, 149, 450, 75, config_get("font path"));
+    ui->tp = ui_text_panel_new(0, 150, 250, 30, config_get("font path"));
     return !UINT_ERROR;
 }
 
 void ui_teardown()
 {
-    // this function does nothing at the moment as the UI is
-    // statically allocated
+    // TODO: ui_tile_info_destroy(ui->ti);
+    ui_world_info_destroy(ui->wi);
+    ui_map_destroy(ui->map);
+    ui_text_panel_destroy(ui->tp);
+    // TODO: free the sprite dict
     return;
 }
 
@@ -106,4 +109,11 @@ Dict *ui_get_sprite_dict() {
         return ui->sprite_dict;
 
     return NULL;
+}
+
+int ui_show_msg(char *msg) {
+    if (!ui)
+        return UINT_ERROR;
+
+    return ui_text_panel_print(ui->tp, msg);
 }

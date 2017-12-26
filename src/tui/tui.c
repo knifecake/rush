@@ -93,3 +93,8 @@ int ui_update_tile_info()
     ui_tile_info_draw(ui->ti, ui_map_get_cursor(ui->map), 0, 0);
     return !UINT_ERROR;
 }
+
+int ui_show_msg(char *msg)
+{
+    return printf("%s", msg);
+}

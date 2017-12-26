@@ -66,6 +66,10 @@ int ui_update_tile_info();
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();
 
+/*
+ * Displays a message where it's appropriate.
+ */
+int ui_show_msg(char *msg);
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 

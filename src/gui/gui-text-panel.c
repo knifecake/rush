@@ -26,6 +26,11 @@ struct _UITextPanel {
     // a small delay between characters gives the impresion of a typewriter effect
     int typewriter_effect; // use us
 
+    // the ammout of space left between the borders and the text-box
+    int padding;
+    int tb_x, tb_y;
+    int tb_height, tb_width;
+
     char *msg;
 };
 
@@ -46,7 +51,7 @@ void _ui_text_panel_draw(UITextPanel *tp)
     fprintf(stdout, "\033[%d;%dH", y, x);
 
     // print the top border
-    for (; x < tp->width + tp->x; x++)
+    for (; x < 2 * (tp->width + tp->x); x++)
         fprintf(stdout, "+");
 
     // print the side borders
@@ -54,16 +59,16 @@ void _ui_text_panel_draw(UITextPanel *tp)
         x = tp->x;
         fprintf(stdout, "\033[%d;%dH", y, x);
         fprintf(stdout, "+");
-        for (; x < tp->width + tp->x - 1; x++)
+        for (; x < 2 * (tp->width + tp->x); x++)
             fprintf(stdout, " ");
         fprintf(stdout, "+");
     }
 
     x = tp->x;
-    y = tp->y + tp->height;
+    y = tp->y + tp->height - 1;
     fprintf(stdout, "\033[%d;%dH", y, x);
 
-    for (; x < tp->width + tp->x; x++)
+    for (; x < 2 * (tp->width + tp->x); x++)
         fprintf(stdout, "+");
 }
 
@@ -107,11 +112,15 @@ UITextPanel *ui_text_panel_new(int x, int y, int width, int height, char *font_p
     tp->char_width = sprite_get_w(tp->chars['A' - ' ']);
     tp->char_height = sprite_get_h(tp->chars['A' - ' ']);
 
-    tp->typewriter_effect = 30000;
+    tp->padding = 1;
+    tp->tb_x = tp->x + 2 * tp->padding;
+    tp->tb_y = tp->y + tp->padding;
+    tp->tb_height = tp->height - 2 * tp->padding;
+    tp->tb_width = tp->width - 4 * tp->padding;
+
+    tp->typewriter_effect = 0;
 
     _ui_text_panel_draw(tp);
-
-    ui_text_panel_print(tp, "Hello world");
 
     return tp;
 }
@@ -135,9 +144,22 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
         return UINT_ERROR;
     }
 
-    int x = tp->x + 3, y = tp->y + 3;
+    ui_text_panel_clear(tp);
+
+    int x = tp->tb_x, y = tp->tb_y;
     for (int i = 0; i < strlen(msg); i++)
     {
+        // if this does not fit horizontally, move down a line
+        if (x + tp->char_width > tp->tb_x + tp->tb_width) {
+            x = tp->tb_x;
+            y += tp->char_height + tp->padding;
+        }
+
+        // if this does not fit vertically, stop printing
+        if (y + tp->char_height >= tp->tb_y + tp->tb_height) {
+            break;
+        }
+
         // if character is not printable continue
         if (msg[i] < ' ' || msg[i] > '~')
             continue;
@@ -166,6 +188,13 @@ int ui_text_panel_clear(UITextPanel *tp)
         return UINT_ERROR;
     }
 
-    // TODO: implement
+    for (int j = tp->tb_y; j < tp->tb_y + tp->tb_height; j++)
+    {
+        printf("\033[%d;%dH", j, tp->tb_x);
+        for (int i = tp->tb_x; i < 2 * (tp->tb_x + tp->tb_width); i++)
+        {
+            printf(" ");
+        }
+    }
     return !UINT_ERROR;
 }
