@@ -251,31 +251,17 @@ CoP *cop_new(FILE *cf)
         return NULL;
     }
 
-    CoP *c = calloc(1, sizeof(CoP));
-    if (!c) {
-        HE("could not allocate CoP, out of memory", "cop_new");
-        free(buff); return NULL;
-    }
+    CoP *c = oopsalloc(1, sizeof(CoP), "cop_new");
 
-    c->num_ext = atoi(buff);
+    c->num_ext = atoi(buff); free(buff);
     if (c->num_ext < 1) {
         HE("refusing to load 0 or invalid number of commands from command file", "cop_new");
         free(c); return NULL;
     }
 
     // allocate memory for as many external commands as we need to
-    c->e_list = calloc(c->num_ext, sizeof(ext_cmd *));
-    if (!c->e_list) {
-        HE("could not allocate memory for external commands", "cop_new");
-        free(c); return NULL;
-    }
-
-    // TODO: use dynamic allocation here
-    c->i_list = calloc(c->num_ext, sizeof(int_cmd *));
-    if (!c->i_list) {
-        HE("could not allocate memory for internal commands", "cop_new");
-        free(c); return NULL;
-    }
+    c->e_list = oopsalloc(c->num_ext, sizeof(ext_cmd *), "cop_new");
+    c->i_list = oopsalloc(c->num_ext, sizeof(int_cmd *), "cop_new");
 
     for (int i = 0; i < c->num_ext; i++)
     {
@@ -325,6 +311,8 @@ void cop_destroy(CoP *c)
 
     for (int i = 0; i < c->num_ext; _cop_ext_cmd_destroy(c->e_list[i++]));
     for (int i = 0; i < c->num_int; _cop_int_cmd_destroy(c->i_list[i++]));
+    free(c->e_list);
+    free(c->i_list);
     free(c);
 }
 

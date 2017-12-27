@@ -81,6 +81,7 @@ int main(void) {
     // free
     ui_teardown();
     world_destroy(w);
+    cop_destroy(c);
     config_destroy();
 
     // restore terminal configuration

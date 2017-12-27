@@ -72,6 +72,6 @@ Building **load_buildings_from_file(FILE *f, int num_resources)
 void building_list_destroy(Building **l)
 {
     if (!l) return;
-    for (int i = 0; l[i++]; building_destroy(l[i]));
+    for (int i = 0; l[i]; building_destroy(l[i++]));
     free(l);
 }

@@ -102,6 +102,7 @@ int main(void) {
 
     // free
     ui_teardown();
+    cop_destroy(c);
     world_destroy(w);
     config_destroy();
 
