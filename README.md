@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/knifecake/pprog.svg?style=svg&circle-token=a738aa38091dce1ca9eead8125f07cdd91df0831)](https://circleci.com/gh/knifecake/pprog)
 ## How to compile this project
 Inside the root directory run `make`. An executable will be created inside
-`build/`. You may run it with `./build/game`. Intermediate object files (`*.o`)
+`build/`. You may run it with `./build/gui`. In addition, an executable with a text-only interface is avaiable in `./buil/tui` Intermediate object files (`*.o`)
 will be deleted after running `make clean`, however, if by any chance one is
 left behind, git is instructed to ignore them. Also, it will ignore anything
 inside the build directory except for the directory itself which is required by
@@ -54,7 +54,7 @@ We've finally settled on the following architecture:
     * `src/asset_loaders` contains the code for loading assets into entities;
     * `src/entities` contains the core of the game engine: Tile, Building, Resource, etc...
     * `src/lib` contains small libraries that we wrote ourselves to handle repetitive tasks. Error Handling, Config and Sprite, among others, live here;
+    * `src/gui` and `src/tui` contain the implementations for both graphical and text based user interfaces. These files are linked to their respective executables. In addition, a different main file `gui.c` or `tui.c` is used to generate each executable separately.
     * `src/` contains the `ui` and controller modules, which will likely be moved into their own subdirectories soon.
 * `test/` contains spec files for entities, asset_loaders and some libraries. Basically we tested everything that could be uint tested easily.
 * `build/` is where executables are generated. This directory must not be removed (don't remove `build/.keep`, or otherwise Git will get rid of it)
-* `main.c` contains the code that bootstraps the game.
