@@ -132,8 +132,13 @@ Tile *world_tile_at_index(World *w, int tile_index);
  *  - Player has building unlocking level
  *  - Player has money
  *
- *  returns UINT_ERROR if an error ocurred or the criteria are not met.
+ *  returns UINT_ERROR if an error ocurred. In other circumstances it returns one of the following:
  */
+#define WORLD_BUILD_NO_MONEY 2
+#define WORLD_BUILD_NO_LEVEL 3
+#define WORLD_BUILD_SUCCESS 4
+#define WORLD_BUILD_SUCCESS_LEVEL_UP 5
+
 int world_build_on_tile(World *w, int tile_index, Building *b);
 
 #endif

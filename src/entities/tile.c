@@ -136,19 +136,6 @@ char *tile_get_sprite(Tile *t)
     return t->sprite;
 }
 
-/*Tile *tile_set_id (Tile *tile, int id) {
-  if(!tile) {
-    HE("tile_set_id: invalid tile.\n");
-    return NULL;
-  }
-  if(id<0) {
-    HE("tile_set_id: invalid id.\n");
-    return NULL;
-  }
-  tile->id=id;
-
-  return tile;
-}*/
 Tile *tile_set_event (Tile *tile, Event *event){
   if(!tile){
     HE("invalid tile", "tile_set_event")

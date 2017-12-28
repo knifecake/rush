@@ -55,17 +55,29 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     }
 
     // update the model (entity) to reflect the changes that took place
-    if (UINT_ERROR == world_build_on_tile(w, tile_index, b)) {
-        show_msg("Nothing was built\n\n");
-        return CTRL_OK;
-    }
+    int result = world_build_on_tile(w, tile_index, b);
 
-    show_msg("Your building '%s' was constructed!\n", building_get_name(b));
+    // communicate the result to the user
+    switch(result) {
+        case WORLD_BUILD_SUCCESS_LEVEL_UP:
+            show_msg("Building was constructed and you leveled up!");
+            break;
+        case WORLD_BUILD_SUCCESS:
+            show_msg("Building was constructed!");
+            break;
+        case WORLD_BUILD_NO_LEVEL:
+            show_msg("You need to level up before building this. Hint: upgrade townhall.");
+            break;
+        case WORLD_BUILD_NO_MONEY:
+            show_msg("You need to save more to build this");
+            break;
+        default:
+            show_msg("An error ocurred and nothing was built");
+            return CTRL_ERROR;
+    }
 
     // redraw the current tile. TODO: think about who should do this
     // ui_map_draw_tile(current_tile);
-
-    printf("\n");
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     return CTRL_OK;
