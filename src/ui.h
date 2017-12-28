@@ -103,4 +103,6 @@ int ui_show_msg(char *msg);
 
 #include "ui-list.h"
 
+#include "ui-utils.h"
+
 #endif

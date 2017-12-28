@@ -78,7 +78,7 @@ UIList *ui_list_new(void **s, int s_len,
     // TODO: placement parameters need to be defined somewhere else
     l->x = 260;
     l->y = 6;
-    l->width = 60;
+    l->width = 45;
     l->height = 100;
     l->items_per_screen = 6;
 
@@ -205,9 +205,15 @@ void *ui_list_present(UIList *l)
         }
     }
 
-    if (key == 'q')
-        return NULL;
+    if (key == 'q') {
+        // clear the screen space we occupied
+        ui_clear_rect(l->x, l->y, l->width, l->height);
 
+        return NULL;
+    }
+
+    // clear the screen space we occupied
+    ui_clear_rect(l->x, l->y, l->width, l->height);
 
     return l->list[l->cursor]->info;
 }

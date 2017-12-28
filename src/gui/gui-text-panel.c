@@ -41,37 +41,6 @@ struct _UITextPanel {
 #define FILENAME_MAX_LEN 10
 
 
-void _ui_text_panel_draw(UITextPanel *tp)
-{
-    if (!tp)
-        return;
-
-    int x = tp->x, y = tp->y;
-    fprintf(stdout, "\033[255;255;255m");
-    fprintf(stdout, "\033[%d;%dH", y, x);
-
-    // print the top border
-    for (; x < 2 * (tp->width + tp->x); x++)
-        fprintf(stdout, "+");
-
-    // print the side borders
-    for (y = tp->y + 1; y < tp->height + tp->y - 1; y++) {
-        x = tp->x;
-        fprintf(stdout, "\033[%d;%dH", y, x);
-        fprintf(stdout, "+");
-        for (; x < 2 * (tp->width + tp->x); x++)
-            fprintf(stdout, " ");
-        fprintf(stdout, "+");
-    }
-
-    x = tp->x;
-    y = tp->y + tp->height - 1;
-    fprintf(stdout, "\033[%d;%dH", y, x);
-
-    for (; x < 2 * (tp->width + tp->x); x++)
-        fprintf(stdout, "+");
-}
-
 // TODO: proper error handling
 UITextPanel *ui_text_panel_new(int x, int y, int width, int height, char *font_path)
 {
@@ -120,8 +89,7 @@ UITextPanel *ui_text_panel_new(int x, int y, int width, int height, char *font_p
 
     tp->typewriter_effect = 0;
 
-    _ui_text_panel_draw(tp);
-
+    ui_draw_rect(tp->x, tp->y, tp->width, tp->height);
     return tp;
 }
 
@@ -188,13 +156,6 @@ int ui_text_panel_clear(UITextPanel *tp)
         return UINT_ERROR;
     }
 
-    for (int j = tp->tb_y; j < tp->tb_y + tp->tb_height; j++)
-    {
-        printf("\033[%d;%dH", j, tp->tb_x);
-        for (int i = tp->tb_x; i < 2 * (tp->tb_x + tp->tb_width); i++)
-        {
-            printf(" ");
-        }
-    }
+    ui_clear_rect(tp->tb_x, tp->tb_y, tp->tb_width, tp->tb_height);
     return !UINT_ERROR;
 }
