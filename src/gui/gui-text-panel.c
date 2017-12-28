@@ -13,8 +13,8 @@
  */
 
 struct _UITextPanel {
-    int x, y; // starting possitions for drawing
-    int width, height; // dimensions of the panel
+    UIRect outer_dim;
+    UIRect inner_dim;
 
     UIFont *font;
     int char_width, char_height;
@@ -32,9 +32,9 @@ struct _UITextPanel {
 
 
 // TODO: proper error handling
-UITextPanel *ui_text_panel_new(int x, int y, int width, int height, UIFont *font)
+UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font)
 {
-    if (x < 0 || y < 0 || width < 0 || height < 0 || !font)
+    if (!font)
     {
         HE("invalid arguments", "ui_text_panel_new");
         return NULL;
@@ -42,23 +42,28 @@ UITextPanel *ui_text_panel_new(int x, int y, int width, int height, UIFont *font
 
     UITextPanel *tp = oopsalloc(1, sizeof(UITextPanel), "ui_text_panel_new");
 
-    tp->x = x;
-    tp->y = y;
-    tp->width = width;
-    tp->height = height;
     tp->font = font;
     tp->char_width = ui_font_get_char_width(tp->font);
     tp->char_height = ui_font_get_char_height(tp->font);
 
+    // TODO: make this parameter configurable
     tp->padding = 1;
-    tp->tb_x = tp->x + 2 * tp->padding;
-    tp->tb_y = tp->y + tp->padding;
-    tp->tb_height = tp->height - 2 * tp->padding;
-    tp->tb_width = tp->width - 4 * tp->padding;
 
+    // copy outer dimensions
+    tp->outer_dim = outer_dim;
+
+    // calculate inner dimensions with padding
+    tp->inner_dim.x = tp->outer_dim.x + 2 * tp->padding;
+    tp->inner_dim.y = tp->outer_dim.y + tp->padding;
+    tp->inner_dim.height = tp->outer_dim.height - 2 * tp->padding;
+
+    // account for both margins and for the double x pixels
+    tp->inner_dim.width = tp->outer_dim.width - 2 * 2 * tp->padding;
+
+    // TODO: make this parameter adjustable
     tp->typewriter_effect = 0;
 
-    ui_draw_rect(tp->x, tp->y, tp->width, tp->height);
+    ui_draw_rect(tp->outer_dim, '+');
     return tp;
 }
 
@@ -79,18 +84,18 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
 
     ui_text_panel_clear(tp);
 
-    int x = tp->tb_x, y = tp->tb_y;
+    int x = tp->inner_dim.x, y = tp->tb_y;
     for (int i = 0; i < strlen(msg); i++)
     {
         // if this does not fit horizontally, move down a line
         // alternatively, it this character is a new line, do the same
-        if (x + tp->char_width > tp->tb_x + tp->tb_width || msg[i] == '\n') {
-            x = tp->tb_x;
+        if (x + tp->char_width > tp->inner_dim.x + tp->inner_dim.width || msg[i] == '\n') {
+            x = tp->inner_dim.x;
             y += tp->char_height + tp->padding;
         }
 
         // if this does not fit vertically, stop printing
-        if (y + tp->char_height >= tp->tb_y + tp->tb_height) {
+        if (y + tp->char_height >= tp->tb_y + tp->inner_dim.height) {
             break;
         }
 
@@ -123,6 +128,6 @@ int ui_text_panel_clear(UITextPanel *tp)
         return UINT_ERROR;
     }
 
-    ui_clear_rect(tp->tb_x, tp->tb_y, tp->tb_width, tp->tb_height);
+    ui_clear_rect(tp->inner_dim);
     return !UINT_ERROR;
 }

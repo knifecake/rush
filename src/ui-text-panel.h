@@ -17,7 +17,7 @@ typedef struct _UITextPanel UITextPanel;
  * characters can be found. The names of these sprites should be the ascii
  * codes for each character.
  */
-UITextPanel *ui_text_panel_new(int x, int y, int width, int height, UIFont *font);
+UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font);
 
 /*
  * Frees all resources associated with a given UITextPanel.

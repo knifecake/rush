@@ -8,8 +8,7 @@
 #include "../entities/world.h"
 #include "../entities/tile.h"
 
-
-
+// TODO: this is a temporary function until building sprites are done
 Sprite *get_placeholder_sprite(Building *b)
 {
     FILE *f = fopen("assets/img/building-placeholder.png", "r");
@@ -30,6 +29,7 @@ char *building_get_desc(Building *b)
     sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b));
     return buff;
 }
+
 int action_build(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {

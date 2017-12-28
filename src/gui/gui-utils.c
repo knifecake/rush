@@ -2,40 +2,43 @@
 
 #include <stdio.h>
 
-void ui_clear_rect(int x, int y, int width, int height)
+void ui_clear_rect(UIRect r)
 {
-    for (int j = y; j <= y + height; j++) {
-        fprintf(stdout, "\033[%d;%dH", j, 2*x);
-        for (int i = x; i <= x + 2 * width; i++)
-            fprintf(stdout, " ");
+    for (int j = r.x; j <= r.y + r.height; j++) {
+        fprintf(stdout, "\033[%d;%dH", j, 2 * r.x);
+        for (int i = r.x; i <= r.x + 2 * r.width; i++)
+            fputc(' ', stdout);
     }
 }
 
-void ui_draw_rect(int x0, int y0, int width, int height)
+void ui_draw_rect(UIRect r, char border)
 {
-    int x = x0, y = y0;
+    int i = r.x, j = r.y;
+
+    // TODO: setting a white color, maybe make this customizable
     fprintf(stdout, "\033[255;255;255m");
-    fprintf(stdout, "\033[%d;%dH", y, 2 * x);
+
+    fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
     // print the top border
-    for (; x < x0 + 2 * width; x++)
-        fprintf(stdout, "+");
+    for (; i < r.x + 2 * r.width; i++)
+        fputc(border, stdout);
 
     // print the side borders
-    for (y = y0 + 1; y < height + y0; y++) {
-        x = x0;
-        fprintf(stdout, "\033[%d;%dH", y, 2 * x);
-        fprintf(stdout, "+");
-        for (; x < x0 + 2 * width - 1; x++)
-            fprintf(stdout, " ");
-        fprintf(stdout, "+");
+    for (j = r.y + 1; j < r.height + r.y; j++) {
+        i = r.x;
+        fprintf(stdout, "\033[%d;%dH", j, 2 * i);
+        fputc(border, stdout);
+        for (; i < r.x + 2 * r.width - 1; i++)
+            fputc(' ', stdout);
+        fputc(border, stdout);
     }
 
-    x = x0;
-    y = y0 + height;
-    fprintf(stdout, "\033[%d;%dH", y, 2 * x);
+    i = r.x;
+    j = r.y + r.height;
+    fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
-    for (; x < x0 + 2 * width; x++)
+    for (; i < r.x + 2 * r.width; i++)
         fprintf(stdout, "+");
 
 }

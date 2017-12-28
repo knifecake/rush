@@ -28,6 +28,11 @@ typedef struct _UI UI;
 UI *ui;
 
 /*
+ * First of all, we include a set of generic functions to build upon.
+ */
+#include "ui-utils.h"
+
+/*
  * GENERAL UI FUNCTIONS
  *
  * The following functions are called once to prepare the UI for drawing.
@@ -87,17 +92,6 @@ Dict *ui_get_sprite_dict();
  */
 int ui_show_msg(char *msg);
 
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-
-/*
- * A generic structure for expressing rectangular dimensions.
- */
-typedef struct {
-    int x, y;
-    int width, height;
-} UIRect;
-
 UIRect ui_get_top_sidebar_dim();
 
 // ----------------------------------------------------------------------------
@@ -132,7 +126,5 @@ UIRect ui_get_top_sidebar_dim();
  */
 
 #include "ui-list.h"
-
-#include "ui-utils.h"
 
 #endif

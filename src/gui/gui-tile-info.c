@@ -7,8 +7,7 @@ struct _UITileInfo {
     World *w;
 
     // rendering parameters
-    int x, y;
-    int width, height;
+    UIRect dim;
 
     // internally we use a text panel at the moment
     UITextPanel *tp;
@@ -24,14 +23,10 @@ UITileInfo *ui_tile_info_new(World *w, UIRect dim)
 
     UITileInfo *ti = oopsalloc(1, sizeof(UITileInfo), "ui_tile_info_new");
 
-    ti->width = dim.width;
-    ti->height = dim.height;
-    ti->x = dim.x;
-    ti->y = dim.y;
-
+    ti->dim = dim;
     ti->w = w;
 
-    ti->tp = ui_text_panel_new(ti->x, ti->y, ti->width, ti->height, ui_get_font());
+    ti->tp = ui_text_panel_new(ti->dim, ui_get_font());
 
     return ti;
 }
