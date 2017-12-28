@@ -91,6 +91,7 @@ int ui_map_move_cursor(UIMap *m, UIMapVector dir){
   }
   _calculate_edge(m, &rel_edge1, &rel_edge2, m->twice_screen_height/2, m->screen_columns, false);
   _move(m, dir, rel_edge1, rel_edge2);
+  ui_update_tile_info();
   return !UINT_ERROR;
 }
 

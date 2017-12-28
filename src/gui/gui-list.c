@@ -47,7 +47,7 @@ void _ui_li_destroy(UIListItem *li)
     free(li);
 }
 
-UIList *ui_list_new(void **s, int s_len,
+UIList *ui_list_new(void **s, int s_len, UIRect dim,
         ui_get_li_string_fun get_li_title,
         ui_get_li_sprite_fun get_li_sprite)
 {
@@ -75,11 +75,11 @@ UIList *ui_list_new(void **s, int s_len,
     l->get_li_title = get_li_title;
     l->get_li_sprite = get_li_sprite;
 
-    // TODO: placement parameters need to be defined somewhere else
-    l->x = 260;
-    l->y = 6;
-    l->width = 45;
-    l->height = 100;
+    l->x = dim.x;
+    l->y = dim.y;
+    l->width = dim.width;
+    l->height = dim.height;
+
     l->items_per_screen = 6;
 
     l->sprite_height = l->sprite_width = 25;
@@ -162,6 +162,9 @@ void *ui_list_present(UIList *l)
         HE("invalid parameters", "ui_list_present");
         return NULL;
     }
+
+    // clear the space we need
+    ui_clear_rect(l->x, l->y, l->width, l->height);
 
     l->cursor = 0;
     int key = HERE_ARROW;

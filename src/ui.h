@@ -44,6 +44,20 @@ int ui_setup(World *w);
  */
 void ui_teardown();
 
+
+/*
+ * UIFont is a fundamental component needed for the graphical user interface,
+ * as it is not capable of rendering legible text.
+ *
+ * By placing it inside the UI we can reuse the same font accross different components.
+ */
+#include "ui-font.h"
+
+/*
+ * Returns the font loaded when calling ui_setup.
+ */
+UIFont *ui_get_font();
+
 /*
  * The following functions are wrappers arround more specific functions defined
  * below for general UI compontents. They are the same but do not receive UI
@@ -63,6 +77,8 @@ int ui_update_world_info();
 
 int ui_update_tile_info();
 
+void ui_redraw_sidebar();
+
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();
 
@@ -70,6 +86,20 @@ Dict *ui_get_sprite_dict();
  * Displays a message where it's appropriate.
  */
 int ui_show_msg(char *msg);
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+/*
+ * A generic structure for expressing rectangular dimensions.
+ */
+typedef struct {
+    int x, y;
+    int width, height;
+} UIRect;
+
+UIRect ui_get_top_sidebar_dim();
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 

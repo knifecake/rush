@@ -37,7 +37,7 @@ void _ui_li_destroy(UIListItem *li)
     free(li);
 }
 
-UIList *ui_list_new(void **s, int s_len,
+UIList *ui_list_new(void **s, int s_len, UIRect dim,
         ui_get_li_string_fun get_li_title,
         ui_get_li_sprite_fun get_li_sprite)
 {
