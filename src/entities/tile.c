@@ -187,11 +187,11 @@ int tile_build (Tile *tile, Building *bp){
         1. First of all, it checks if the remining resource is enough to collect the
         base resources of its building. If not, it catch all that remains.
 
-        2. After that, it multiply that value with the tile multiplier and converts that
+        2. After that, it multiplies that value by the tile multiplier and converts that
         value to an int
 
         3. After that, it checks if an event is active in that tile. If that is the case,
-        it multiplies the previous value to an int again */
+        it multiplies the previous value by the event multiplier and converts the result to an int again */
 
 int tile_collect_resources(Tile * tile, int resource_id){
   if (!tile){

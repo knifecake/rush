@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "../../lib/lineread.h"
 
@@ -37,6 +38,7 @@ struct _World {
     int level;
 };
 
+/*
 int _aleat_num (int inf, int sup){
   int temp, r;
   if (inf > sup){
@@ -47,6 +49,50 @@ int _aleat_num (int inf, int sup){
   sup++;
   r = (int) inf + rand() / (RAND_MAX / (sup - inf) + 1);
   return r;
+}
+*/
+
+int aleat_num(int inf, int sup){
+  int n, r;
+  long end;
+
+  if(inf<sup){
+    n=sup-inf+1;
+  }
+  else if(sup<inf){
+    n=inf-sup+1;
+  }
+  else{
+    fprintf(stderr, "aleat_num: cant generate a random number between the same number\n");
+    return -1;
+  }
+
+  if ((n - 1) == RAND_MAX) {
+      return rand();
+  }
+  else {
+      /* Chop off all of the values that would cause skew...*/
+
+      end = RAND_MAX / n; /* truncate skew*/
+      assert (end > 0L);
+      end *= n;
+
+      /* ... and ignore results from rand() that fall above that limit.
+       (Worst case the loop condition should succeed 50% of the time,
+       so we can expect to bail out of this loop pretty quickly.)*/
+
+      while ((r = rand()) >= end);
+
+      r = r % n;
+      if(inf<sup){
+        r=inf+r;
+      }
+      else{
+        r=sup+r;
+      }
+      return r;
+    }
+
 }
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -217,7 +263,7 @@ World *world_new(void) {
     // choose a tile type at random from the list of tiles for each cell in the map
     for (int i=0; i < w->map_tiles; i++){
       //w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles-1)]);
-      w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles - 1)]);
+      w->map[i] = tile_copy(w->tiles[aleat_num(0, w->num_tiles - 1)]);
     }
 
     // load initial game state
@@ -253,6 +299,10 @@ World *world_next_turn(World *w){
     HE("invalid parameters", "world_player_turn");
     return NULL;
   }
+  /*
+  / Collect all the resources from the tiles with resources buildings and reduce by one
+  / the turns of the active events
+  */
 
   for(int i = 0; i < w->map_tiles; i++){
     int *resources = (int *) oopsalloc(MAX_RESOURCES, sizeof(int), "world_next_turn");
@@ -262,6 +312,18 @@ World *world_next_turn(World *w){
     }
     free(resources);
   }
+
+  /*
+  / TODO: See how many events we want to manage with and modify this
+  / so that the probabilties are consistent with that
+  */
+ int i = 0;
+  while(i < w->num_tiles){
+    int tile_affected = aleat_num(0, w->num_tiles);
+    int affecting_event = aleat_num(0, w->num_events);
+    tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
+    i += aleat_num(0, w->num_tiles);
+}
   return w;
 }
 
