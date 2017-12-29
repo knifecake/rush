@@ -494,11 +494,11 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
         return UINT_ERROR;
     }
     // check if there is already a building there that it is not the previous level.
-    Building *current_building = tile_get_building(w->tiles[tile_index]);
-
-    if (current_building) {
+    Building *current_building = tile_get_building(w->map[tile_index]);
+    if (current_building != NULL) {
       int current_id = building_get_id(current_building);
       int new_id = building_get_id(b);
+      //this means we are  not trying to build exactly the next level building
       if((new_id-current_id) != 1){
         HE("There is already a building in that tile", "world_build_on_tile");
         return WORLD_BUILD_OCCUPIED;

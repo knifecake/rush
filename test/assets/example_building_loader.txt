@@ -30,7 +30,7 @@ hello
 527     # int building_id
 bye
 1       # current level of the building
-10      # player's level to build it
+0      # player's level to build it
 
 1700    # building's health points
 850     # (int) buiding's leveling cost of resource 1
