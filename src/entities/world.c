@@ -485,16 +485,40 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
         HE("invalid arguments", "world_build_on_tile");
         return UINT_ERROR;
     }
+    // check if there is already a building there that it is not the previous level.
+    Building *current_building = tile_get_building(w->tiles[tile_index]);
+
+    if (current_building) {
+      int current_id = building_get_id(current_building);
+      int new_id = building_get_id(b);
+      if((new_id-current_id) != 1){
+        HE("There is already a building in that tile", "world_build_on_tile");
+        return WORLD_BUILD_OCCUPIED;
+      }
+      // if there is already a building with the previous level, we level it up
+      else{
+        if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
+            HE("could not build for some reason", "world_build_on_tile");
+            return UINT_ERROR;
+        }
+        return WORLD_BUILD_SUCCESS_LEVEL_UP;
+      }
+    }
 
     // check if building can be build at the player's current level
     int unlock_level = building_get_unlocking_level(b);
     if (unlock_level > w->level)
         return WORLD_BUILD_NO_LEVEL;
 
-    // check the player has enough money
-    int cost = building_get_cost(b);
-    if (cost > w->wallet[COST_RESOURCE])
+    // check the player has enough resources
+    for(int i = 0; i<MAX_RESOURCES; i++){
+      int cost = building_get_cost(b, i);
+      if (cost > w->wallet[i]){
+        HE("not enough resources", "world_build_on_tile");
         return WORLD_BUILD_NO_MONEY;
+      }
+    }
+
 
     // link building to tile
     if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
@@ -503,12 +527,9 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     }
 
     // substract money from wallet
-    w->wallet[COST_RESOURCE] -= cost;
-
-    // if building is a town hall, increase level
-    if (building_is_townhall(b)) {
-        w->level = building_get_level(b);
-        return WORLD_BUILD_SUCCESS_LEVEL_UP;
+    for(int i = 0; i<MAX_RESOURCES; i++){
+      int cost = building_get_cost(b, i);
+      w->wallet[i] -= cost;
     }
 
     return WORLD_BUILD_SUCCESS;

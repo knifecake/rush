@@ -11,13 +11,13 @@ struct _Building {
   int level;  /* Level building */
   int unlocking_level;  /* Player level requiered to build it*/
   int health; /* Health points of the building */
-  int cost;   /*Cost of building or leveling it up*/
+  int cost[MAX_RESOURCES];   /*Cost of building or leveling it up*/
   int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
   char sprite[MAX_SPRITE_NAME + 1];
 };
 
 Building *building_new (int id, int level, int unlocking_level, int health,
-int cost, int * base_resources, const char *sprite){
+int * cost, int * base_resources, const char *sprite){
   if(!sprite){
     HE("cannot create building, missing sprite name", "building_new")
     return NULL;
@@ -32,9 +32,9 @@ int cost, int * base_resources, const char *sprite){
   bp -> level = level;
   bp -> unlocking_level = unlocking_level;
   bp -> health = health;
-  bp -> cost = cost;
   for (int i = 0; i < MAX_RESOURCES; i++){
     bp->base_resources[i] = base_resources[i];
+    bp -> cost[i] = cost[i];
   }
   /*
    * This piece of code should be substituted with the initial values depending
@@ -119,12 +119,12 @@ int building_get_health (Building *bp){
   return bp -> health;
 }
 
-int building_get_cost (Building *bp){
+int building_get_cost (Building *bp, const int resource_id){
   if(!bp){
     HE("pointer is NULL", "building_get_cost");
     return -1;
   }
-  return bp -> cost;
+  return bp -> cost[resource_id];
 }
 
 int building_get_base_resources (Building *bp, const int resource_id){
@@ -145,6 +145,9 @@ char *building_get_sprite(Building *bp)
     return bp->sprite;
 }
 
+/*
+Don't think we need this function as every_building can be leveled up and not only the towunhall
+
 int building_is_townhall(Building *bp)
 {
     if (!bp) {
@@ -159,6 +162,7 @@ int building_is_townhall(Building *bp)
 
     return 0;
 }
+*/
 
 void building_print(FILE *f, Building *bp)
 {
@@ -173,11 +177,13 @@ void building_print(FILE *f, Building *bp)
 	fprintf(f, "\n - level: %d", bp->level);
 	fprintf(f, "\n - unlocking level: %d", bp->unlocking_level);
 	fprintf(f, "\n - health: %d", bp->health);
-	fprintf(f, "\n - cost: %d", bp->cost);
-
 
     fprintf(f, "\n - resource no.:                 ");
     for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", i++));
+
+    fprintf(f, "\n - resources needed to build: ");
+    for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", bp->cost[i++]));
+	fprintf(f, "\n");
 
     fprintf(f, "\n - resources returned each time: ");
     for (int i = 0; i < MAX_RESOURCES; fprintf(f, "%8d ", bp->base_resources[i++]));

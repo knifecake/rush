@@ -32,7 +32,7 @@ typedef struct _Building Building;
  * as an argument, then sets every other value according to the established data
  * If it fails, NULL is returned.
  */
-Building *building_new(int, int, int, int, int, int *, const char *);
+Building *building_new(int, int, int, int, int *, int *, const char *);
 
 /*
  * Frees memory allocated by building_new, it will only free it if the pointer
@@ -67,7 +67,7 @@ int building_get_unlocking_level(Building *);
 
 int building_get_health(Building *);
 
-int building_get_cost(Building *);
+int building_get_cost(Building *, const int);
 
 char *building_get_sprite(Building *);
 /*
@@ -79,7 +79,10 @@ int building_get_base_resources(Building *, const int);
 /*
  * Returns true if the building is a town hall.
  */
+
+/*
 int building_is_townhall(Building *bp);
+*/
 
 void building_print(FILE *s, Building *bp);
 #endif

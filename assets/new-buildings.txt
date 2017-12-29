@@ -11,7 +11,14 @@ town_hall1  # (char *) sprite
 0           # player's level to build it
 
 1000        # building's health points
-0           # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0           # (int) quantity of resource 1 returned each turn
 0           # (int) quantity of resource 2 returned each turn
@@ -27,7 +34,13 @@ town_hall2  # (char *) sprite
 1           # player's level to build it
 
 2000        # building's health points
-7000        # (int) buiding's leveling cost
+7000        # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
 
 0           # (int) quantity of resource 1 returned each turn
 0           # (int) quantity of resource 2 returned each turn
@@ -43,7 +56,14 @@ town_hall3  # (char *) sprite
 2           # player's level to build it
 
 4000        # building's health points
-10500       # (int) buiding's leveling cost
+10500       # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0           # (int) quantity of resource 1 returned each turn
 0           # (int) quantity of resource 2 returned each turn
@@ -59,7 +79,14 @@ town_hall4  # (char *) sprite
 3           # player's level to build it
 
 8000        # building's health points
-17500       # (int) buiding's leveling cost
+17500       # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0           # (int) quantity of resource 1 returned each turn
 0           # (int) quantity of resource 2 returned each turn
@@ -74,8 +101,15 @@ town_hall5  # (char *) sprite
 5           # current level of the building
 4           # player's level to build it
 
-16000        # building's health points
-28000        # (int) buiding's leveling cost
+16000       # building's health points
+28000       # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0           # (int) quantity of resource 1 returned each turn
 0           # (int) quantity of resource 2 returned each turn
@@ -97,7 +131,14 @@ money_mine # (char *) sprite
 1     # player's level to build it
 
 250    # building's health points
-1000    # (int) buiding's leveling cost
+1000    # (int) buiding's leveling resource 1 cost
+0       # (int) buiding's leveling resource 2 cost
+0       # (int) buiding's leveling resource 3 cost
+0       # ...
+0
+0
+0
+
 
 100        # (int) quantity of resource 1 returned each turn
 0       # (int) quantity of resource 2 returned each turn
@@ -113,7 +154,14 @@ money_mine # (char *) sprite
 2     # player's level to build it
 
 400    # building's health points
-1500    # (int) buiding's leveling cost
+1500    # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 200        # (int) quantity of resource 1 returned each turn
 0       # (int) quantity of resource 2 returned each turn
@@ -130,7 +178,14 @@ money_mine # (char *) sprite
 2     # player's level to build it
 
 700    # building's health points
-2500    # (int) buiding's leveling cost
+2500    # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 350        # (int) quantity of resource 1 returned each turn
 0       # (int) quantity of resource 2 returned each turn
@@ -147,7 +202,14 @@ money_mine # (char *) sprite
 3     # player's level to build it
 
 1300    # building's health points
-4000    # (int) buiding's leveling cost
+4000    # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 500        # (int) quantity of resource 1 returned each turn
 0       # (int) quantity of resource 2 returned each turn
@@ -164,7 +226,14 @@ money_mine # (char *) sprite
 3     # player's level to build it
 
 2500    # building's health points
-6000    # (int) buiding's leveling cost
+6000    # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 700        # (int) quantity of resource 1 returned each turn
 0       # (int) quantity of resource 2 returned each turn
@@ -182,7 +251,14 @@ ginebrita_mine # (char *) sprite
 1     # player's level to build it
 
 250    # building's health points
-1000    # (int) buiding's leveling cost
+1000    # (int) buiding's leveling resource 1 cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 100        # (int) quantity of resource 1 returned each turn
@@ -199,6 +275,13 @@ ginebrita_mine # (char *) sprite
 
 400    # building's health points
 1500    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 200        # (int) quantity of resource 1 returned each turn
@@ -215,6 +298,13 @@ ginebrita_mine # (char *) sprite
 
 700    # building's health points
 2500    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 350        # (int) quantity of resource 1 returned each turn
@@ -231,6 +321,13 @@ ginebrita_mine # (char *) sprite
 
 1300    # building's health points
 4000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 500        # (int) quantity of resource 1 returned each turn
@@ -247,6 +344,13 @@ ginebrita_mine # (char *) sprite
 
 2500    # building's health points
 6000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0
 700
@@ -265,6 +369,13 @@ chococrispies_mine # (char *) sprite
 
 250    # building's health points
 1000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -281,6 +392,13 @@ chococrispies_mine # (char *) sprite
 
 400    # building's health points
 1500    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -297,6 +415,13 @@ chococrispies_mine # (char *) sprite
 
 700    # building's health points
 2500    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -313,6 +438,13 @@ chococrispies_mine # (char *) sprite
 
 1300    # building's health points
 4000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -329,6 +461,13 @@ chococrispies_mine # (char *) sprite
 
 2500    # building's health points
 6000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0
 0
@@ -347,6 +486,13 @@ special_mine # (char *) sprite
 
 250    # building's health points
 3750    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -363,6 +509,13 @@ special_mine # (char *) sprite
 
 400    # building's health points
 6250    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -379,6 +532,13 @@ special_mine # (char *) sprite
 
 700    # building's health points
 10000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -395,6 +555,13 @@ special_mine # (char *) sprite
 
 1400    # building's health points
 15000    # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
@@ -411,6 +578,13 @@ special_mine # (char *) sprite
 
 2500    # building's health points
 25000 # (int) buiding's leveling cost
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 
 0
 0
@@ -431,6 +605,13 @@ harbour
 2
 500
 4500
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -445,6 +626,13 @@ harbour_2
 4
 800
 14000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -461,6 +649,13 @@ airport
 3
 400
 10000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -475,6 +670,13 @@ airport_2
 5
 800
 27000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -494,6 +696,13 @@ academy_1
 1
 500
 1500
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -509,6 +718,13 @@ academy_2
 2
 500
 300
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -524,6 +740,13 @@ academy_3
 4
 500
 10000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -542,6 +765,13 @@ library
 2
 500
 3750
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -556,6 +786,13 @@ library
 4
 500
 12000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -570,6 +807,13 @@ university
 3
 500
 7500
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
 0
 0
 0
@@ -585,6 +829,14 @@ university
 5
 500
 21000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
+
 0
 0
 0

@@ -18,6 +18,7 @@ Sprite *get_placeholder_sprite(Building *b)
     return placeholder_sprite;
 }
 
+//TODO:modify the sprintf so that it includes all the resources
 char *building_get_desc(Building *b)
 {
     if (!b) {
@@ -27,7 +28,7 @@ char *building_get_desc(Building *b)
 
     char *buff = oopsalloc(100, sizeof(char), "building_get_desc");
 
-    sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b));
+    sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b, 0));
     return buff;
 }
 int action_build(void *w, char *cmd, char **msg, int num_msg)

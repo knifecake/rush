@@ -8,6 +8,7 @@
 #include "../entities/world.h"
 #include "../entities/tile.h"
 
+//TODO: Change the sprintf so that it includes all the resources
 char *building_get_desc(Building *b)
 {
     if (!b) {
@@ -17,7 +18,7 @@ char *building_get_desc(Building *b)
 
     char *buff = oopsalloc(100, sizeof(char), "building_get_desc");
 
-    sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b));
+    sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b, 0));
     return buff;
 }
 

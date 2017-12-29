@@ -138,6 +138,7 @@ Tile *world_tile_at_index(World *w, int tile_index);
 #define WORLD_BUILD_NO_LEVEL 3
 #define WORLD_BUILD_SUCCESS 4
 #define WORLD_BUILD_SUCCESS_LEVEL_UP 5
+#define WORLD_BUILD_OCCUPIED 6
 
 int world_build_on_tile(World *w, int tile_index, Building *b);
 
