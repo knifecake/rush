@@ -110,6 +110,8 @@ Event **world_get_events(World *w);
  */
 int world_get_num_events(World *w);
 
+int world_get_player_level(World *w);
+
 
 /*
  * Prints what's inside the world for debugging.

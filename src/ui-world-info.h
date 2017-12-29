@@ -2,6 +2,7 @@
 #define __UI_WORLD_INFO__
 
 #include "entities/world.h"
+#include "ui.h"
 
 /*
  * UIWorldInfo panel
@@ -13,15 +14,15 @@ typedef struct _UIWorldInfo UIWorldInfo;
 /*
  * Creates a new world info panel UI component.
  */
-UIWorldInfo *ui_world_info_new(World *w);
+UIWorldInfo *ui_world_info_new(World *w, UIRect dim);
 
 /*
- * Draws a new world info panel starting from (x,y).
+ * Draws the given world info panel.).
  *
  * Before drawing all the values displayed are updated by calling getters on
  * the World entity.
  */
-void ui_world_info_draw(UIWorldInfo *wi, int x, int y);
+void ui_world_info_draw(UIWorldInfo *wi);
 
 /*
  * Frees all the memory associated with a UIWorldInfo component that was

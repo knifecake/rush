@@ -38,14 +38,24 @@ void ui_tile_info_draw(UITileInfo *ti, int tile_index)
         return;
     }
 
-    char buff[100];
-    Building *b = tile_get_building(world_tile_at_index(ti->w, tile_index));
-    if (!b)
-        sprintf(buff, "Tile %d\nPress b to build.", tile_index);
-    else
-        sprintf(buff, "Tile %d\n%s", tile_index, building_get_sprite(b));
+    Tile *tile = world_tile_at_index(ti->w, tile_index);
+    if (!tile) {
+        HE("could not retrieve tile", "ui_tile_info_draw");
+    }
 
-    ui_text_panel_print(ti->tp, buff);
+    char *info = oopsalloc(MAX_RESOURCES * 10 + 100, sizeof(char), "ui_tile_info_draw");
+
+    // communicate the presence of a building // TODO: remove this when building sprites are done
+    Building *b = tile_get_building(tile);
+    if (!b)
+        sprintf(info, "Tile %d\nPress b to build.\n", tile_index);
+    else
+        sprintf(info, "Tile %d\n%s (%d)\n", tile_index, building_get_sprite(b), building_get_level(b));
+
+    for (int i = 0; i < MAX_RESOURCES; i++)
+        sprintf(info, "%s%d: %d\n", info, i, tile_get_remaining_resources(tile, i));
+
+    ui_text_panel_print(ti->tp, info);
 }
 
 void ui_tile_info_destroy(UITileInfo *ti)
@@ -53,5 +63,6 @@ void ui_tile_info_destroy(UITileInfo *ti)
     if (!ti)
         return;
 
+    free(ti->tp);
     free(ti);
 }

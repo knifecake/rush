@@ -19,7 +19,7 @@
  * Choosing a very large number and not using that many Resources
  * means a lot of wasted space in other entities.
  */
-#define MAX_RESOURCES 10
+#define MAX_RESOURCES 7
 
 
 /*
