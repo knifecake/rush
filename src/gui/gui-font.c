@@ -78,6 +78,29 @@ int ui_font_get_char_height(UIFont *font)
     return font->height;
 }
 
+void ui_font_print(FILE *fp, UIFont *font, char *string, int x0, int y0, int maxsize)
+{
+  if(!fp || !font || !string || x0<1 || y0<0 || maxsize < 1){
+    HE("null parameters", "sprite_write")
+    return;
+  }
+  int x, y;
+  x = x0;
+  y = y0;
+  if(maxsize > strlen(string)){
+    maxsize = strlen(string);
+  }
+  for (int i = 0; i < maxsize; i++){
+    if(string[i] == '\n'){
+      x = x0;
+      y += font->height;
+      continue;
+    }
+    int index = string[i] - ' ';
+    sprite_draw(fp, font->chars[index], x, y);
+    x += sprite_get_w(font->chars[index]);
+  }
+}
 
 void ui_font_destroy(UIFont *font)
 {

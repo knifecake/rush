@@ -14,6 +14,8 @@
 
 struct _UITextPanel {
     UIRect outer_dim;
+
+    // TODO: these are disabled for easier placement
     UIRect inner_dim;
 
     UIFont *font;
@@ -51,17 +53,20 @@ UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font)
     tp->outer_dim = outer_dim;
 
     // calculate inner dimensions with padding
-    tp->inner_dim.x = tp->outer_dim.x + 2 * tp->padding;
-    tp->inner_dim.y = tp->outer_dim.y + tp->padding;
-    tp->inner_dim.height = tp->outer_dim.height - 2 * tp->padding;
+    /* tp->inner_dim.x = tp->outer_dim.x + 2 * tp->padding; */
+    /* tp->inner_dim.y = tp->outer_dim.y + tp->padding; */
+    /* tp->inner_dim.height = tp->outer_dim.height - 2 * tp->padding; */
+    /* // account for both margins and for the double x pixels */
+    /* tp->inner_dim.width = tp->outer_dim.width - 2 * 2 * tp->padding; */
+    // TODO: temporarily (or not) disable inner dimmensions
+    tp->inner_dim = outer_dim;
 
-    // account for both margins and for the double x pixels
-    tp->inner_dim.width = tp->outer_dim.width - 2 * 2 * tp->padding;
 
     // TODO: make this parameter adjustable
     tp->typewriter_effect = 0;
 
-    ui_draw_rect(tp->outer_dim, '+');
+    // Optionally, draw a border for debugging
+    /* ui_draw_rect(tp->outer_dim, '+'); */
     return tp;
 }
 
