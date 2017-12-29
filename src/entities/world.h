@@ -134,13 +134,42 @@ Tile *world_tile_at_index(World *w, int tile_index);
  *  - Player has building unlocking level
  *  - Player has money
  *
- *  returns UINT_ERROR if an error ocurred. In other circumstances it returns one of the following:
+ *  returns UINT_ERROR if an error ocurred. In other circumstances it returns
+ *  one of the following:
+ */
+
+/*
+ * Player does not have enough resources to build this.
  */
 #define WORLD_BUILD_NO_MONEY 2
+
+/*
+ * Player's level is not hight enough. This building hasn't unlocked.
+ */
 #define WORLD_BUILD_NO_LEVEL 3
+
+/*
+ * Building was successfully constructed.
+ */
 #define WORLD_BUILD_SUCCESS 4
+
+/*
+ * Building was successfully construted and caused the player to move 1 level
+ * up.
+ */
 #define WORLD_BUILD_SUCCESS_LEVEL_UP 5
+
+/*
+ * Building could not be constructed because there is a building of a different
+ * kind on this tile.
+ */
 #define WORLD_BUILD_OCCUPIED 6
+
+/*
+ * Building was successfully constructed and overrides the previous building
+ * upgrading it.
+ */
+#define WORLD_BUILD_SUCCESS_UPGRADE 7
 
 int world_build_on_tile(World *w, int tile_index, Building *b);
 

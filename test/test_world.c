@@ -47,8 +47,8 @@ int main(void) {
 
     Tile **tiles = world_get_map(w);
     Building *edificio = tile_get_building(tiles[2]);
-    building_print(stderr, edificio);
-    building_print(stderr, buildings[2]);
+    /* building_print(stderr, edificio); */
+    /* building_print(stderr, buildings[2]); */
 
     assert("can't build in the tiles that already has a building", estado==6);
     fprintf(stderr, "%d\n", estado);

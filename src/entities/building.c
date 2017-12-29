@@ -145,9 +145,6 @@ char *building_get_sprite(Building *bp)
     return bp->sprite;
 }
 
-/*
-Don't think we need this function as every_building can be leveled up and not only the towunhall
-
 int building_is_townhall(Building *bp)
 {
     if (!bp) {
@@ -162,7 +159,16 @@ int building_is_townhall(Building *bp)
 
     return 0;
 }
-*/
+
+int building_is_upgrade(Building *b1, Building *b2)
+{
+    if (!b1 || !b2)
+        return 0;
+
+    // buildings must share the first digits of the id in addition to
+    // having consecutive ids
+    return b1->level / 10 == b2->level / 10 && b1->id == b2->id + 1;
+}
 
 void building_print(FILE *f, Building *bp)
 {

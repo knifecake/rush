@@ -78,6 +78,12 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         case WORLD_BUILD_NO_MONEY:
             show_msg("You need to save more to build this");
             break;
+        case WORLD_BUILD_OCCUPIED:
+            show_msg("There already is a building on that tile. You may only upgrade it to a higher level.");
+            break;
+        case WORLD_BUILD_SUCCESS_UPGRADE:
+            show_msg("The building on this tile was upgraded to the next level.");
+            break;
         default:
             show_msg("An error ocurred and nothing was built");
             ui_redraw_sidebar();

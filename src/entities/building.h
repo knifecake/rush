@@ -79,10 +79,12 @@ int building_get_base_resources(Building *, const int);
 /*
  * Returns true if the building is a town hall.
  */
+int building_is_townhall(Building *bp);
 
 /*
-int building_is_townhall(Building *bp);
-*/
+ * Returns trye if the two given buildings are of the same class.
+ */
+int building_is_upgrade(Building *b1, Building *b2);
 
 void building_print(FILE *s, Building *bp);
 #endif

@@ -385,7 +385,7 @@ int world_get_num_tiles(World *w)
       return UINT_ERROR;
   }
 
-  return w->num_tiles;
+  return w->map_tiles;
 }
 
 Resource **world_get_resources(World *w)
@@ -493,25 +493,11 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
         HE("invalid arguments", "world_build_on_tile");
         return UINT_ERROR;
     }
-    // check if there is already a building there that it is not the previous level.
-    Building *current_building = tile_get_building(w->map[tile_index]);
-    if (current_building != NULL) {
-      int current_id = building_get_id(current_building);
-      int new_id = building_get_id(b);
-      //this means we are  not trying to build exactly the next level building
-      if((new_id-current_id) != 1){
-        HE("There is already a building in that tile", "world_build_on_tile");
+
+    // if tile is occupied, reject buildings that are not an upgrade
+    int is_upgrade = building_is_upgrade(b, tile_get_building(w->map[tile_index]));
+    if (tile_get_building(w->map[tile_index]) && !is_upgrade)
         return WORLD_BUILD_OCCUPIED;
-      }
-      // if there is already a building with the previous level, we level it up
-      else{
-        if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
-            HE("could not build for some reason", "world_build_on_tile");
-            return UINT_ERROR;
-        }
-        return WORLD_BUILD_SUCCESS_LEVEL_UP;
-      }
-    }
 
     // check if building can be build at the player's current level
     int unlock_level = building_get_unlocking_level(b);
@@ -522,11 +508,9 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     for(int i = 0; i<MAX_RESOURCES; i++){
       int cost = building_get_cost(b, i);
       if (cost > w->wallet[i]){
-        HE("not enough resources", "world_build_on_tile");
         return WORLD_BUILD_NO_MONEY;
       }
     }
-
 
     // link building to tile
     if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
@@ -539,6 +523,16 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
       int cost = building_get_cost(b, i);
       w->wallet[i] -= cost;
     }
+
+    // if building is a town-hall, signal player level upgrade
+    if (building_is_townhall(b)) {
+        w->level++;
+        return WORLD_BUILD_SUCCESS_LEVEL_UP;
+    }
+
+    // if this was a building upgrade, notify the controller
+    else if (is_upgrade)
+        return WORLD_BUILD_SUCCESS_UPGRADE;
 
     return WORLD_BUILD_SUCCESS;
 }
