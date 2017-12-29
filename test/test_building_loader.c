@@ -30,7 +30,11 @@ int main(){
 
   assert("correctly loads the health", building_get_health(buildings[0]) == 1599);
 
-  assert("correctly loads the cost", building_get_cost(buildings[0]) == 550);
+  bool truth = true;
+  for(int i = 0; i < 2; i++){
+    truth *= (building_get_cost(buildings[0], i) == 550);
+  }
+  assert("correctly loads the costs", truth == true);
 
   building_list_destroy(buildings);
   fclose(f);

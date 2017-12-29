@@ -21,29 +21,29 @@ int main(void) {
 
     assert("wallet is completely empty at the start", truth==true);
 
-    Building *building = building_new();
+    Building **buildings = world_get_buildings(w);
 
-    int estado = world_build_on_tile(w, 5, building);
+    int estado = world_build_on_tile(w, 5, buildings[0]);
 
     assert("can't build in the tiles without resources", estado==2);
 
     for(int i = 0; i < MAX_RESOURCES; i++){
       world_wallet_delta(w, i, INT_MAX);
     }
-    wallet = world_get_wallet(w)
+    wallet = world_get_wallet(w);
 
     for(int i=0; i<MAX_RESOURCES; i++)
       truth*=(wallet[i]==INT_MAX);
 
     assert("world_wallet_delta runs correctly", truth==true);
 
-    estado = world_build_on_tile(w, 5, building);
+    estado = world_build_on_tile(w, 5, buildings[0]);
 
     assert("can build in the tiles with enough resources", estado==4);
 
-    estado = world_build_on_tile(w, 5, building);
+    estado = world_build_on_tile(w, 5, buildings[0]);
 
-    assert("can't build in the tiles that already has a building");
+    assert("can't build in the tiles that already has a building", estado==6);
 
     world_destroy(w);
     assert("can destroy world", true);

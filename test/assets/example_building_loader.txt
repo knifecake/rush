@@ -7,7 +7,8 @@ mine
 14      # player's level to build it
 
 1599    # building's health points
-550     # (int) buiding's leveling cost
+550     # (int) buiding's leveling cost of resource 1
+550     # (int) buiding's leveling cost of resource 2
 
 1532        # (int) quantity of resource 1 returned each time
 29032       # (int) quantity of resource 2 returned each time
@@ -19,7 +20,8 @@ hello
 1     # player's level to build it
 
 2590    # building's health points
-1500    # (int) buiding's leveling cost
+1500     # (int) buiding's leveling cost of resource 1
+1500     # (int) buiding's leveling cost of resource 2
 
 15320        # (int) quantity of resource 1 returned each time
 2032       # (int) quantity of resource 2 returned each time
@@ -31,7 +33,8 @@ bye
 10      # player's level to build it
 
 1700    # building's health points
-850     # (int) buiding's leveling cost
+850     # (int) buiding's leveling cost of resource 1
+850     # (int) building's leveling cost of resource 2
 
 15333      # (int) quantity of resource 1 returned each time
 2903       # (int) quantity of resource 2 returned each time
