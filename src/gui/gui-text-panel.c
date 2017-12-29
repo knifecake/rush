@@ -24,8 +24,6 @@ struct _UITextPanel {
 
     // the ammout of space left between the borders and the text-box
     int padding;
-    int tb_x, tb_y;
-    int tb_height, tb_width;
 
     char *msg;
 };
@@ -84,7 +82,7 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
 
     ui_text_panel_clear(tp);
 
-    int x = tp->inner_dim.x, y = tp->tb_y;
+    int x = tp->inner_dim.x, y = tp->inner_dim.y;
     for (int i = 0; i < strlen(msg); i++)
     {
         // if this does not fit horizontally, move down a line
@@ -95,7 +93,7 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
         }
 
         // if this does not fit vertically, stop printing
-        if (y + tp->char_height >= tp->tb_y + tp->inner_dim.height) {
+        if (y + tp->char_height >= tp->inner_dim.y + tp->inner_dim.height) {
             break;
         }
 
@@ -103,7 +101,7 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
         if (msg[i] < ' ' || msg[i] > '~')
             continue;
 
-        // if it is a space, leave room and move left
+        // if it is a space, leave room and move right
         if (msg[i] == ' ') {
             x += tp->char_width;
             continue;
@@ -111,6 +109,10 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
 
         // move down a bit to align the baseline of the characters
         Sprite *ch = ui_font_get_char_sprite(tp->font, msg[i]);
+        if (!ch) {
+            HE("this font does not support this character", "ui_text_panel_print");
+            continue;
+        }
         sprite_draw(stdout, ch, x, y + tp->char_height - sprite_get_h(ch));
 
         x += sprite_get_w(ch) + 1;

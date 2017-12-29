@@ -27,6 +27,7 @@ struct _UI {
     Dict *sprite_dict;
 
     UIRect top_sidebar_dim;
+    UIRect bottom_sidebar_dim;
 };
 
 int ui_setup(World *w)
@@ -38,18 +39,23 @@ int ui_setup(World *w)
 
     ui = oopsalloc(1, sizeof(UI), "ui_setup");
 
-    ui->top_sidebar_dim.x = 260;
-    ui->top_sidebar_dim.y = 1;
-    ui->top_sidebar_dim.width = 45;
-    ui->top_sidebar_dim.height = 100;
+    ui->top_sidebar_dim.x       = 260;
+    ui->top_sidebar_dim.y       = 1;
+    ui->top_sidebar_dim.width   = 45;
+    ui->top_sidebar_dim.height  = 100;
+
+    ui->bottom_sidebar_dim.x       = 260;
+    ui->bottom_sidebar_dim.y       = 101;
+    ui->bottom_sidebar_dim.width   = 45;
+    ui->bottom_sidebar_dim.height  = 70;
 
     ui->w = w;
 
     ui->font = ui_font_new(config_get("font path"));
     ui->map = ui_map_new(ui->w);
-    ui->wi = ui_world_info_new(ui->w);
     ui->tp = ui_text_panel_new((UIRect ) { 1, 150, 250, 30 }, ui->font);
     ui->ti = ui_tile_info_new(ui->w, ui->top_sidebar_dim);
+    ui->wi = ui_world_info_new(ui->w, ui->bottom_sidebar_dim);
     ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
     if(!ui->sprite_dict){
       HE("Error creating the sprite dictionary", "ui_setup")
@@ -58,6 +64,7 @@ int ui_setup(World *w)
 
     ui_map_draw(ui->map);
     ui_update_tile_info();
+    ui_update_world_info();
     return !UINT_ERROR;
 }
 
@@ -104,7 +111,7 @@ int ui_redraw_tile(int tile_index){
 }
 
 int ui_update_world_info(){
-  /*TODO: Implement this*/
+  ui_world_info_draw(ui->wi);
   return !UINT_ERROR;
 }
 
@@ -115,8 +122,8 @@ int ui_update_tile_info() {
 }
 
 void ui_redraw_sidebar() {
-    ui_tile_info_draw(ui->ti, ui_get_cursor());
-    /* ui_world_info_draw() */
+    ui_update_tile_info();
+    ui_update_world_info();
 }
 
 Dict *ui_get_sprite_dict() {

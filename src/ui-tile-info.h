@@ -21,7 +21,7 @@ typedef struct _UITileInfo UITileInfo;
 UITileInfo *ui_tile_info_new(World *w, UIRect dim);
 
 /*
- * Draws a new tile info panel starting from (x,y).
+ * Draws the provided tile info panel with information in tile with given index.
  *
  * Before drawing all the values displayed are updated by calling getters on
  * the World entity.

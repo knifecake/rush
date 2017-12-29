@@ -12,7 +12,7 @@ struct _UIWorldInfo {
     World *w;
 };
 
-UIWorldInfo *ui_world_info_new(World *w)
+UIWorldInfo *ui_world_info_new(World *w, UIRect dim)
 {
     if (!w) {
         HE("invalid parameters", "ui_world_info_new");
@@ -24,7 +24,7 @@ UIWorldInfo *ui_world_info_new(World *w)
     return wi;
 }
 
-void ui_world_info_draw(UIWorldInfo *wi, int x, int y)
+void ui_world_info_draw(UIWorldInfo *wi)
 {
     if (!wi) {
         HE("invalid params", "ui_world_info_draw");

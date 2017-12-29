@@ -4,11 +4,7 @@
 
 void ui_clear_rect(UIRect r)
 {
-    for (int j = r.x; j <= r.y + r.height; j++) {
-        fprintf(stdout, "\033[%d;%dH", j, 2 * r.x);
-        for (int i = r.x; i <= r.x + 2 * r.width; i++)
-            fputc(' ', stdout);
-    }
+    ui_draw_rect(r, ' ');
 }
 
 void ui_draw_rect(UIRect r, char border)
@@ -39,6 +35,6 @@ void ui_draw_rect(UIRect r, char border)
     fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
     for (; i < r.x + 2 * r.width; i++)
-        fprintf(stdout, "+");
+        fputc(border, stdout);
 
 }
