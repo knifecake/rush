@@ -16,7 +16,7 @@ struct _UITileInfo {
     World *w;
 };
 
-UITileInfo *ui_tile_info_new(World *w)
+UITileInfo *ui_tile_info_new(World *w, UIRect dim)
 {
     if (!w) {
         HE("invalid arguments", "ui_tile_info_new");
@@ -28,7 +28,7 @@ UITileInfo *ui_tile_info_new(World *w)
     return ti;
 }
 
-void ui_tile_info_draw(UITileInfo *ti, int tile_index, int x, int y)
+void ui_tile_info_draw(UITileInfo *ti, int tile_index)
 {
     if (!ti || tile_index < 0) {
         HE("invalid arguments", "ui_tile_info_draw");

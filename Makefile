@@ -11,9 +11,9 @@ lib = $(wildcard lib/*.c)
 obj = $(src:.c=.o) \
 			$(lib:.c=.o)
 
-gui_src = gui.c $(wildcard src/gui/*.c)
+gui_src = $(wildcard src/gui/*.c)
 gui_obj = $(gui_src:.c=.o)
-tui_src = tui.c $(wildcard src/tui/*.c)
+tui_src = $(wildcard src/tui/*.c)
 tui_obj = $(tui_src:.c=.o)
 
 test_sources = $(wildcard test/test_*.c)
@@ -26,10 +26,10 @@ test_exes = $(test_sources:.c=.test)
 .PHONY: game
 game: $(BUILD_DIR)/tui $(BUILD_DIR)/gui
 
-$(BUILD_DIR)/tui: $(tui_obj) $(obj)
+$(BUILD_DIR)/tui: tui.o $(tui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/gui: $(gui_obj) $(obj)
+$(BUILD_DIR)/gui: gui.o $(gui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # compiles all tests
@@ -40,10 +40,10 @@ test: $(test_exes)
 
 # compiles whichever test you tell it to
 # TODO: fix this rule to only compile the test_*.o that have changed
-test_%.test: $(obj) test/minitest.o test/*.c
+test_%.test: $(obj) $(tui_obj) test/minitest.o test/*.c
 	@echo "Compiling $(@)"
 	$(CC) $(CFLAGS) -c -o $(@:.test=.o) $(@:.test=.c)
-	$(CC) $(CFLAGS) -o $@ $(@:.test=.o) $(obj) test/minitest.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(@:.test=.o) $(obj) $(tui_obj) test/minitest.o $(LDFLAGS)
 
 # compiles the test library
 test/minitest.o:

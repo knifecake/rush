@@ -36,8 +36,8 @@ int ui_setup(World *w)
         return UINT_ERROR;
     }
 
-    ui->wi = ui_world_info_new(ui->w);
-    ui->ti = ui_tile_info_new(ui->w);
+    ui->wi = ui_world_info_new(ui->w, (UIRect) { 0 });
+    ui->ti = ui_tile_info_new(ui->w, (UIRect) { 0 });
 
     // ui tile info is created when the cursor is first moved
 
@@ -84,13 +84,13 @@ int ui_redraw_tile(int tile_index)
 
 int ui_update_world_info()
 {
-  ui_world_info_draw(ui->wi, 0, 0);
+  ui_world_info_draw(ui->wi);
   return !UINT_ERROR;
 }
 
 int ui_update_tile_info()
 {
-    ui_tile_info_draw(ui->ti, ui_map_get_cursor(ui->map), 0, 0);
+    ui_tile_info_draw(ui->ti, ui_map_get_cursor(ui->map));
     return !UINT_ERROR;
 }
 

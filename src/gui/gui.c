@@ -19,11 +19,15 @@
 struct _UI {
     World *w;
 
+    UIFont *font;
     UIMap *map;
     UIWorldInfo *wi;
     UITileInfo *ti;
     UITextPanel *tp;
     Dict *sprite_dict;
+
+    UIRect top_sidebar_dim;
+    UIRect bottom_sidebar_dim;
 };
 
 int ui_setup(World *w)
@@ -35,26 +39,38 @@ int ui_setup(World *w)
 
     ui = oopsalloc(1, sizeof(UI), "ui_setup");
 
+    ui->top_sidebar_dim.x       = 260;
+    ui->top_sidebar_dim.y       = 1;
+    ui->top_sidebar_dim.width   = 45;
+    ui->top_sidebar_dim.height  = 100;
+
+    ui->bottom_sidebar_dim.x       = 260;
+    ui->bottom_sidebar_dim.y       = 101;
+    ui->bottom_sidebar_dim.width   = 45;
+    ui->bottom_sidebar_dim.height  = 70;
+
     ui->w = w;
 
+    ui->font = ui_font_new(config_get("font path"));
     ui->map = ui_map_new(ui->w);
-    ui->wi = ui_world_info_new(ui->w);
-
+    ui->tp = ui_text_panel_new((UIRect ) { 1, 150, 250, 30 }, ui->font);
+    ui->ti = ui_tile_info_new(ui->w, ui->top_sidebar_dim);
+    ui->wi = ui_world_info_new(ui->w, ui->bottom_sidebar_dim);
     ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
     if(!ui->sprite_dict){
       HE("Error creating the sprite dictionary", "ui_setup")
       return UINT_ERROR;
     }
 
-    // ui tile info is created when the cursor is first moved
     ui_map_draw(ui->map);
-    ui->tp = ui_text_panel_new(0, 150, 250, 30, config_get("font path"));
+    ui_update_tile_info();
+    ui_update_world_info();
     return !UINT_ERROR;
 }
 
 void ui_teardown()
 {
-    // TODO: ui_tile_info_destroy(ui->ti);
+    ui_tile_info_destroy(ui->ti);
     ui_world_info_destroy(ui->wi);
     ui_map_destroy(ui->map);
     ui_text_panel_destroy(ui->tp);
@@ -80,7 +96,8 @@ UIMapVector _ui_keypress_to_vector(int input)
 
 int ui_move_cursor(int input)
 {
-    return ui_map_move_cursor(ui->map, _ui_keypress_to_vector(input));
+    ui_map_move_cursor(ui->map, _ui_keypress_to_vector(input));
+    return !UINT_ERROR;
 }
 
 int ui_get_cursor()
@@ -94,14 +111,19 @@ int ui_redraw_tile(int tile_index){
 }
 
 int ui_update_world_info(){
-  /*TODO: Implement this*/
+  ui_world_info_draw(ui->wi);
   return !UINT_ERROR;
 }
 
 // No need to call this after calling update cursor, it gets called automatically.
-int ui_update_tile_info(){
-  /*TODO: Implement this*/
-  return !UINT_ERROR;
+int ui_update_tile_info() {
+  ui_tile_info_draw(ui->ti, ui_get_cursor());
+  return !UINT_ERROR; // TODO: this doesn't mean anything
+}
+
+void ui_redraw_sidebar() {
+    ui_update_tile_info();
+    ui_update_world_info();
 }
 
 Dict *ui_get_sprite_dict() {
@@ -116,4 +138,19 @@ int ui_show_msg(char *msg) {
         return UINT_ERROR;
 
     return ui_text_panel_print(ui->tp, msg);
+}
+
+UIFont *ui_get_font()
+{
+    if (!ui)
+        return NULL;
+
+    return ui->font;
+}
+
+UIRect ui_get_top_sidebar_dim()
+{
+    if (!ui)
+        return (UIRect) { 0 };
+    return ui->top_sidebar_dim;
 }

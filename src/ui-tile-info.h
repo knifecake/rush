@@ -2,6 +2,7 @@
 #define __UI_TILE_INFO__
 
 #include "entities/world.h"
+#include "ui.h"
 
 /*
  * UITileInfo panel
@@ -17,15 +18,15 @@ typedef struct _UITileInfo UITileInfo;
 /*
  * Creates a new tile info panel UI component.
  */
-UITileInfo *ui_tile_info_new(World *w);
+UITileInfo *ui_tile_info_new(World *w, UIRect dim);
 
 /*
- * Draws a new tile info panel starting from (x,y).
+ * Draws the provided tile info panel with information in tile with given index.
  *
  * Before drawing all the values displayed are updated by calling getters on
  * the World entity.
  */
-void ui_tile_info_draw(UITileInfo *ti, int tile_index, int x, int y);
+void ui_tile_info_draw(UITileInfo *ti, int tile_index);
 
 /*
  * Frees all the memory associated with a UITileInfo component that was

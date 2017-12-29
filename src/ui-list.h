@@ -2,6 +2,7 @@
 #define __UI_LIST__
 
 #include "lib/sprite.h"
+#include "ui.h"
 
 /*
  * These function types are designed to bind UI strings to information on
@@ -29,7 +30,7 @@ typedef struct _UIList UIList;
  * Also receives a pointer to a function able to retrieve a string from each of
  * the objects making up s used for displaying in the list.
  */
-UIList *ui_list_new(void **s, int s_len,
+UIList *ui_list_new(void **s, int s_len, UIRect dim,
         ui_get_li_string_fun get_li_title,
         ui_get_li_sprite_fun get_li_sprite);
 

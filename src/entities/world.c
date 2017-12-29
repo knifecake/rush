@@ -479,6 +479,14 @@ Tile *world_tile_at_index(World *w, int tile_index)
     return w->map[tile_index];
 }
 
+int world_get_player_level(World *w)
+{
+    if (!w)
+        return UINT_ERROR;
+
+    return w->level;
+}
+
 int world_build_on_tile(World *w, int tile_index, Building *b)
 {
     if (!w || tile_index < 0 || tile_index >= w->map_tiles || !b) {

@@ -28,6 +28,11 @@ typedef struct _UI UI;
 UI *ui;
 
 /*
+ * First of all, we include a set of generic functions to build upon.
+ */
+#include "ui-utils.h"
+
+/*
  * GENERAL UI FUNCTIONS
  *
  * The following functions are called once to prepare the UI for drawing.
@@ -43,6 +48,20 @@ int ui_setup(World *w);
  * Frees all memory allocated by ui_setup.
  */
 void ui_teardown();
+
+
+/*
+ * UIFont is a fundamental component needed for the graphical user interface,
+ * as it is not capable of rendering legible text.
+ *
+ * By placing it inside the UI we can reuse the same font accross different components.
+ */
+#include "ui-font.h"
+
+/*
+ * Returns the font loaded when calling ui_setup.
+ */
+UIFont *ui_get_font();
 
 /*
  * The following functions are wrappers arround more specific functions defined
@@ -63,6 +82,8 @@ int ui_update_world_info();
 
 int ui_update_tile_info();
 
+void ui_redraw_sidebar();
+
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();
 
@@ -70,6 +91,9 @@ Dict *ui_get_sprite_dict();
  * Displays a message where it's appropriate.
  */
 int ui_show_msg(char *msg);
+
+UIRect ui_get_top_sidebar_dim();
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
@@ -102,7 +126,5 @@ int ui_show_msg(char *msg);
  */
 
 #include "ui-list.h"
-
-#include "ui-utils.h"
 
 #endif

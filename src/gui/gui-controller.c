@@ -8,8 +8,7 @@
 #include "../entities/world.h"
 #include "../entities/tile.h"
 
-
-
+// TODO: this is a temporary function until building sprites are done
 Sprite *get_placeholder_sprite(Building *b)
 {
     FILE *f = fopen("assets/img/building-placeholder.png", "r");
@@ -31,6 +30,7 @@ char *building_get_desc(Building *b)
     sprintf(buff, "%s, level %d ($%d)", building_get_name(b), building_get_level(b), building_get_cost(b, 0));
     return buff;
 }
+
 int action_build(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
@@ -44,14 +44,20 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     Building **bs = world_get_buildings(w);
 
     // assemble a list that is compatible with the UI-library
-    UIList *ui_l = ui_list_new((void *)bs, world_get_num_buildings(w), (ui_get_li_string_fun)building_get_desc, (ui_get_li_sprite_fun)get_placeholder_sprite);
+    UIList *ui_l = ui_list_new((void *)bs,
+            world_get_num_buildings(w),
+            ui_get_top_sidebar_dim(),
+            (ui_get_li_string_fun)building_get_desc,
+            (ui_get_li_sprite_fun)get_placeholder_sprite);
 
-    show_msg("\nWhat do you want to build this tile?\n");
-    // display the list: passes control to the ui, will return a pointer to the list item that was chosen
+    show_msg("What do you want to build this tile?\nUse the arrow keys to select a building on the top right.");
+
+    // display the list: passes control to the uilist, will return a pointer to the list item that was chosen
     Building *b = ui_list_present(ui_l);
 
     if (!b) {
         show_msg("Okay, nothing will be built\n\n");
+        ui_redraw_sidebar();
         return CTRL_OK;
     }
 
@@ -74,6 +80,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
             break;
         default:
             show_msg("An error ocurred and nothing was built");
+            ui_redraw_sidebar();
             return CTRL_ERROR;
     }
 
@@ -81,6 +88,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // ui_map_draw_tile(current_tile);
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
+    ui_redraw_sidebar();
     return CTRL_OK;
 }
 

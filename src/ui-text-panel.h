@@ -1,3 +1,8 @@
+#ifndef __UI_TEXT_PANEL__
+#define __UI_TEXT_PANEL__
+
+#include "ui-font.h"
+
 /*
  * UITextPanel
  *
@@ -12,7 +17,7 @@ typedef struct _UITextPanel UITextPanel;
  * characters can be found. The names of these sprites should be the ascii
  * codes for each character.
  */
-UITextPanel *ui_text_panel_new(int x, int y, int width, int height, char *font_path);
+UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font);
 
 /*
  * Frees all resources associated with a given UITextPanel.
@@ -30,3 +35,4 @@ int ui_text_panel_print(UITextPanel *tp, char *msg);
  * Clears any text written in the given UIText panel.
  */
 int ui_text_panel_clear(UITextPanel *tp);
+#endif

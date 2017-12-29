@@ -13,83 +13,60 @@
  */
 
 struct _UITextPanel {
-    int x, y; // starting possitions for drawing
-    int width, height; // dimensions of the panel
+    UIRect outer_dim;
 
-    // an array of all the ascii printable characters
-    Sprite **chars;
+    // TODO: these are disabled for easier placement
+    UIRect inner_dim;
 
-    // the width and height of the tallest letter: A
-    int char_width;
-    int char_height;
+    UIFont *font;
+    int char_width, char_height;
 
     // a small delay between characters gives the impresion of a typewriter effect
     int typewriter_effect; // use us
 
     // the ammout of space left between the borders and the text-box
     int padding;
-    int tb_x, tb_y;
-    int tb_height, tb_width;
 
     char *msg;
 };
 
-/*
- * A format string that maps ascii codes to character sprites.
- */
-#define FILENAME_FS "%s/%d.png"
-#define FILENAME_MAX_LEN 10
-
 
 // TODO: proper error handling
-UITextPanel *ui_text_panel_new(int x, int y, int width, int height, char *font_path)
+UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font)
 {
-    if (x < 0 || y < 0 || width < 0 || height < 0 || !font_path)
+    if (!font)
     {
         HE("invalid arguments", "ui_text_panel_new");
         return NULL;
     }
 
     UITextPanel *tp = oopsalloc(1, sizeof(UITextPanel), "ui_text_panel_new");
-    tp->chars = oopsalloc('~' - ' ' + 1, sizeof(Sprite *), "ui_text_panel_new");
 
-    tp->x = x;
-    tp->y = y;
-    tp->width = width;
-    tp->height = height;
+    tp->font = font;
+    tp->char_width = ui_font_get_char_width(tp->font);
+    tp->char_height = ui_font_get_char_height(tp->font);
 
-    // load each printable character into a sprite
-    // we allocate a buffer approximately the size of the final filename
-    char *buff = oopsalloc(FILENAME_MAX_LEN + strlen(font_path), sizeof(char), "ui_text_panel_new");
-    for (char i = ' '; i <= '~'; i++)
-    {
-        // compute filename
-        sprintf(buff, FILENAME_FS, font_path, i);
-
-        FILE *f = fopen(buff, "r");
-
-        // skip over characters not in the font
-        if (!f)
-            continue;
-
-        tp->chars[i - ' '] = sprite_new(f);
-    }
-
-    free(buff);
-
-    // calculate width and height of the tallest letter
-    tp->char_width = sprite_get_w(tp->chars['A' - ' ']);
-    tp->char_height = sprite_get_h(tp->chars['A' - ' ']);
-
+    // TODO: make this parameter configurable
     tp->padding = 1;
-    tp->tb_x = tp->x + 2 * tp->padding;
-    tp->tb_y = tp->y + tp->padding;
-    tp->tb_height = tp->height - 2 * tp->padding;
-    tp->tb_width = tp->width - 4 * tp->padding;
 
+    // copy outer dimensions
+    tp->outer_dim = outer_dim;
+
+    // calculate inner dimensions with padding
+    /* tp->inner_dim.x = tp->outer_dim.x + 2 * tp->padding; */
+    /* tp->inner_dim.y = tp->outer_dim.y + tp->padding; */
+    /* tp->inner_dim.height = tp->outer_dim.height - 2 * tp->padding; */
+    /* // account for both margins and for the double x pixels */
+    /* tp->inner_dim.width = tp->outer_dim.width - 2 * 2 * tp->padding; */
+    // TODO: temporarily (or not) disable inner dimmensions
+    tp->inner_dim = outer_dim;
+
+
+    // TODO: make this parameter adjustable
     tp->typewriter_effect = 0;
 
-    ui_draw_rect(tp->x, tp->y, tp->width, tp->height);
+    // Optionally, draw a border for debugging
+    /* ui_draw_rect(tp->outer_dim, '+'); */
     return tp;
 }
 
@@ -98,10 +75,6 @@ void ui_text_panel_destroy(UITextPanel *tp)
     if (tp)
         return;
 
-    for (char i = ' '; i <= '~'; i++)
-        sprite_destroy(tp->chars[i - ' ']);
-
-    free(tp->chars);
     free(tp);
 }
 
@@ -114,17 +87,18 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
 
     ui_text_panel_clear(tp);
 
-    int x = tp->tb_x, y = tp->tb_y;
+    int x = tp->inner_dim.x, y = tp->inner_dim.y;
     for (int i = 0; i < strlen(msg); i++)
     {
         // if this does not fit horizontally, move down a line
-        if (x + tp->char_width > tp->tb_x + tp->tb_width) {
-            x = tp->tb_x;
+        // alternatively, it this character is a new line, do the same
+        if (x + tp->char_width > tp->inner_dim.x + tp->inner_dim.width || msg[i] == '\n') {
+            x = tp->inner_dim.x;
             y += tp->char_height + tp->padding;
         }
 
         // if this does not fit vertically, stop printing
-        if (y + tp->char_height >= tp->tb_y + tp->tb_height) {
+        if (y + tp->char_height >= tp->inner_dim.y + tp->inner_dim.height) {
             break;
         }
 
@@ -132,16 +106,21 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
         if (msg[i] < ' ' || msg[i] > '~')
             continue;
 
-        // if it is a space, leave room and move left
+        // if it is a space, leave room and move right
         if (msg[i] == ' ') {
             x += tp->char_width;
             continue;
         }
 
         // move down a bit to align the baseline of the characters
-        sprite_draw(stdout, tp->chars[msg[i] - ' '], x, y + tp->char_height - sprite_get_h(tp->chars[msg[i] - ' ']));
+        Sprite *ch = ui_font_get_char_sprite(tp->font, msg[i]);
+        if (!ch) {
+            HE("this font does not support this character", "ui_text_panel_print");
+            continue;
+        }
+        sprite_draw(stdout, ch, x, y + tp->char_height - sprite_get_h(ch));
 
-        x += sprite_get_w(tp->chars[msg[i] - ' ']) + 1;
+        x += sprite_get_w(ch) + 1;
 
         usleep(tp->typewriter_effect);
     }
@@ -156,6 +135,6 @@ int ui_text_panel_clear(UITextPanel *tp)
         return UINT_ERROR;
     }
 
-    ui_clear_rect(tp->tb_x, tp->tb_y, tp->tb_width, tp->tb_height);
+    ui_clear_rect(tp->inner_dim);
     return !UINT_ERROR;
 }

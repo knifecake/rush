@@ -13,8 +13,7 @@ struct _UIList {
     ui_get_li_sprite_fun get_li_sprite;
 
     // component dimensions
-    int x, y;
-    int width, height;
+    UIRect dim;
     int sprite_height, sprite_width;
     int items_per_screen;
     int min_displayed_index;
@@ -47,7 +46,7 @@ void _ui_li_destroy(UIListItem *li)
     free(li);
 }
 
-UIList *ui_list_new(void **s, int s_len,
+UIList *ui_list_new(void **s, int s_len, UIRect dim,
         ui_get_li_string_fun get_li_title,
         ui_get_li_sprite_fun get_li_sprite)
 {
@@ -75,11 +74,8 @@ UIList *ui_list_new(void **s, int s_len,
     l->get_li_title = get_li_title;
     l->get_li_sprite = get_li_sprite;
 
-    // TODO: placement parameters need to be defined somewhere else
-    l->x = 260;
-    l->y = 6;
-    l->width = 45;
-    l->height = 100;
+    l->dim = dim;
+
     l->items_per_screen = 6;
 
     l->sprite_height = l->sprite_width = 25;
@@ -122,15 +118,15 @@ void _ui_list_draw_cursor(UIList *l, int new_cursor)
     }
 
     int i = l->cursor % l->items_per_screen;
-    int x = l->x + (i % 2) * l->sprite_width;
-    int y = l->y + i / 2 * l->sprite_height;
+    int x = l->dim.x + (i % 2) * l->sprite_width;
+    int y = l->dim.y + i / 2 * l->sprite_height;
 
     // delete previous cursor
     sprite_draw(stdout, l->cursor_off, x, y);
 
     i = new_cursor % l->items_per_screen;
-    x = l->x + (i % 2) * l->sprite_width;
-    y = l->y + i / 2 * l->sprite_height;
+    x = l->dim.x + (i % 2) * l->sprite_width;
+    y = l->dim.y + i / 2 * l->sprite_height;
 
     // draw new cursor
     sprite_draw(stdout, l->cursor_on, x, y);
@@ -147,8 +143,8 @@ void _ui_list_draw_sublist(UIList *l, int first_item)
     }
 
     for (int i = first_item; i < l->len && i < l->items_per_screen; i++) {
-        int x = l->x + (i % 2) * l->sprite_width;
-        int y = l->y + i / 2 * l->sprite_height;
+        int x = l->dim.x + (i % 2) * l->sprite_width;
+        int y = l->dim.y + i / 2 * l->sprite_height;
         sprite_draw(stdout, l->get_li_sprite(l->list[i]), x, y);
     }
 
@@ -162,6 +158,9 @@ void *ui_list_present(UIList *l)
         HE("invalid parameters", "ui_list_present");
         return NULL;
     }
+
+    // clear the space we need
+    ui_clear_rect(l->dim);
 
     l->cursor = 0;
     int key = HERE_ARROW;
@@ -207,13 +206,13 @@ void *ui_list_present(UIList *l)
 
     if (key == 'q') {
         // clear the screen space we occupied
-        ui_clear_rect(l->x, l->y, l->width, l->height);
+        ui_clear_rect(l->dim);
 
         return NULL;
     }
 
     // clear the screen space we occupied
-    ui_clear_rect(l->x, l->y, l->width, l->height);
+    ui_clear_rect(l->dim);
 
     return l->list[l->cursor]->info;
 }

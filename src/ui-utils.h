@@ -2,15 +2,24 @@
 #define __UI_UTILS__
 
 /*
+ * A generic structure for expressing rectangular dimensions.
+ */
+typedef struct {
+    int x, y;
+    int width, height;
+} UIRect;
+
+
+/*
  * Writes spaces filling and "drawing" the borders of the rectangle starting at
  * (x, y) of the specified dimensions.
  */
-void ui_clear_rect(int x, int y, int width, int height);
+void ui_clear_rect(UIRect r);
 
 /*
- * Clears the screen under the rectangle and draws an outline of plus signs
- * ('+') around the rectangle starting at (x, y) of dimensions width * height.
+ * Clears the screen section delimited by r and draws a border surrounding it
+ * with the given character.
  */
-void ui_draw_rect(int x, int y, int width, int height);
+void ui_draw_rect(UIRect r, char border);
 
 #endif

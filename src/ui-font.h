@@ -1,13 +1,24 @@
-#ifndef __FONT_H__
-#define __FONT_H__
+#ifndef __UI_FONT__
+#define __UI_FONT__
 
-#include "sprite.h"
+#include "lib/sprite.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+typedef struct _UIFont UIFont;
 
 /*
- * The Sprite** will contain the Sprite* Array of chars.
+ * Loads all printable ASCII characters from the font path as sprites.
+ */
+UIFont *ui_font_new(const char *font_path);
+
+/*
+ * Returns the sprite associated with the character a.
+ */
+Sprite *ui_font_get_char_sprite(UIFont *font, char a);
+
+int ui_font_get_char_width(UIFont *font);
+int ui_font_get_char_height(UIFont *font);
+
+/*
  * You need to specify where will it start printing for coordinates x>1; y>0.
  * You also need to specify how many chars you want to write, for example:
  *
@@ -34,5 +45,8 @@
  *
  * Please notice that strlen("Hello\nWorld") will do the work again.
  */
- void font_write(FILE *, Sprite **, char *, int, int, int);
+void ui_font_print(FILE *fp, UIFont *font, char *string, int x0, int y0, int maxsize);
+
+void ui_font_destroy(UIFont *font);
+
 #endif
