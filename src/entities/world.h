@@ -3,6 +3,7 @@
 
 #include "tile.h"
 #include "building.h"
+#include "map.h"
 
 #define COST_RESOURCE 0
 
@@ -96,8 +97,10 @@ Tile **world_get_tiles(World *w);
  */
 int world_get_num_tiles(World *w);
 
-/* Returns the number of tiles the map has. UINT_ERROR on error.*/
-Tile **world_get_map(World *w);
+/*
+ * Returns the number of tiles the map has. UINT_ERROR on error
+ */
+Map *world_get_map(World *w);
 
 /*
  * Returns a pointer to the list of available events.

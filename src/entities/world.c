@@ -1,7 +1,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "../../lib/lineread.h"
 
@@ -22,78 +21,22 @@ struct _World {
 	int wallet[MAX_RESOURCES];
     int num_resources;
 
-    // holds an array of copies of canonical tiles created randomly on startup
-    Tile **map;
-    int map_tiles;
-
     // keeps a canonical copy of each type of tile
     Tile **tiles;
     int num_tiles;
+
+    Map *map;
+    int map_tiles;
 
     Building **buildings;
     int num_buildings;
 
     Event **events;
     int num_events;
+
+    // player level
     int level;
 };
-
-/*
-int _aleat_num (int inf, int sup){
-  int temp, r;
-  if (inf > sup){
-    temp = inf;
-    inf = sup;
-    sup = temp;
-  }
-  sup++;
-  r = (int) inf + rand() / (RAND_MAX / (sup - inf) + 1);
-  return r;
-}
-*/
-
-int aleat_num(int inf, int sup){
-  int n, r;
-  long end;
-
-  if(inf<sup){
-    n=sup-inf+1;
-  }
-  else if(sup<inf){
-    n=inf-sup+1;
-  }
-  else{
-    fprintf(stderr, "aleat_num: cant generate a random number between the same number\n");
-    return -1;
-  }
-
-  if ((n - 1) == RAND_MAX) {
-      return rand();
-  }
-  else {
-      /* Chop off all of the values that would cause skew...*/
-
-      end = RAND_MAX / n; /* truncate skew*/
-      assert (end > 0L);
-      end *= n;
-
-      /* ... and ignore results from rand() that fall above that limit.
-       (Worst case the loop condition should succeed 50% of the time,
-       so we can expect to bail out of this loop pretty quickly.)*/
-
-      while ((r = rand()) >= end);
-
-      r = r % n;
-      if(inf<sup){
-        r=inf+r;
-      }
-      else{
-        r=sup+r;
-      }
-      return r;
-    }
-
-}
 
 int _world_load_game_state(World *w, char *game_state_file)
 {
@@ -196,7 +139,7 @@ World *world_new(void) {
     if (!buildings_db) {
         HE("don't know where to load buildings from, set up a 'buildings db' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map); free(w);
+        map_destroy(w->map); free(w);
         return NULL;
     }
 
@@ -204,7 +147,7 @@ World *world_new(void) {
     if (!bf) {
         HE("could not open buildings db file", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map); free(w);
+        map_destroy(w->map); free(w);
         return NULL;
     }
 
@@ -212,7 +155,7 @@ World *world_new(void) {
     if (!w->buildings) {
         HE("could not load tiles", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map); free(w);
+        map_destroy(w->map); free(w);
         return NULL;
     }
 
@@ -223,7 +166,7 @@ World *world_new(void) {
     if (!events_db) {
         HE("don't know where to load events from, set up an 'event db' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map);
+        map_destroy(w->map);
         building_list_destroy(w->buildings); free(w);
         return NULL;
     }
@@ -232,7 +175,7 @@ World *world_new(void) {
     if (!bf) {
         HE("could not open buildings db file", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map);
+        map_destroy(w->map);
         building_list_destroy(w->buildings); free(w);
         return NULL;
     }
@@ -241,7 +184,7 @@ World *world_new(void) {
     if (!w->events) {
         HE("could not load events", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
-        tile_list_destroy(w->map);
+        map_destroy(w->map);
         building_list_destroy(w->buildings); free(w);
         return NULL;
     }
@@ -257,14 +200,8 @@ World *world_new(void) {
     int columns = config_get_int("map columns");
     w->map_tiles = height * columns;
 
-    // as always, list of entities are null terminated
-    w->map = oopsalloc(w->map_tiles + 1, sizeof(Tile *),"world_new");
+    w->map = map_new(w->tiles, w->num_tiles, map_gen_random, w->map_tiles);
 
-    // choose a tile type at random from the list of tiles for each cell in the map
-    for (int i=0; i < w->map_tiles; i++){
-      //w->map[i] = tile_copy(w->tiles[_aleat_num(0, w->num_tiles-1)]);
-      w->map[i] = tile_copy(w->tiles[aleat_num(0, w->num_tiles - 1)]);
-    }
 
     // load initial game state
     char *initial_game_state = config_get("initial game state");
@@ -286,7 +223,7 @@ void world_destroy(World *w) {
   }
 
   building_list_destroy(w->buildings);
-  tile_list_destroy(w->map);
+  map_destroy(w->map);
   tile_list_destroy(w->tiles);
   event_list_destroy(w->events);
   resource_list_destroy(w->resources, w->num_resources);
@@ -306,7 +243,7 @@ World *world_next_turn(World *w){
 
   for(int i = 0; i < w->map_tiles; i++){
     int *resources = (int *) oopsalloc(MAX_RESOURCES, sizeof(int), "world_next_turn");
-    w->map[i] = tile_next_turn(w->map[i], resources);
+    tile_next_turn(map_tile_at_index(w->map, i), resources);
     for(int j = 0; j < w->num_resources; j++){
       w->wallet[j] += resources[j];
     }
@@ -368,7 +305,7 @@ Tile **world_get_tiles(World *w)
   return w->tiles;
 }
 
-Tile **world_get_map(World *w)
+Map *world_get_map(World *w)
 {
   if (!w) {
       HE("invalid parameters", "world_get_tiles");
@@ -451,7 +388,7 @@ void world_print(FILE *s, World *w)
     for (int i = 0; i < w->num_resources; resource_print(s, w->resources[i++]));
 
     fprintf(s, "\nTiles:\n");
-    for (int i = 0; w->map[i]; tile_print(s, w->map[i++]));
+    for (int i = 0; i < w->map_tiles; tile_print(s, map_tile_at_index(w->map, i++)));
 
     fprintf(s, "\nBuildings:\n");
     for (int i = 0; w->buildings[i]; building_print(s, w->buildings[i++]));
@@ -471,12 +408,12 @@ int world_wallet_delta(World *w, int resource_id, int delta)
 
 Tile *world_tile_at_index(World *w, int tile_index)
 {
-    if (!w || tile_index < 0 || tile_index >= w->map_tiles) {
+    if (!w) {
         HE("invalid arguments", "world_tile_at_index");
         return NULL;
     }
 
-    return w->map[tile_index];
+    return map_tile_at_index(w->map, tile_index);
 }
 
 int world_get_player_level(World *w)
@@ -495,8 +432,8 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     }
 
     // if tile is occupied, reject buildings that are not an upgrade
-    int is_upgrade = building_is_upgrade(b, tile_get_building(w->map[tile_index]));
-    if (tile_get_building(w->map[tile_index]) && !is_upgrade)
+    int is_upgrade = building_is_upgrade(b, tile_get_building(map_tile_at_index(w->map, tile_index)));
+    if (tile_get_building(map_tile_at_index(w->map, tile_index)) && !is_upgrade)
         return WORLD_BUILD_OCCUPIED;
 
     // check if building can be build at the player's current level
@@ -513,7 +450,7 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     }
 
     // link building to tile
-    if (UINT_ERROR == tile_build(w->map[tile_index], b)) {
+    if (UINT_ERROR == tile_build(map_tile_at_index(w->map, tile_index), b)) {
         HE("could not build for some reason", "world_build_on_tile");
         return UINT_ERROR;
     }
