@@ -6,18 +6,13 @@
 #include <string.h>
 
 #define TILE_INFO_LINES 4
-
-//TODO: Load this array below from files
-UIRect text_coords[]={
-  {276, 132, 39, 7}, //Visible or not, line 0
-  {276, 144, 39, 7}, //Enemies or hp, line 1
-  {276, 156, 43, 7}, //Resources per turn, line 2
-  {276, 168, 39, 7}  //Remaining resources, line 3
-};
+#define RESOURCE_ICON_WIDTH 16
+#define LINE_HEIGHT 12
 
 struct _UITileInfo {
     World *w;
     UITextPanel *tp[TILE_INFO_LINES];
+    UIRect text_coords[TILE_INFO_LINES];
 };
 
 
@@ -32,8 +27,16 @@ UITileInfo *ui_tile_info_new(World *w, UIRect dim)
 
     ti->w = w;
     for(int i = 0; i < TILE_INFO_LINES; ++i){
-      ti->tp[i] = ui_text_panel_new(text_coords[i], ui_get_font());
+      ti->text_coords[i] = (UIRect) {
+          .x = dim.x + RESOURCE_ICON_WIDTH,
+          .y = dim.y + i * LINE_HEIGHT,
+          .width = dim.width - RESOURCE_ICON_WIDTH,
+          .height = 7 // TODO: where does this come from
+      };
+
+      ti->tp[i] = ui_text_panel_new(ti->text_coords[i], ui_get_font());
     }
+
     return ti;
 }
 
@@ -43,12 +46,17 @@ void ui_tile_info_draw(UITileInfo *ti, int tile_index)
         HE("invalid arguments", "ui_tile_info_draw");
         return;
     }
-    for(int i = 0; i < TILE_INFO_LINES; ++i){
+    for (int i = 0; i < TILE_INFO_LINES; ++i){
       ui_tile_info_print_single_line(ti,tile_index, i);
     }
 }
 
 void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_index){
+    if (!ti || line_index < 0 || line_index >= TILE_INFO_LINES) {
+        HE("invalid arguments", "ui_tile_info_print_single_line");
+        return;
+    }
+
   Tile *tile = world_tile_at_index(ti->w, tile_index);
   if (!tile) {
       HE("could not retrieve tile", "ui_tile_info_draw");
@@ -61,7 +69,7 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         ui_text_panel_print(ti->tp[line_index], "Not visible");
         break;
       case 1:;
-        char *enem_hp = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_tile_info_print_single_line");
+        char *enem_hp = oopsalloc(strlen("0000000") + 1, sizeof(char), "ui_tile_info_print_single_line");
         sprintf(enem_hp, "%07d", tile_get_enemies(tile));
         ui_text_panel_print(ti->tp[line_index], enem_hp);
         free(enem_hp);

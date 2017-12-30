@@ -28,6 +28,7 @@ struct _UI {
 
     UIRect top_sidebar_dim;
     UIRect bottom_sidebar_dim;
+    UIRect text_panel_dim;
 };
 
 int ui_setup(World *w)
@@ -39,31 +40,26 @@ int ui_setup(World *w)
 
     ui = oopsalloc(1, sizeof(UI), "ui_setup");
 
-    ui->top_sidebar_dim.x       = 260;
-    ui->top_sidebar_dim.y       = 1;
-    ui->top_sidebar_dim.width   = 45;
-    ui->top_sidebar_dim.height  = 100;
-
-    ui->bottom_sidebar_dim.x       = 260;
-    ui->bottom_sidebar_dim.y       = 101;
-    ui->bottom_sidebar_dim.width   = 45;
-    ui->bottom_sidebar_dim.height  = 70;
+    ui->top_sidebar_dim         = (UIRect) { .x = 260,  .y = 12,     .width = 60,    .height = 95 };
+    ui->bottom_sidebar_dim      = (UIRect) { .x = 260,  .y = 132,   .width = 60,    .height = 70 };
+    ui->text_panel_dim          = (UIRect) { .x = 1,    .y = 153,   .width = 250,   .height = 27 };
 
     ui->w = w;
 
     ui->font = ui_font_new(config_get("font path"));
     ui->map = ui_map_new(ui->w);
-    ui->tp = ui_text_panel_new((UIRect ) { 1, 150, 250, 30 }, ui->font);
-    ui->ti = ui_tile_info_new(ui->w, ui->top_sidebar_dim);
-    ui->wi = ui_world_info_new(ui->w, ui->bottom_sidebar_dim);
+    ui->tp = ui_text_panel_new(ui->text_panel_dim, ui->font);
+    ui->wi = ui_world_info_new(ui->w, ui->top_sidebar_dim);
+    ui->ti = ui_tile_info_new(ui->w, ui->bottom_sidebar_dim);
     ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
-    if(!ui->sprite_dict){
-      HE("Error creating the sprite dictionary", "ui_setup")
-      return UINT_ERROR;
+
+    if (!ui->font || !ui->map || !ui->tp || !ui->ti || !ui->wi || !ui->sprite_dict) {
+        HE("Could not initialize UI", "ui_setup");
+        return UINT_ERROR;
     }
 
+    ui_draw_interface();
     ui_map_draw(ui->map);
-    sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "interphace"), 0, 0); /* TODO: Shall this line be a function itself?*/
     ui_update_tile_info();
     ui_update_world_info();
     return !UINT_ERROR;
@@ -154,4 +150,12 @@ UIRect ui_get_top_sidebar_dim()
     if (!ui)
         return (UIRect) { 0 };
     return ui->top_sidebar_dim;
+}
+
+void ui_draw_interface()
+{
+    if (!ui)
+        return;
+
+    sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "interface"), 0, 0);
 }

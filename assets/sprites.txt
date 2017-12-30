@@ -4,6 +4,6 @@ background
 cursor_on
 cursor_off
 forest
-interphace
+interface
 quarry
 water

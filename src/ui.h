@@ -94,6 +94,12 @@ int ui_show_msg(char *msg);
 
 UIRect ui_get_top_sidebar_dim();
 
+
+/*
+ * Draws the frames and non-changing parts of the interface.
+ */
+void ui_draw_interface();
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 

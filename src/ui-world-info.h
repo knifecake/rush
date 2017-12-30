@@ -38,6 +38,7 @@ void ui_world_info_draw(UIWorldInfo *wi);
  * 7     7st Resource
  */
 void ui_world_info_print_single_line (UIWorldInfo *wi, int index);
+
 /*
  * Frees all the memory associated with a UIWorldInfo component that was
  * allocated by ui_world_info_new.

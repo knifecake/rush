@@ -9,6 +9,10 @@
  * A world info panel intended to be displayed on the top of the sidebar.
  */
 
+#define WORLD_INFO_LINES (MAX_RESOURCES + 1)
+#define LINE_HEIGHT 12
+#define RESOURCE_ICON_WIDTH 16
+
  /*
   * TODO: Implement this array below to be loaded from file
   */
@@ -28,6 +32,7 @@ struct _UIWorldInfo {
     World *w;
 
     UITextPanel *tp[MAX_RESOURCES+1];
+    UIRect text_dim[WORLD_INFO_LINES];
 };
 
 UIWorldInfo *ui_world_info_new(World *w, UIRect dim)
@@ -40,9 +45,18 @@ UIWorldInfo *ui_world_info_new(World *w, UIRect dim)
     UIWorldInfo *wi = oopsalloc(1, sizeof(UIWorldInfo), "ui_world_info_new");
 
     wi->w = w;
-    for(int i = 0; i < MAX_RESOURCES+1; ++i){
-      wi->tp[i] = ui_text_panel_new(text_dim[i], ui_get_font());
+
+    for(int i = 0; i < WORLD_INFO_LINES; ++i){
+      wi->text_dim[i] = (UIRect) {
+          .x = dim.x + RESOURCE_ICON_WIDTH,
+          .y = dim.y + i * LINE_HEIGHT,
+          .width = dim.width  - RESOURCE_ICON_WIDTH,
+          .height = 7
+      };
+
+      wi->tp[i] = ui_text_panel_new(wi->text_dim[i], ui_get_font());
     }
+
     return wi;
 }
 

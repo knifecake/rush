@@ -37,7 +37,7 @@ void ui_tile_info_draw(UITileInfo *ti, int tile_index);
  * 2     Resources per turn
  * 3     Remaining resources
  */
-void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_index);
+void ui_tile_info_print_single_line(UITileInfo *ti, int tile_index, int line_index);
 
 /*
  * Frees all the memory associated with a UITileInfo component that was
