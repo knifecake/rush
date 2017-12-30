@@ -63,6 +63,7 @@ int ui_setup(World *w)
     }
 
     ui_map_draw(ui->map);
+    sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "interphace"), 0, 0); /* TODO: Shall this line be a function itself?*/
     ui_update_tile_info();
     ui_update_world_info();
     return !UINT_ERROR;

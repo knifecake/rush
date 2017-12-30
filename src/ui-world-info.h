@@ -25,6 +25,20 @@ UIWorldInfo *ui_world_info_new(World *w, UIRect dim);
 void ui_world_info_draw(UIWorldInfo *wi);
 
 /*
+ * Refreshes just one line of the world info panel.
+ * Lines indexes as follows:
+ * Index Field
+ * 0     Level
+ * 1     1st Resource
+ * 2     2st Resource
+ * 3     3st Resource
+ * 4     4st Resource
+ * 5     5st Resource
+ * 6     6st Resource
+ * 7     7st Resource
+ */
+void ui_world_info_print_single_line (UIWorldInfo *wi, int index);
+/*
  * Frees all the memory associated with a UIWorldInfo component that was
  * allocated by ui_world_info_new.
  */

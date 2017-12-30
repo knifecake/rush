@@ -29,6 +29,17 @@ UITileInfo *ui_tile_info_new(World *w, UIRect dim);
 void ui_tile_info_draw(UITileInfo *ti, int tile_index);
 
 /*
+ * Refreshes just one line of the tile info panel.
+ * Lines indexes as follows:
+ * Index Field
+ * 0     Visible or not NOTE: Isn't this completely useless?
+ * 1     Number of enemies or hp
+ * 2     Resources per turn
+ * 3     Remaining resources
+ */
+void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_index);
+
+/*
  * Frees all the memory associated with a UITileInfo component that was
  * allocated by ui_tile_info_new.
  */

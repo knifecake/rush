@@ -12,8 +12,11 @@ void ui_draw_rect(UIRect r, char border)
     int i = r.x, j = r.y;
 
     // TODO: setting a white color, maybe make this customizable
-    fprintf(stdout, "\033[255;255;255m");
-
+    if(border == ' '){
+      fprintf(stdout, "\033[48;2;%d;%d;%dm",78, 74, 78);
+    }else{
+      fprintf(stdout, "\033[%d;%d;%dm",78, 74, 78);
+    }
     fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
     // print the top border
