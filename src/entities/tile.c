@@ -55,7 +55,8 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
 
   tile->enemies = enemies;
   tile->building = NULL;
-  tile->visible = false;
+  //TODO: Change this to false and update it from world. Is in true for debug purposes.
+  tile->visible = true;
   tile->event = NULL;
 
   return tile;
@@ -95,7 +96,7 @@ return tile->resource_multipliers[resource_id];
 }
 
 int tile_get_remaining_resources (Tile *tile, int resource_id) {
-  if(!tile) {
+  if(!tile||resource_id < 0) {
     HE("invalid tile", "tile_get_remaining_resources")
     return INT_ERROR;
   }
@@ -208,17 +209,8 @@ Tile *tile_next_turn(Tile *tile, int *resources){
     HE("invalid resources pointer", "tile_next_turn")
     return NULL;
   }
-  int base;
-  float multiplier;
-  if(tile_get_building(tile)){
-    for(int i = 0; i < MAX_RESOURCES; i++){
-      base = tile_collect_resources(tile, i);
-      if (tile->event){
-        multiplier = event_get_mult(tile->event)[i];
-        base = (int)base*multiplier;
-      }
-      resources[i] = base;
-    }
+  for(int i = 0; i < MAX_RESOURCES; ++i){
+    resources[i] = tile_get_resource_per_turn(tile, i);
   }
   if(tile->event){
     if(!event_next_turn(tile->event)){
@@ -231,6 +223,31 @@ Tile *tile_next_turn(Tile *tile, int *resources){
     }
   }
   return tile;
+}
+int tile_get_resource_per_turn(Tile *tile, int resource_index){
+  int base;
+  float multiplier;
+  if(resource_index == -1){
+    return 0;
+  }
+  if(tile_get_building(tile)){
+    base = tile_collect_resources(tile, resource_index);
+    if (tile->event){
+      multiplier = event_get_mult(tile->event)[resource_index];
+      base = (int)base*multiplier;
+    }
+    return base;
+  }
+  return 0;
+}
+
+int tile_find_resource_index(Tile* t){
+  for(int i = 0; i < MAX_RESOURCES; ++i){
+    if (tile_get_resource_per_turn(t, i) != 0){
+      return i;
+    }
+  }
+  return -1;
 }
 
 Tile *tile_copy(Tile* src){
