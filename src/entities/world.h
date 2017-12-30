@@ -174,6 +174,11 @@ Tile *world_tile_at_index(World *w, int tile_index);
  */
 #define WORLD_BUILD_SUCCESS_UPGRADE 7
 
+/*
+ * Building wasn't successfully constructed due to tile was not visible
+ */
+#define WORLD_BUILD_NO_LIGHT 8
+
 int world_build_on_tile(World *w, int tile_index, Building *b);
 
 #endif

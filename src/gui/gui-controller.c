@@ -84,6 +84,9 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         case WORLD_BUILD_SUCCESS_UPGRADE:
             show_msg("The building on this tile was upgraded to the next level.");
             break;
+        case WORLD_BUILD_NO_LIGHT:
+            show_msg("The tile is not visible.");
+            break;
         default:
             show_msg("An error ocurred and nothing was built");
             ui_redraw_sidebar();

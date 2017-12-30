@@ -256,6 +256,7 @@ World *world_next_turn(World *w){
   */
  int i = 0;
   while(i < w->num_tiles){
+    //TODO: DEFINE ALEAT NUM
     int tile_affected = aleat_num(0, w->num_tiles);
     int affecting_event = aleat_num(0, w->num_events);
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
@@ -430,6 +431,10 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
         HE("invalid arguments", "world_build_on_tile");
         return UINT_ERROR;
     }
+    // if the tile is not visible, reject everything
+    int visible = tile_get_visible(map_tile_at_index(w->map, tile_index));
+    if(!visible)
+        return WORLD_BUILD_NO_LIGHT;
 
     // if tile is occupied, reject buildings that are not an upgrade
     int is_upgrade = building_is_upgrade(b, tile_get_building(map_tile_at_index(w->map, tile_index)));
