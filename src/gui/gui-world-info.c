@@ -83,13 +83,13 @@ void ui_world_info_print_single_line(UIWorldInfo* wi, int i){
   //NOTE: Shall this format be loaded from file?
   if (!i){
     char *lvl = oopsalloc(strlen("LVL. 000")+1, sizeof(char), "ui_world_info_draw");
-    sprintf(lvl, "LVL. %3d", world_get_player_level(wi->w));
+    sprintf(lvl, "LVL. %03d", world_get_player_level(wi->w));
     ui_text_panel_print(wi->tp[0], lvl);
     free(lvl);
     return;
   }
   char *info = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_world_info_draw");
-  sprintf(info, "%7d", world_get_resource_quantity(wi->w, i-1));
+  sprintf(info, "%07d", world_get_resource_quantity(wi->w, i-1));
   ui_text_panel_print(wi->tp[i], info);
   free(info);
   //TODO: Decide wether to use %03d and %07d or %3d and %7d.

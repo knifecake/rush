@@ -231,7 +231,7 @@ int tile_get_resource_per_turn(Tile *tile, int resource_index){
     return 0;
   }
   if(tile_get_building(tile)){
-    base = tile_collect_resources(tile, resource_index);
+    base = building_get_base_resources(tile_get_building(tile), resource_index) * tile_get_resource_multipliers(tile,resource_index);
     if (tile->event){
       multiplier = event_get_mult(tile->event)[resource_index];
       base = (int)base*multiplier;
