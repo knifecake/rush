@@ -58,8 +58,8 @@ int ui_setup(World *w)
         return UINT_ERROR;
     }
 
-    ui_draw_interface();
     ui_map_draw(ui->map);
+    ui_draw_interface();
     ui_update_tile_info();
     ui_update_world_info();
     return !UINT_ERROR;

@@ -42,6 +42,8 @@ Map *map_new(Tile **tiles, int num_tiles, layout_generation_function layout_gen,
 
 Tile *map_tile_at_index(Map *m, int tile_index);
 
+Tile **map_get_map_tiles(Map *m);
+
 void map_destroy(Map *m);
 
 #endif

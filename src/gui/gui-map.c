@@ -59,7 +59,7 @@ UIMap *ui_map_new(World *w){
     return NULL;
   }
 
-  m->tiles = world_get_map(w);
+  m->tiles = map_get_map_tiles(world_get_map(w));
   if(!m->tiles){
     HE("Error retrieving tile list from world", "ui_map_new")
     return NULL;

@@ -131,6 +131,14 @@ Tile *map_tile_at_index(Map *m, int tile_index)
     return m->map[tile_index];
 }
 
+Tile **map_get_map_tiles(Map *m){
+  if(!m){
+    HE("Input error", "map_get_map_tiles")
+    return NULL;
+  }
+  return m->map;
+}
+
 void map_destroy(Map *m)
 {
     if (!m)
