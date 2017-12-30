@@ -94,7 +94,16 @@ int tile_build (Tile *, Building *);
  * Returns -1 on error.
  */
 int tile_collect_resources(Tile *, int);
+/*
+ * Given a resource id and a tile, return the amount of resources multiplied by
+ * the event if it exists. Returns 0 if there's no building.
+ */
+int tile_get_resource_per_turn(Tile *, int);
 
+/*
+ * Finds the index of the only resource that will be collected
+ */
+int tile_find_resource_index(Tile *);
 /*
  * Returns a copy of the given tile or NULL on error.
  */

@@ -270,10 +270,6 @@ void _draw_map(UIMap *m){
   int screen_tiles = m->twice_screen_height/2;
   int initial_tile = m->first_index;
 
-  Sprite *background;
-  background = dict_get(ui_get_sprite_dict(), "background");
-  sprite_draw(stdout, background, 0, 0);
-
   for(int i = m->first_index, j=0, count=0; count < m->screen_tiles; count++){
     ui_map_redraw_tile(m, i);
     if(j == screen_tiles - 1){
