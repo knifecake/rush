@@ -3,6 +3,7 @@
 
 #include "terminal.h"
 #include "error_handling.h"
+#include "sprite.h"
 
 #define MAX_READ_STRING 10
 #define _POSIX_C_SOURCE 1
@@ -114,8 +115,8 @@ void term_resize_hint(FILE *in, FILE *out, int height, int width)
     term_read_key(in);
 
     // erase screen and move to the top left corner
-    fprintf(out, "\033[2J\033[1;1H");
-
+    /*fprintf(out, "\033[2J\033[1;1H");*/
+/*
     // draw a square
     for (int i = 0; i < width; i++)
         fprintf(out, "+");
@@ -130,8 +131,12 @@ void term_resize_hint(FILE *in, FILE *out, int height, int width)
     fprintf(out, "\n");
 
     for (int i = 0; i < width; i++)
-        fprintf(out, "+");
-
+        fprintf(out, "+");*/
+    FILE* img = fopen("assets/img/welcome.png", "r");
+    Sprite *s = sprite_new(img);
+    sprite_draw(out, s, 0, 70);
+    sprite_destroy(s);
+    fclose(img);
     // wait for user confirmation
     term_read_key(in);
 
