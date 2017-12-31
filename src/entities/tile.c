@@ -55,8 +55,7 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
 
   tile->enemies = enemies;
   tile->building = NULL;
-  //TODO: Change this to false and update it from world. Is in true for debug purposes.
-  tile->visible = true;
+  tile->visible = false;
   tile->event = NULL;
 
   return tile;
