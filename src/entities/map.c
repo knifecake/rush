@@ -25,11 +25,7 @@ struct _Map {
    * They are the neighbours of the hex clockwise being 0 the top one.
    */
     int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
-<<<<<<< 35ca50eb20ff62452781f930d4d0817db6938679
     int _tile_is_neighbour(int tile_index, int neighbour, bool odd);
-=======
-    int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd);
->>>>>>> Implement finding neighbours of a tile
 /*
  *
  */
@@ -206,21 +202,13 @@ void map_destroy(Map *m)
     free(m);
 }
 
-<<<<<<< 35ca50eb20ff62452781f930d4d0817db6938679
 int _tile_is_neighbour(int tile_index, int neighbour, bool odd){
   if (tile_index < 0){
-=======
-int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd){
-  if (!m || tile_index < 0){
->>>>>>> Implement finding neighbours of a tile
     HE("Input error", "_tile_is_neighbour")
     return UINT_ERROR;
   }
   int height = config_get_int("map height");
-<<<<<<< 35ca50eb20ff62452781f930d4d0817db6938679
   int width = config_get_int("map columns");
-=======
->>>>>>> Implement finding neighbours of a tile
   if(tile_index % height == 0){//First row
     if(neighbour == 0){
       return -1;
@@ -245,11 +233,7 @@ int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd){
   /*
    * Neighbour out of map (left, right, top-left, bottom-right)
    */
-<<<<<<< 35ca50eb20ff62452781f930d4d0817db6938679
   if(neigh_index < 0 || neigh_index >= height * width){
-=======
-  if(neigh_index < 0 || neigh_index >= m->map_tiles){
->>>>>>> Implement finding neighbours of a tile
     return -1;
   }
   return neigh_index;
@@ -268,11 +252,7 @@ int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd){
         return tile_index + h;
       return tile_index + h + 1;
     case 3:
-<<<<<<< 35ca50eb20ff62452781f930d4d0817db6938679
       return tile_index + 1;
-=======
-      return tile_index - 1;
->>>>>>> Implement finding neighbours of a tile
     case 4:
       if(odd)
         return tile_index - h;
