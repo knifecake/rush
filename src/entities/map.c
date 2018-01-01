@@ -26,6 +26,30 @@ struct _Map {
    */
     int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
     int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd);
+
+  /*
+   * This function return an array of 6 ints with the index of each neighbour,
+   * in case a neighbour doesn't exist in some direction, -1 will be the index of
+   * that direction. This returns neighbour assuming a hexagonal tile map.
+   */
+
+  /* Odd column:  Even column:
+   *  _______        ___
+   *  |N|N|N|        |N|
+   *  |N|T|N|      |N|T|N|
+   *    |N|        |N|N|N|
+   *
+   * These graphs above shows the distribution of the neighbour in a squared
+   * tile map, being T the tile given and N each neighbour.
+   *
+   *           |0|
+   *        |5|   |1|
+   *        ---|T|---
+   *        |4|   |2|
+   *           |3|
+   * The number indicates the neighbour number in relation to the tile.
+   */
+    int *_map_get_neighbour_tiles(Map *m, int tile_index);
 /*
  *
  */
@@ -153,7 +177,30 @@ Tile **map_get_map_tiles(Map *m){
   return m->map;
 }
 
-int *map_get_neighbour_tiles(Map *m, int tile_index){
+int map_update_neighbour_tiles(Map *m, int tile_index){
+  if(!m || tile_index < 0){
+    HE("Input error", "map_update_neighbour_tiles");
+    return UINT_ERROR;
+  }
+  int *neighbours = _map_get_neighbour_tiles(m, tile_index);
+  if(!neighbours){
+    HE("Error retrieving tile neighbours", "map_update_neighbour_tiles");
+    return UINT_ERROR;
+  }
+  for(int i = 0; i < 6; i++){
+    fprintf(stderr, "%d \t", neighbours[i]);
+  }
+  for (int i = 0; i < 6; i++) {
+    if (neighbours[i] == -1) continue;
+    if(UINT_ERROR == tile_set_visible(m->map[neighbours[i]], true)){
+      HE("Error setting tile visibility", "map_update_neighbour_tiles")
+      return UINT_ERROR;
+    }
+  }
+  return !UINT_ERROR;
+}
+
+int *_map_get_neighbour_tiles(Map *m, int tile_index){
   if(!m || tile_index < 0 || tile_index >= m->map_tiles ){
     HE("Input error", "map_get_neighbour_tiles")
     return NULL;
@@ -228,7 +275,7 @@ int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd){
         return tile_index + h;
       return tile_index + h + 1;
     case 3:
-      return tile_index - 1;
+      return tile_index + 1;
     case 4:
       if(odd)
         return tile_index - h;
