@@ -1,6 +1,6 @@
 #include "map.h"
 #include "../lib/error_handling.h"
-
+#include "../lib/config.h"
 #include <assert.h>
 
 struct _Map {
@@ -14,6 +14,20 @@ struct _Map {
 /*
  * TODO: IMPORTANT, sergio si esto no es tuyo tenemos que atribuirlo.
  * Also, if this is private, by convention it should be named _aleat_num;
+ */
+
+/*
+ * Private functions
+ */
+
+  /*
+   * In these functions neighbour is a number in the range [0,5].
+   * They are the neighbours of the hex clockwise being 0 the top one.
+   */
+    int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
+    int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd);
+/*
+ *
  */
 int aleat_num(int inf, int sup){
   int n, r;
@@ -139,6 +153,23 @@ Tile **map_get_map_tiles(Map *m){
   return m->map;
 }
 
+int *map_get_neighbour_tiles(Map *m, int tile_index){
+  if(!m || tile_index < 0 || tile_index >= m->map_tiles ){
+    HE("Input error", "map_get_neighbour_tiles")
+    return NULL;
+  }
+  int height = config_get_int("map height");
+  bool column_parity = (tile_index/height)%2;
+  int *neighbours = oopsalloc(6, sizeof(int), "map_get_neighbour_tiles");
+  neighbours[0] = _tile_is_neighbour(m, tile_index, 0, column_parity);
+  neighbours[1] = _tile_is_neighbour(m, tile_index, 1, column_parity);
+  neighbours[2] = _tile_is_neighbour(m, tile_index, 2, column_parity);
+  neighbours[3] = _tile_is_neighbour(m, tile_index, 3, column_parity);
+  neighbours[4] = _tile_is_neighbour(m, tile_index, 4, column_parity);
+  neighbours[5] = _tile_is_neighbour(m, tile_index, 5, column_parity);
+  return neighbours;
+}
+
 void map_destroy(Map *m)
 {
     if (!m)
@@ -146,4 +177,68 @@ void map_destroy(Map *m)
 
     for (int i = 0; i < m->map_tiles; tile_destroy(m->map[i++]));
     free(m);
+}
+
+int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd){
+  if (!m || tile_index < 0){
+    HE("Input error", "_tile_is_neighbour")
+    return UINT_ERROR;
+  }
+  int height = config_get_int("map height");
+  if(tile_index % height == 0){//First row
+    if(neighbour == 0){
+      return -1;
+    }
+    if(odd){
+      if(neighbour == 1 || neighbour == 5){
+        return -1;
+      }
+    }
+  }
+  if(tile_index % height == height - 1){//Last row
+    if(neighbour == 3){
+      return -1;
+    }
+    if(!odd){
+      if(neighbour == 2 || neighbour == 4){
+        return -1;
+      }
+    }
+  }
+  int neigh_index = _tile_calc_neighbour(tile_index, neighbour, height, odd);
+  /*
+   * Neighbour out of map (left, right, top-left, bottom-right)
+   */
+  if(neigh_index < 0 || neigh_index >= m->map_tiles){
+    return -1;
+  }
+  return neigh_index;
+}
+
+int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd){
+  switch (neighbour) {
+    case 0:
+      return tile_index - 1;
+    case 1:
+      if(odd)
+        return tile_index + h - 1;
+      return tile_index + h;
+    case 2:
+      if(odd)
+        return tile_index + h;
+      return tile_index + h + 1;
+    case 3:
+      return tile_index - 1;
+    case 4:
+      if(odd)
+        return tile_index - h;
+      return tile_index - h + 1;
+    case 5:
+      if(odd)
+        return tile_index - h - 1;
+      return tile_index - h;
+    default:
+      HE("Neighbour error", "_tile_is_neighbour")
+      return UINT_ERROR;
+  }
 }
