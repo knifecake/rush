@@ -157,6 +157,15 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
+int tile_set_visible(Tile *t, bool visible){
+  if(!t){
+    HE("Input error", "tile_set_visible")
+    return UINT_ERROR;
+  }
+  t->visible = visible;
+  return !UINT_ERROR;
+}
+
 int tile_build (Tile *tile, Building *bp){
   if (!tile){
     HE("invalid tile", "tile_build")

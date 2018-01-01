@@ -128,6 +128,12 @@ void world_print(FILE *f, World *w);
 int world_wallet_delta(World *w, int resource_id, int delta);
 
 /*
+ * Updates the neighbours given the tile_index.
+ * Returns UINT_ERROR on error.
+ */
+int world_update_neighbours(World *w,int tile_index);
+
+/*
  * Returns the tile at the given index, NULL on error.
  */
 Tile *world_tile_at_index(World *w, int tile_index);
