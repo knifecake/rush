@@ -55,26 +55,31 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
 
     // communicate the result to the user
     switch(result) {
-        case WORLD_BUILD_SUCCESS_LEVEL_UP:
-            show_msg("Building was constructed and you leveled up!");
-            break;
-        case WORLD_BUILD_SUCCESS:
-            show_msg("Building was constructed!");
-            break;
-        case WORLD_BUILD_NO_LEVEL:
-            show_msg("You need to level up before building this. Hint: upgrade townhall.");
-            break;
-        case WORLD_BUILD_NO_MONEY:
-            show_msg("You need to save more to build this");
-            break;
-        case WORLD_BUILD_OCCUPIED:
-            show_msg("There already is a building on that tile. You may only upgrade it to a higher level.");
-            break;
-        case WORLD_BUILD_SUCCESS_UPGRADE:
-            show_msg("The building on this tile was upgraded to the next level.");
-            break;
-        default:
-            show_msg("An error ocurred and nothing was built");
+      case WORLD_BUILD_SUCCESS_LEVEL_UP:
+          show_msg("Building was constructed and you leveled up!");
+          world_update_neighbours(w, tile_index);
+          break;
+      case WORLD_BUILD_SUCCESS:
+          show_msg("Building was constructed!");
+          world_update_neighbours(w, tile_index);
+          break;
+      case WORLD_BUILD_NO_LEVEL:
+          show_msg("You need to level up before building this. Hint: upgrade townhall.");
+          break;
+      case WORLD_BUILD_NO_MONEY:
+          show_msg("You need to save more to build this");
+          break;
+      case WORLD_BUILD_OCCUPIED:
+          show_msg("There already is a building on that tile. You may only upgrade it to a higher level.");
+          break;
+      case WORLD_BUILD_SUCCESS_UPGRADE:
+          show_msg("The building on this tile was upgraded to the next level.");
+          break;
+      case WORLD_BUILD_NO_LIGHT:
+          show_msg("The tile is not visible.");
+          break;
+      default:
+          show_msg("An error ocurred and nothing was built");
             return CTRL_ERROR;
     }
 

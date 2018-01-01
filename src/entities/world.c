@@ -213,6 +213,11 @@ World *world_new(void) {
         }
     }
 
+    //TODO: Change these lines below when issue #21 is fixed.
+    int initial_tile = config_get_int("initial cursor");
+    Tile *init_tile = world_tile_at_index(w, initial_tile);
+    tile_set_visible(init_tile, true);
+
     return w;
 }
 
@@ -477,4 +482,16 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
         return WORLD_BUILD_SUCCESS_UPGRADE;
 
     return WORLD_BUILD_SUCCESS;
+}
+
+int world_update_neighbours(World *w, int tile_index){
+  if(!w || tile_index < 0){
+    HE("Input error", "world_update_neighbours");
+    return UINT_ERROR;
+  }
+  if(UINT_ERROR == map_update_neighbour_tiles(w->map, tile_index)){
+    HE("Error updating map neighbours", "world_update_neighbours");
+    return UINT_ERROR;
+  }
+  return !UINT_ERROR;
 }

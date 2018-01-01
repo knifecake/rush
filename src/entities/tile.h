@@ -74,6 +74,12 @@ char *tile_get_sprite(Tile *t);
 Tile *tile_set_event (Tile *, Event *);
 
 /*
+ * Sets visibility of a tile, true for visible, false for not visible.
+ * Returns UINT_ERROR on error.
+ */
+int tile_set_visible(Tile *, bool);
+
+/*
  * TODO: Decide what tile_next_turn has to manage.
  * - event: calls function event_next_turn and then checks if the event has
  *          finished. If so, it frees the mem allocated by the event and sets
