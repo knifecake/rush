@@ -1,5 +1,7 @@
-8
-castle4
+13
+town_hall1
+town_hall2
+town_hall4
 background
 cursor_on
 cursor_off
@@ -7,3 +9,6 @@ forest
 interface
 quarry
 water
+forest!
+quarry!
+water!

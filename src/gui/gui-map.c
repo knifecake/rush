@@ -100,16 +100,34 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
     HE("Input error", "ui_map_redraw_tile")
     return;
   }
-  if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, tile_get_sprite(m->tiles[tile_index]))){
+  char *original_name = tile_get_sprite(m->tiles[tile_index]);
+  char *sprite_name = oopsalloc(strlen(original_name) + 2, sizeof(char), "ui_map_redraw_tile");
+  if(!tile_get_visible(m->tiles[tile_index])){
+    sprintf(sprite_name, "%s!", original_name);
+  }else{
+    strcpy(sprite_name, original_name);
+  }
+  if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, sprite_name)){
     HE("Error drawing tile given the index", "ui_map_redraw_tile")
     return;
   }
+  free(sprite_name);
+  if(!tile_get_visible(m->tiles[tile_index])) return;
+
   Building* b;
   if( (b = tile_get_building(m->tiles[tile_index])) ){
     if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, building_get_sprite(b))){
       HE("Error drawing building in the given index", "ui_map_redraw_tile")
       return;
     }
+  }
+  return;
+}
+void ui_map_redraw_neighbours(UIMap *m, int current_tile){
+  int *neighs = map_get_neighbour_tiles(current_tile);
+  for (int i = 0; i < 6; ++i) {
+    if(neighs[i] == -1) continue;
+    ui_map_redraw_tile(m, neighs[i]);
   }
   return;
 }
@@ -201,6 +219,7 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   Sprite* s;
   s = dict_get(ui_get_sprite_dict(), sprite_name);
   if(!s){
+    fprintf(stderr, "%s\n", sprite_name);
     HE("Error retrieving sprite data from sprite dictionary", "_draw_sprite_in_index");
     return UINT_ERROR;
   }
