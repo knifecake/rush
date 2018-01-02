@@ -64,13 +64,15 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // update the model (entity) to reflect the changes that took place
     int result = world_build_on_tile(w, tile_index, b);
 
-    // communicate the result to the user
+    // communicate the result to the user and update neighbours
     switch(result) {
         case WORLD_BUILD_SUCCESS_LEVEL_UP:
             show_msg("Building was constructed and you leveled up!");
+            world_update_neighbours(w, tile_index);
             break;
         case WORLD_BUILD_SUCCESS:
             show_msg("Building was constructed!");
+            world_update_neighbours(w, tile_index);
             break;
         case WORLD_BUILD_NO_LEVEL:
             show_msg("You need to level up before building this. Hint: upgrade townhall.");
@@ -94,7 +96,15 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     }
 
     // redraw the current tile. TODO: think about who should do this
-    // ui_map_draw_tile(current_tile);
+    ui_redraw_tile(tile_index);
+    switch (result) {
+      case WORLD_BUILD_SUCCESS_LEVEL_UP:
+      case WORLD_BUILD_SUCCESS:
+        ui_redraw_neighbours(tile_index);
+        break;
+      default:
+        break;
+    }
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     ui_redraw_sidebar();

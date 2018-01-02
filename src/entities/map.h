@@ -44,6 +44,32 @@ Tile *map_tile_at_index(Map *m, int tile_index);
 
 Tile **map_get_map_tiles(Map *m);
 
+int map_update_neighbour_tiles(Map *m, int tile_index);
+
+/*
+ * This function return an array of 6 ints with the index of each neighbour,
+ * in case a neighbour doesn't exist in some direction, -1 will be the index of
+ * that direction. This returns neighbour assuming a hexagonal tile map.
+ */
+
+/* Odd column:  Even column:
+ *  _______        ___
+ *  |N|N|N|        |N|
+ *  |N|T|N|      |N|T|N|
+ *    |N|        |N|N|N|
+ *
+ * These graphs above shows the distribution of the neighbour in a squared
+ * tile map, being T the tile given and N each neighbour.
+ *
+ *           |0|
+ *        |5|   |1|
+ *        ---|T|---
+ *        |4|   |2|
+ *           |3|
+ * The number indicates the neighbour number in relation to the tile.
+ */
+int *map_get_neighbour_tiles(int tile_index);
+
 void map_destroy(Map *m);
 
 #endif

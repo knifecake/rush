@@ -44,6 +44,8 @@ void _draw_map(UIMap *m);
 
 void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real);
 
+bool _tile_is_in_screen(UIMap *m, int tile_index);
+
 UIMap *ui_map_new(World *w){
   if(!w){
     HE("Input error", "ui_map_new")
@@ -100,10 +102,20 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
     HE("Input error", "ui_map_redraw_tile")
     return;
   }
-  if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, tile_get_sprite(m->tiles[tile_index]))){
+  char *original_name = tile_get_sprite(m->tiles[tile_index]);
+  char *sprite_name = oopsalloc(strlen(original_name) + 2, sizeof(char), "ui_map_redraw_tile");
+  if(!tile_get_visible(m->tiles[tile_index])){
+    sprintf(sprite_name, "%s!", original_name);
+  }else{
+    strcpy(sprite_name, original_name);
+  }
+  if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, sprite_name)){
     HE("Error drawing tile given the index", "ui_map_redraw_tile")
     return;
   }
+  free(sprite_name);
+  if(!tile_get_visible(m->tiles[tile_index])) return;
+
   Building* b;
   if( (b = tile_get_building(m->tiles[tile_index])) ){
     if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, building_get_sprite(b))){
@@ -111,6 +123,15 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
       return;
     }
   }
+  return;
+}
+void ui_map_redraw_neighbours(UIMap *m, int current_tile){
+  int *neighs = map_get_neighbour_tiles(current_tile);
+  for (int i = 0; i < 6; ++i) {
+    if(neighs[i] == -1) continue;
+    ui_map_redraw_tile(m, neighs[i]);
+  }
+  free(neighs);
   return;
 }
 
@@ -183,13 +204,12 @@ int _relative_coordinates (UIMap* m, int index){
 }
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
-  int tiles_in_screen, coord, x, y;
+  int coord, x, y;
   FILE *fp = stdout;
 
-  tiles_in_screen = m->screen_tiles;
-
   coord = _relative_coordinates(m, index);
-  if ((coord == UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
+  if (!_tile_is_in_screen(m, index)){
+    fprintf(stderr, "%d %d\n",m->first_index, index);
     HE("Coordinates out of map view", "_draw_sprite_in_index")
     return UINT_ERROR;
   }
@@ -201,6 +221,7 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
   Sprite* s;
   s = dict_get(ui_get_sprite_dict(), sprite_name);
   if(!s){
+    fprintf(stderr, "%s\n", sprite_name);
     HE("Error retrieving sprite data from sprite dictionary", "_draw_sprite_in_index");
     return UINT_ERROR;
   }
@@ -316,4 +337,12 @@ void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int heig
     }
   }
   return;
+}
+
+bool _tile_is_in_screen(UIMap *m, int tile_index){
+  for (int i = 0; i < m->screen_columns; ++i) {
+    if(tile_index >= m->first_index + i*m->true_height && tile_index < m->first_index + m->twice_screen_height/2 + i*m->true_height)
+      return true;
+  }
+  return false;
 }

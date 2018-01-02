@@ -55,8 +55,7 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
 
   tile->enemies = enemies;
   tile->building = NULL;
-  //TODO: Change this to false and update it from world. Is in true for debug purposes.
-  tile->visible = true;
+  tile->visible = false;
   tile->event = NULL;
 
   return tile;
@@ -156,6 +155,15 @@ Tile *tile_set_event (Tile *tile, Event *event){
     return NULL;
   }
   return tile;
+}
+
+int tile_set_visible(Tile *t, bool visible){
+  if(!t){
+    HE("Input error", "tile_set_visible")
+    return UINT_ERROR;
+  }
+  t->visible = visible;
+  return !UINT_ERROR;
 }
 
 int tile_build (Tile *tile, Building *bp){
