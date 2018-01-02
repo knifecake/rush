@@ -73,7 +73,7 @@ void ui_world_info_draw(UIWorldInfo *wi)
         return;
     }
 
-    for(int i = 0; i < MAX_RESOURCES+1; ++i){
+    for(int i = 0; i < MAX_RESOURCES + 1; ++i){
       ui_world_info_print_single_line(wi, i);
     }
     //TODO: Print resources icons.
@@ -100,11 +100,22 @@ void ui_world_info_print_single_line(UIWorldInfo* wi, int i){
     sprintf(lvl, "LVL. %03d", world_get_player_level(wi->w));
     ui_text_panel_print(wi->tp[0], lvl);
     free(lvl);
-    return;
+  }else{
+    char *info = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_world_info_draw");
+    sprintf(info, "%07d", world_get_resource_quantity(wi->w, i-1));
+    ui_text_panel_print(wi->tp[i], info);
+    free(info);
   }
-  char *info = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_world_info_draw");
-  sprintf(info, "%07d", world_get_resource_quantity(wi->w, i-1));
-  ui_text_panel_print(wi->tp[i], info);
-  free(info);
+  fprintf(stderr, "%d\n", i);
+  char res[20];
+  Sprite *resource;
+  sprintf(res, "resource_%d", i);
+  resource = dict_get(ui_get_sprite_dict(), res);
+  int x = 263;
+  int y = 10;
+  y += i*LINE_HEIGHT;
+
+  sprite_draw(stdout, resource, x, y);
+
   //TODO: Decide wether to use %03d and %07d or %3d and %7d.
 }

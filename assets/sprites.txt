@@ -1,4 +1,4 @@
-13
+21
 town_hall1
 town_hall2
 town_hall4
@@ -12,3 +12,12 @@ water
 forest!
 quarry!
 water!
+resource_0
+resource_1
+resource_2
+resource_3
+resource_4
+resource_5
+resource_6
+resource_7
+
