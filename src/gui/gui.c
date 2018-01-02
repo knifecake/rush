@@ -103,7 +103,12 @@ int ui_get_cursor()
 }
 
 int ui_redraw_tile(int tile_index){
-  /*TODO: Implement this*/
+  ui_map_redraw_tile(ui->map, tile_index);
+  return !UINT_ERROR;
+}
+
+int ui_redraw_neighbours(int tile_index){
+  ui_map_redraw_neighbours(ui->map, tile_index);
   return !UINT_ERROR;
 }
 

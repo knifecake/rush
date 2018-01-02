@@ -25,31 +25,7 @@ struct _Map {
    * They are the neighbours of the hex clockwise being 0 the top one.
    */
     int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
-    int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd);
-
-  /*
-   * This function return an array of 6 ints with the index of each neighbour,
-   * in case a neighbour doesn't exist in some direction, -1 will be the index of
-   * that direction. This returns neighbour assuming a hexagonal tile map.
-   */
-
-  /* Odd column:  Even column:
-   *  _______        ___
-   *  |N|N|N|        |N|
-   *  |N|T|N|      |N|T|N|
-   *    |N|        |N|N|N|
-   *
-   * These graphs above shows the distribution of the neighbour in a squared
-   * tile map, being T the tile given and N each neighbour.
-   *
-   *           |0|
-   *        |5|   |1|
-   *        ---|T|---
-   *        |4|   |2|
-   *           |3|
-   * The number indicates the neighbour number in relation to the tile.
-   */
-    int *_map_get_neighbour_tiles(Map *m, int tile_index);
+    int _tile_is_neighbour(int tile_index, int neighbour, bool odd);
 /*
  *
  */
@@ -182,38 +158,38 @@ int map_update_neighbour_tiles(Map *m, int tile_index){
     HE("Input error", "map_update_neighbour_tiles");
     return UINT_ERROR;
   }
-  int *neighbours = _map_get_neighbour_tiles(m, tile_index);
+  int *neighbours = map_get_neighbour_tiles(tile_index);
   if(!neighbours){
     HE("Error retrieving tile neighbours", "map_update_neighbour_tiles");
     return UINT_ERROR;
-  }
-  for(int i = 0; i < 6; i++){
-    fprintf(stderr, "%d \t", neighbours[i]);
   }
   for (int i = 0; i < 6; i++) {
     if (neighbours[i] == -1) continue;
     if(UINT_ERROR == tile_set_visible(m->map[neighbours[i]], true)){
       HE("Error setting tile visibility", "map_update_neighbour_tiles")
+      free(neighbours);
       return UINT_ERROR;
     }
   }
+  free(neighbours);
   return !UINT_ERROR;
 }
 
-int *_map_get_neighbour_tiles(Map *m, int tile_index){
-  if(!m || tile_index < 0 || tile_index >= m->map_tiles ){
+int *map_get_neighbour_tiles(int tile_index){
+  int height = config_get_int("map height");
+  int width = config_get_int("map columns");
+  if(tile_index < 0 || tile_index >= height * width){
     HE("Input error", "map_get_neighbour_tiles")
     return NULL;
   }
-  int height = config_get_int("map height");
   bool column_parity = (tile_index/height)%2;
   int *neighbours = oopsalloc(6, sizeof(int), "map_get_neighbour_tiles");
-  neighbours[0] = _tile_is_neighbour(m, tile_index, 0, column_parity);
-  neighbours[1] = _tile_is_neighbour(m, tile_index, 1, column_parity);
-  neighbours[2] = _tile_is_neighbour(m, tile_index, 2, column_parity);
-  neighbours[3] = _tile_is_neighbour(m, tile_index, 3, column_parity);
-  neighbours[4] = _tile_is_neighbour(m, tile_index, 4, column_parity);
-  neighbours[5] = _tile_is_neighbour(m, tile_index, 5, column_parity);
+  neighbours[0] = _tile_is_neighbour(tile_index, 0, column_parity);
+  neighbours[1] = _tile_is_neighbour(tile_index, 1, column_parity);
+  neighbours[2] = _tile_is_neighbour(tile_index, 2, column_parity);
+  neighbours[3] = _tile_is_neighbour(tile_index, 3, column_parity);
+  neighbours[4] = _tile_is_neighbour(tile_index, 4, column_parity);
+  neighbours[5] = _tile_is_neighbour(tile_index, 5, column_parity);
   return neighbours;
 }
 
@@ -226,12 +202,13 @@ void map_destroy(Map *m)
     free(m);
 }
 
-int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd){
-  if (!m || tile_index < 0){
+int _tile_is_neighbour(int tile_index, int neighbour, bool odd){
+  if (tile_index < 0){
     HE("Input error", "_tile_is_neighbour")
     return UINT_ERROR;
   }
   int height = config_get_int("map height");
+  int width = config_get_int("map columns");
   if(tile_index % height == 0){//First row
     if(neighbour == 0){
       return -1;
@@ -256,7 +233,7 @@ int _tile_is_neighbour(Map *m, int tile_index, int neighbour, bool odd){
   /*
    * Neighbour out of map (left, right, top-left, bottom-right)
    */
-  if(neigh_index < 0 || neigh_index >= m->map_tiles){
+  if(neigh_index < 0 || neigh_index >= height * width){
     return -1;
   }
   return neigh_index;

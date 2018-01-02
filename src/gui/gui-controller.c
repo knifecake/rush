@@ -96,7 +96,15 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     }
 
     // redraw the current tile. TODO: think about who should do this
-    // ui_map_draw_tile(current_tile);
+    ui_redraw_tile(tile_index);
+    switch (result) {
+      case WORLD_BUILD_SUCCESS_LEVEL_UP:
+      case WORLD_BUILD_SUCCESS:
+        ui_redraw_neighbours(tile_index);
+        break;
+      default:
+        break;
+    }
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     ui_redraw_sidebar();

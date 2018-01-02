@@ -38,10 +38,15 @@ void ui_map_update_cursor(UIMap *, int cursor);
 int ui_map_get_cursor(UIMap *m);
 
 /*
- * Redraws a spectific Tile (if visible) on the map. This function gets called,
+ * Redraws a spectific Tile (if in-screen) on the map. This function gets called,
  * for instance, when a building is constructed in one of the tiles.
  */
 void ui_map_redraw_tile(UIMap *m, int tile_index);
+
+/*
+ * Redraws all neighbours of a specific tile in the map.
+ */
+void ui_map_redraw_neighbours(UIMap *, int);
 
 /*
 * Draws a new map starting from (x,y).
