@@ -44,6 +44,8 @@ void _draw_map(UIMap *m);
 
 void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int height, int n_columns, bool real);
 
+bool _tile_is_in_screen(UIMap *m, int tile_index);
+
 UIMap *ui_map_new(World *w){
   if(!w){
     HE("Input error", "ui_map_new")
@@ -129,6 +131,7 @@ void ui_map_redraw_neighbours(UIMap *m, int current_tile){
     if(neighs[i] == -1) continue;
     ui_map_redraw_tile(m, neighs[i]);
   }
+  free(neighs);
   return;
 }
 
@@ -201,13 +204,12 @@ int _relative_coordinates (UIMap* m, int index){
 }
 
 int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
-  int tiles_in_screen, coord, x, y;
+  int coord, x, y;
   FILE *fp = stdout;
 
-  tiles_in_screen = m->screen_tiles;
-
   coord = _relative_coordinates(m, index);
-  if ((coord == UINT_ERROR) || coord < 0 || coord >= tiles_in_screen){
+  if (!_tile_is_in_screen(m, index)){
+    fprintf(stderr, "%d %d\n",m->first_index, index);
     HE("Coordinates out of map view", "_draw_sprite_in_index")
     return UINT_ERROR;
   }
@@ -335,4 +337,12 @@ void _calculate_edge (UIMap *m, UIMapVector *edge1, UIMapVector *edge2, int heig
     }
   }
   return;
+}
+
+bool _tile_is_in_screen(UIMap *m, int tile_index){
+  for (int i = 0; i < m->screen_columns; ++i) {
+    if(tile_index >= m->first_index + i*m->true_height && tile_index < m->first_index + m->twice_screen_height/2 + i*m->true_height)
+      return true;
+  }
+  return false;
 }
