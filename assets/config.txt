@@ -19,6 +19,9 @@ assets/sprites.txt
 sprite dir
 assets/img/
 
+audio dir
+asset/audio/
+
 events db
 assets/events.txt
 

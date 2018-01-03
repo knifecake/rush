@@ -1,6 +1,10 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <sys/types.h>
+
+#define MAX_AUDIOS_REPEATING 5 //TODO: Load this from file. Notice this macro is
+                               // also present int test_audio.c
+
 typedef struct _Audios Audios;
 
 typedef enum { PID, NAME } audio_key_t;

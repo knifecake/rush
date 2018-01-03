@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "minitest.h"
+#include "../src/lib/audio.h"
+#include "../src/lib/error_handling.h"
+
+#define NON_REPEATING "test/assets/audio/non_repeat.ogg"
+#define REPEATING "test/assets/audio/repeat.ogg"
+int main(void) {
+  Audios *auds = audios_new();
+  assert("Can create a list of process ids", auds);
+  /* Non repeating tests */
+  assert("Can play a non-repeating audio", play_audio(NON_REPEATING, false));
+  assert("Cannot play a non-repeating audio if file does not exists", !play_audio("test/assets/audio/thisfiledoesnotexists.ogg", false));
+  /* Repeating tests */
+  pid_t pid[MAX_AUDIOS_REPEATING] = {0};
+  assert("Cannot play a repeating audio if file does not exists", !play_audio("test/assets/audio/thisfiledoesnotexists.ogg", true));
+  assert("Can play a repeating audio", (pid[0] = play_audio(REPEATING, true)));
+  assert("Can stop a repeating audio", UINT_ERROR != stop_audio(&pid[0], PID));
+  for (size_t i = 0; i < MAX_AUDIOS_REPEATING; i++) {
+    assert("Can play a repeating audio", (pid[i] = play_audio(REPEATING, true)));
+  }
+  assert("Cannot play a repeating audio if list is full", !play_audio(REPEATING, true));
+  assert("Can stop last repeating audio",  UINT_ERROR != stop_audio(&pid[4], PID));
+  assert("Can play a repeating audio at last position", (pid[4] = play_audio(REPEATING, true)));
+  assert("Can stop a repeating audio",  UINT_ERROR != stop_audio(&pid[0], PID));
+  assert("Can stop a repeating audio",  UINT_ERROR != stop_audio(&pid[3], PID));
+  assert("Can play a repeating audio after stopping some of them", (pid[3] = play_audio(REPEATING, true)));
+  assert("Can play a repeating audio after stopping some of them", (pid[0] = play_audio(REPEATING, true)));
+  assert("Cannot play a repeating audio if list is full", !play_audio(REPEATING, true));
+  audios_destroy();
+  assert("Can destroy and stop all playing repeating audios", true);
+  return failed_tests();
+}

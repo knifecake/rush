@@ -6,15 +6,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX_AUDIOS_REPEATING 20 //TODO: Load these from file.
-#define MAX_AUDIO_NAME_LEN 30
+//TODO: Load these from file.
+#define MAX_AUDIO_NAME_LEN 128
 #define OGG123_PATH "/usr/bin/ogg123"
 
 struct _Audios{
   pid_t pids[MAX_AUDIOS_REPEATING];
   char name[MAX_AUDIOS_REPEATING][MAX_AUDIO_NAME_LEN];
   int num_pids;
-  int empty_record;
+  int last_pid;
 };
 /* Private functions */
 int _add_rec(pid_t pid, char *name);
@@ -29,7 +29,7 @@ pid_t play_audio(char *filename, bool repeating){
   }
   pid_t pid;
   if(repeating){
-    if (playing_audios->num_pids == MAX_AUDIOS_REPEATING){
+    if (playing_audios->num_pids >= MAX_AUDIOS_REPEATING){
       HE("Cannot play another repeating audio", "play_audio")
       return 0;
     }
@@ -41,7 +41,7 @@ pid_t play_audio(char *filename, bool repeating){
       exit(0);
     }
     if (UINT_ERROR == _add_rec(pid, filename)){
-      HE("Error adding record", "play_audio")
+      HE("Error adding record, you'll need to stop the music manually", "play_audio")
       return 0;
     }
     return pid;
@@ -65,8 +65,7 @@ int stop_audio(void *key, audio_key_t type){
   switch (type) {
     case PID:
       pid = *(pid_t *)key;
-      playing_audios->empty_record=_del_rec(pid);
-      if(playing_audios->empty_record == -1){
+      if(_del_rec(pid) == -1){
         HE("Error deleting record", "stop_audio")
         return UINT_ERROR;
       }
@@ -78,8 +77,7 @@ int stop_audio(void *key, audio_key_t type){
         return UINT_ERROR;
       }
       pid = playing_audios->pids[index];
-      playing_audios->empty_record=_del_rec(pid);
-      if(playing_audios->empty_record == -1){
+      if(_del_rec(pid) == -1){
         HE("Error deleting record", "stop_audio")
         return UINT_ERROR;
       }
@@ -93,13 +91,13 @@ int stop_audio(void *key, audio_key_t type){
 
 Audios *audios_new(){
   playing_audios = calloc(1, sizeof(Audios));
-  playing_audios->empty_record = -1;
   playing_audios->num_pids = 0;
+  playing_audios->last_pid = -1;
   return playing_audios;
 }
 
 void audios_destroy(){
-  for(int i = 0; i < playing_audios->num_pids; ++i){
+  for(int i = 0; i < playing_audios->last_pid; ++i){
     if (playing_audios->pids[i] == 0) continue;
     stop_audio(&playing_audios->pids[i], PID);
   }
@@ -108,19 +106,20 @@ void audios_destroy(){
 
 /* Private functions definitions */
 int _add_rec(pid_t pid, char *name){
-  if(playing_audios->empty_record != -1){
-    playing_audios->pids[playing_audios->empty_record] = pid;
-    strcpy(playing_audios->name[playing_audios->empty_record], name);
-    playing_audios->empty_record = -1;
-    return !UINT_ERROR;
+  int x = 0, index;
+  if(playing_audios->last_pid >= MAX_AUDIOS_REPEATING){
+    index = _search(&x, PID);
+    if(index == -1){
+      return UINT_ERROR;
+    }
+  }else{
+    index = playing_audios->num_pids;
+    playing_audios->last_pid++;
   }
-  if(playing_audios->num_pids < MAX_AUDIOS_REPEATING){
-    playing_audios->pids[playing_audios->num_pids] = pid;
-    strcpy(playing_audios->name[playing_audios->num_pids], name);
-    playing_audios->num_pids++;
-    return !UINT_ERROR;
-  }
-  return UINT_ERROR;
+  playing_audios->pids[index] = pid;
+  strcpy(playing_audios->name[index], name);
+  playing_audios->num_pids++;
+  return !UINT_ERROR;
 }
 int _del_rec(pid_t pid){
   int index = _search(&pid, PID);
@@ -130,18 +129,22 @@ int _del_rec(pid_t pid){
   }
   playing_audios->pids[index]= 0;
   playing_audios->name[index][0] = '\0';
+  playing_audios->num_pids--;
+  if (index == playing_audios->last_pid){
+    playing_audios->last_pid--;
+  }
   return index;
 }
 int _search(void *key, audio_key_t type){
   if(type == PID){
-    for (int i = playing_audios->num_pids-1; i >= 0; i--) {
+    for (int i = 0; i <= playing_audios->last_pid; i++) {
       if(playing_audios->pids[i] == * (pid_t *) key){
         return i;
       }
     }
   }
   if(type == NAME){
-    for (int i = playing_audios->num_pids-1; i >= 0; i--) {
+    for (int i = playing_audios->last_pid; i >= 0; i--) {
       if(!strcmp(playing_audios->name[i], key)){
         return i;
       }
