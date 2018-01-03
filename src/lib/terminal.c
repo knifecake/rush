@@ -185,8 +185,8 @@ void term_teardown(FILE *in, FILE *out)
         return;
     }
 
-    // clear the screen
-    fprintf(out, "\033[2J\033[0;0H");
+    /* // clear the screen */
+    /* fprintf(out, "\033[2J\033[0;0H"); */
 
     tcsetattr(fileno(in), TCSANOW, &term_initial);
 }
