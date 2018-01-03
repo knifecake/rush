@@ -20,7 +20,7 @@ sprite dir
 assets/img/
 
 audio dir
-asset/audio/
+assets/audio/
 
 events db
 assets/events.txt
