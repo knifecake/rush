@@ -50,7 +50,7 @@ typedef struct {
     UIRect dim;
     SKVector speed;
     char border, fill;
-    bool is_drawn;
+    bool is_drawn, is_speed_updated;
 } SKMinion;
 
 SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed)
@@ -91,7 +91,14 @@ void sk_minion_move(SKMinion *m, int x, int y)
     sk_minion_draw(m);
 }
 
-typedef enum { OVERLAPPING, APART, ARGUMENT_ERROR } SKMinionRelativePosition;
+typedef enum {
+    OVERLAPPING,
+    TOUCHING_N, // m2 north of m1
+    TOUCHING_S, // m2 south of m1
+    TOUCHING_W, // m2 west of m1
+    TOUCHING_E, // m2 east of m1
+    APART,
+    ARGUMENT_ERROR } SKMinionRelativePosition;
 
 SKMinionRelativePosition sk_minion_relative_pos(SKMinion *m1, SKMinion *m2)
 {
@@ -109,11 +116,32 @@ SKMinionRelativePosition sk_minion_relative_pos(SKMinion *m1, SKMinion *m2)
     // check if minions are overlapping
     for (int j = m1->dim.y; j < m1->dim.y + m1->dim.h; j++) {
         for (int i = m1->dim.x; i < m1->dim.x + 2 * m1->dim.w; i++) {
-            if (i >= m2->dim.x && i <= m2->dim.x + 2 * m2->dim.w &&
-                    j >= m2->dim.y && j <= m2->dim.y + m2->dim.h)
+            if (i >= m2->dim.x && i < m2->dim.x + 2 * m2->dim.w &&
+                    j >= m2->dim.y && j < m2->dim.y + m2->dim.h)
                 return OVERLAPPING;
         }
     }
+
+    for (int i = m1->dim.x; i < m1->dim.x + 2 * m1->dim.w; i++) {
+        if (i >= m2->dim.x && i <= m2->dim.x + 2 * m2->dim.w) {
+            if (m1->dim.y == m2->dim.y + m2->dim.h)
+                return TOUCHING_N;
+
+            if (m1->dim.y + m1->dim.h == m2->dim.y)
+                return TOUCHING_S;
+        }
+    }
+
+    for (int j = m1->dim.y; j < m1->dim.y + m1->dim.h; j++) {
+        if (j >= m2->dim.y && j < m2->dim.y + m2->dim.h) {
+            if (m1->dim.x == m2->dim.x + 2 * m2->dim.w)
+                return TOUCHING_E;
+
+            if (m1->dim.x + 2 * m1->dim.w == m2->dim.x)
+                return TOUCHING_W;
+        }
+    }
+
 
     return APART;
 }
@@ -177,14 +205,16 @@ void sk_gru_next_frame(SKGru *g)
         return;
     }
 
+    for (int i = 0; i < g->num_minions; g->minions[i++]->is_speed_updated = false);
+
     for (int i = 0; i < g->num_minions; i++) {
         for (int j = 0; j < g->num_minions; j++) {
-            if (g->minions[i] != g->minions[j] &&
-                    sk_minion_relative_pos(g->minions[i], g->minions[j]) == OVERLAPPING) {
-                g->minions[i]->speed.x = -g->minions[i]->speed.x;
-                g->minions[i]->speed.y = -g->minions[i]->speed.y;
+            if (g->minions[j]->is_speed_updated == false &&
+                    g->minions[i] != g->minions[j] &&
+                    sk_minion_relative_pos(g->minions[i], g->minions[j]) != APART) {
                 g->minions[j]->speed.x = -g->minions[j]->speed.x;
                 g->minions[j]->speed.y = -g->minions[j]->speed.y;
+                g->minions[j]->is_speed_updated = true;
             }
         }
         sk_minion_step(g->minions[i]);
@@ -195,7 +225,7 @@ void *enemies(void *s)
 {
     SKGru *g = (SKGru *)s;
     while (1) {
-        usleep(5e4);
+        usleep(1e5);
         sk_gru_next_frame(g);
     }
     return NULL;
@@ -207,18 +237,14 @@ int main(void)
     printf("\033[2J");
 
     SKGru *g = sk_gru_new();
-    SKMinion *m = sk_minion_new((UIRect) {1, 1, 40, 4}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *a = sk_minion_new((UIRect) {1, 5, 4, 16}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *o = sk_minion_new((UIRect) {1, 20, 40, 4}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *b = sk_minion_new((UIRect) {73, 5, 4, 16}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *c = sk_minion_new((UIRect) {25, 6, 4, 4}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *n = sk_minion_new((UIRect) {40, 15, 1, 2}, '+', 'x', (SKVector) {1, 1});
-    sk_gru_add_minion(g, m);
-    sk_gru_add_minion(g, a);
-    sk_gru_add_minion(g, b);
-    sk_gru_add_minion(g, c);
-    sk_gru_add_minion(g, n);
-    sk_gru_add_minion(g, o);
+    SKMinion *m1 = sk_minion_new((UIRect) {1, 1, 4, 4}, 'M', 'M', (SKVector) {0, 0});
+    SKMinion *m2 = sk_minion_new((UIRect) {15, 1, 4, 4}, 'M', 'M', (SKVector) {2, 0});
+    SKMinion *m3 = sk_minion_new((UIRect) {40, 1, 4, 4}, 'M', 'M', (SKVector) {1, 0});
+    SKMinion *m4 = sk_minion_new((UIRect) {80, 1, 4, 4}, 'M', 'M', (SKVector) {0, 0});
+    sk_gru_add_minion(g, m1);
+    sk_gru_add_minion(g, m2);
+    sk_gru_add_minion(g, m3);
+    sk_gru_add_minion(g, m4);
     sk_gru_draw(g);
 
     pthread_t thr;
