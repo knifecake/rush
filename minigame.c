@@ -7,6 +7,7 @@
 
 #include "src/lib/terminal.h"
 #include "src/lib/error_handling.h"
+#include "src/lib/sprite.h"
 
 #define OUTPUT_STREAM stdout
 
@@ -51,9 +52,10 @@ typedef struct {
     SKVector speed;
     char border, fill;
     bool is_drawn, is_speed_updated;
+    Sprite *s;
 } SKMinion;
 
-SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed)
+SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Sprite *sprite)
 {
     SKMinion *m = oopsalloc(1, sizeof(SKMinion), "sk_minion_new");
     m->dim = dim;
@@ -61,6 +63,7 @@ SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed)
     m->border = border;
     m->fill = fill;
     m->is_drawn = false;
+    m->s = sprite;
     return m;
 }
 
@@ -94,9 +97,9 @@ void sk_minion_move(SKMinion *m, int x, int y)
 typedef enum {
     OVERLAPPING,
     TOUCHING_N, // m2 north of m1
+    TOUCHING_E, // m2 east of m1
     TOUCHING_S, // m2 south of m1
     TOUCHING_W, // m2 west of m1
-    TOUCHING_E, // m2 east of m1
     APART,
     ARGUMENT_ERROR } SKMinionRelativePosition;
 
@@ -123,7 +126,7 @@ SKMinionRelativePosition sk_minion_relative_pos(SKMinion *m1, SKMinion *m2)
     }
 
     for (int i = m1->dim.x; i < m1->dim.x + 2 * m1->dim.w; i++) {
-        if (i >= m2->dim.x && i <= m2->dim.x + 2 * m2->dim.w) {
+        if (i >= m2->dim.x && i < m2->dim.x + 2 * m2->dim.w) {
             if (m1->dim.y == m2->dim.y + m2->dim.h)
                 return TOUCHING_N;
 
@@ -160,11 +163,16 @@ void sk_minion_step(SKMinion *m)
 typedef struct {
     SKMinion *minions[MAX_MINIONS];
     int num_minions;
+    UIRect dim;
+    char border;
 } SKGru;
 
-SKGru *sk_gru_new()
+SKGru *sk_gru_new(UIRect dim, char border)
 {
-    return oopsalloc(1, sizeof(SKGru), "sk_gru_new");
+    SKGru *g = oopsalloc(1, sizeof(SKGru), "sk_gru_new");
+    g->dim = dim;
+    g->border = border;
+    return g;
 }
 
 void sk_gru_destroy(SKGru *g)
@@ -195,6 +203,10 @@ void sk_gru_draw(SKGru *g)
         return;
     }
 
+    // draw the frame
+    _draw_rect(g->dim, g->border, ' ');
+
+    // draw every minion
     for (int i = 0; i < g->num_minions; sk_minion_draw(g->minions[i++]));
 }
 
@@ -208,15 +220,40 @@ void sk_gru_next_frame(SKGru *g)
     for (int i = 0; i < g->num_minions; g->minions[i++]->is_speed_updated = false);
 
     for (int i = 0; i < g->num_minions; i++) {
+        // check for collisions with other minions
         for (int j = 0; j < g->num_minions; j++) {
-            if (g->minions[j]->is_speed_updated == false &&
-                    g->minions[i] != g->minions[j] &&
-                    sk_minion_relative_pos(g->minions[i], g->minions[j]) != APART) {
-                g->minions[j]->speed.x = -g->minions[j]->speed.x;
-                g->minions[j]->speed.y = -g->minions[j]->speed.y;
+            SKMinionRelativePosition pos;
+            if (g->minions[j]->is_speed_updated == false && g->minions[i] != g->minions[j]) {
+                pos = sk_minion_relative_pos(g->minions[i], g->minions[j]);
+                switch (pos) {
+                    case TOUCHING_N:
+                    case TOUCHING_S:
+                        g->minions[j]->speed.y *= -1;
+                        break;
+                    case TOUCHING_W:
+                    case TOUCHING_E:
+                        g->minions[j]->speed.x *= -1;
+                        break;
+                    case OVERLAPPING:
+                        g->minions[i]->speed.x *= -1;
+                        g->minions[i]->speed.y *= -1;
+                        break;
+                    default:
+                        continue;
+                }
                 g->minions[j]->is_speed_updated = true;
             }
         }
+
+        // bounce on the gru frame
+        if (g->minions[i]->dim.x <= g->dim.x + 2 ||
+                g->minions[i]->dim.x + 2 * g->minions[i]->dim.w >= g->dim.x + 2 * g->dim.w - 2)
+            g->minions[i]->speed.x *= -1;
+
+        if (g->minions[i]->dim.y <= g->dim.y + 1 ||
+                g->minions[i]->dim.y + g->minions[i]->dim.h >= g->dim.y + g->dim.h - 2)
+            g->minions[i]->speed.y *= -1;
+
         sk_minion_step(g->minions[i]);
     }
 }
@@ -225,7 +262,7 @@ void *enemies(void *s)
 {
     SKGru *g = (SKGru *)s;
     while (1) {
-        usleep(1e5);
+        usleep(5e4);
         sk_gru_next_frame(g);
     }
     return NULL;
@@ -236,15 +273,17 @@ int main(void)
     term_setup(stdin, stdout);
     printf("\033[2J");
 
-    SKGru *g = sk_gru_new();
-    SKMinion *m1 = sk_minion_new((UIRect) {1, 1, 4, 4}, 'M', 'M', (SKVector) {0, 0});
-    SKMinion *m2 = sk_minion_new((UIRect) {15, 1, 4, 4}, 'M', 'M', (SKVector) {2, 0});
-    SKMinion *m3 = sk_minion_new((UIRect) {40, 1, 4, 4}, 'M', 'M', (SKVector) {1, 0});
-    SKMinion *m4 = sk_minion_new((UIRect) {80, 1, 4, 4}, 'M', 'M', (SKVector) {0, 0});
+    SKGru *g = sk_gru_new((UIRect) {2, 2, 100, 70}, 'M');
+    SKMinion *m1 = sk_minion_new((UIRect) {11, 20, 4, 4}, '1', '@', (SKVector) { -2, -1}, NULL);
+    SKMinion *m2 = sk_minion_new((UIRect) {41, 10, 4, 4}, '2', '@', (SKVector) { 1, -1}, NULL);
+    SKMinion *m3 = sk_minion_new((UIRect) {11, 30, 4, 4}, '3', '@', (SKVector) { -1, 2}, NULL);
+    SKMinion *m4 = sk_minion_new((UIRect) {21, 40, 4, 4}, '4', '@', (SKVector) { -1, -1}, NULL);
+    SKMinion *m5 = sk_minion_new((UIRect) {15, 15, 4, 4}, '5', '@', (SKVector) { 1, 1}, NULL);
     sk_gru_add_minion(g, m1);
     sk_gru_add_minion(g, m2);
     sk_gru_add_minion(g, m3);
     sk_gru_add_minion(g, m4);
+    sk_gru_add_minion(g, m5);
     sk_gru_draw(g);
 
     pthread_t thr;
@@ -258,7 +297,24 @@ int main(void)
     /* long delta_usec = end.tv_nsec / 1000 - start.tv_nsec / 1000; */
     /* printf("time: %ld(us)\n", delta_usec); */
 
-    while (term_read_key(stdin) != 'q');
+    int key;
+    while ((key = term_read_key(stdin)) != 'q') {
+        switch (key) {
+            case 'n':
+                sk_gru_next_frame(g);
+                break;
+            case UP_ARROW:
+                break;
+            case DOWN_ARROW:
+                break;
+            case LEFT_ARROW:
+                break;
+            case RIGHT_ARROW:
+                break;
+            default:
+                break;
+        }
+    }
     sk_gru_destroy(g);
     term_teardown(stdin, stdout);
     return 0;
