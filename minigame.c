@@ -75,7 +75,8 @@ void sk_minion_destroy(SKMinion *m)
 void sk_minion_draw(SKMinion *m)
 {
     m->is_drawn = true;
-    _draw_rect(m->dim, m->border, m->fill);
+    sprite_draw(OUTPUT_STREAM, m->s, m->dim.x / 2, m->dim.y - 1);
+    /* _draw_rect(m->dim, m->border, m->fill); */
 }
 
 void sk_minion_move(SKMinion *m, int x, int y)
@@ -273,12 +274,16 @@ int main(void)
     term_setup(stdin, stdout);
     printf("\033[2J");
 
-    SKGru *g = sk_gru_new((UIRect) {2, 2, 100, 70}, 'M');
-    SKMinion *m1 = sk_minion_new((UIRect) {11, 20, 4, 4}, '1', '@', (SKVector) { -2, -1}, NULL);
-    SKMinion *m2 = sk_minion_new((UIRect) {41, 10, 4, 4}, '2', '@', (SKVector) { 1, -1}, NULL);
-    SKMinion *m3 = sk_minion_new((UIRect) {11, 30, 4, 4}, '3', '@', (SKVector) { -1, 2}, NULL);
-    SKMinion *m4 = sk_minion_new((UIRect) {21, 40, 4, 4}, '4', '@', (SKVector) { -1, -1}, NULL);
-    SKMinion *m5 = sk_minion_new((UIRect) {15, 15, 4, 4}, '5', '@', (SKVector) { 1, 1}, NULL);
+    FILE *mar = fopen("assets/img/resource_7.png", "r");
+    Sprite *marabini = sprite_new(mar);
+    fclose(mar);
+
+    SKGru *g = sk_gru_new((UIRect) {2, 2, 300, 150}, 'M');
+    SKMinion *m1 = sk_minion_new((UIRect) {55,  50, sprite_get_w(marabini), sprite_get_h(marabini)}, '1', '@', (SKVector) { -3, -2}, marabini);
+    SKMinion *m2 = sk_minion_new((UIRect) {155, 50, sprite_get_w(marabini), sprite_get_h(marabini)}, '2', '@', (SKVector) { 2, -2}, marabini);
+    SKMinion *m3 = sk_minion_new((UIRect) {205, 50, sprite_get_w(marabini), sprite_get_h(marabini)}, '3', '@', (SKVector) { -2, 3}, marabini);
+    SKMinion *m4 = sk_minion_new((UIRect) {255, 50, sprite_get_w(marabini), sprite_get_h(marabini)}, '4', '@', (SKVector) { -2, -2}, marabini);
+    SKMinion *m5 = sk_minion_new((UIRect) {305, 50, sprite_get_w(marabini), sprite_get_h(marabini)}, '5', '@', (SKVector) { 2, 2}, marabini);
     sk_gru_add_minion(g, m1);
     sk_gru_add_minion(g, m2);
     sk_gru_add_minion(g, m3);

@@ -32,7 +32,7 @@ $(BUILD_DIR)/tui: tui.o $(tui_obj) $(obj)
 $(BUILD_DIR)/gui: gui.o $(gui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/minigame: minigame.o src/lib/terminal.o src/lib/error_handling.o
+$(BUILD_DIR)/minigame: minigame.o src/lib/terminal.o src/lib/error_handling.o src/lib/sprite-png.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) -lpthread
 
 # compiles all tests
