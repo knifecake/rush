@@ -61,26 +61,37 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
   if (!tile) {
       HE("could not retrieve tile", "ui_tile_info_draw");
   }
+
+  int x = 263;
+  int y = 130;
+  y += line_index*LINE_HEIGHT;
+  Sprite *icon;
+
   bool visible = tile_get_visible(tile);
   ui_text_panel_clear(ti->tp[line_index]);
   if(!visible){
     switch (line_index) {
       case 0:
         ui_text_panel_print(ti->tp[line_index], "Not visible");
+        icon = dict_get(ui_get_sprite_dict(), "not_visible");
         break;
       case 1:;
         char *enem_hp = oopsalloc(strlen("0000000") + 1, sizeof(char), "ui_tile_info_print_single_line");
         sprintf(enem_hp, "%07d", tile_get_enemies(tile));
         ui_text_panel_print(ti->tp[line_index], enem_hp);
         free(enem_hp);
+        icon = dict_get(ui_get_sprite_dict(), "enemies");
         break;
       default:
+        icon = dict_get(ui_get_sprite_dict(), "void_icon");
         break;
     }
   }else{
+    char res_name[20];
     switch (line_index) {
       case 0:
         ui_text_panel_print(ti->tp[line_index], "Visible");
+        icon = dict_get(ui_get_sprite_dict(), "visible");
         break;
       case 1:;
         char *enem_hp = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_tile_info_print_single_line");
@@ -88,28 +99,38 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         b = tile_get_building(tile);
         if(!b){
           sprintf(enem_hp, "NONE");
+          icon = dict_get(ui_get_sprite_dict(), "void_icon");
         }else{
           sprintf(enem_hp, "%07d", building_get_health(b));
+          icon = dict_get(ui_get_sprite_dict(), "hp");
         }
         ui_text_panel_print(ti->tp[line_index], enem_hp);
         free(enem_hp);
         break;
       case 2:;
         char *res_turn = oopsalloc(strlen("0000/turn")+1, sizeof(char), "ui_tile_info_print_single_line");
-        if(tile_find_resource_index(tile)==-1){
+        int res_id;
+        if( (res_id = tile_find_resource_index(tile)) ==-1){
           sprintf(res_turn, "NONE/turn");
+          icon = dict_get(ui_get_sprite_dict(), "void_icon");
         }else{
           sprintf(res_turn, "%04d/turn", tile_get_resource_per_turn(tile, tile_find_resource_index(tile)));
+          sprintf(res_name, "resource_%d", res_id+1);
+          icon = dict_get(ui_get_sprite_dict(), res_name);
         }
         ui_text_panel_print(ti->tp[line_index], res_turn);
         free(res_turn);
         break;
       case 3:;
         char *rem_res = oopsalloc(strlen("0000000")+1, sizeof(char), "ui_tile_info_print_single_line");
-        if(tile_find_resource_index(tile)==-1){
+        if( (res_id = tile_find_resource_index(tile)) ==-1){
           sprintf(rem_res, "NONE");
+          icon = dict_get(ui_get_sprite_dict(), "void_icon");
         }else{
-        sprintf(rem_res, "%07d", tile_get_remaining_resources(tile, tile_find_resource_index(tile)));
+          sprintf(rem_res, "%07d", tile_get_remaining_resources(tile, tile_find_resource_index(tile)));
+          /*sprintf(res_name, "resource_%d_rem", res_id+1); NOTE: if we want to get different remaining*/
+          sprintf(res_name, "resource_%d", res_id+1);
+          icon = dict_get(ui_get_sprite_dict(), res_name);
         }
         ui_text_panel_print(ti->tp[line_index], rem_res);
         break;
@@ -117,6 +138,7 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         break;
     }
   }
+  sprite_draw(stdout, icon, x, y);
 }
 
 void ui_tile_info_destroy(UITileInfo *ti)

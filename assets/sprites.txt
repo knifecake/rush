@@ -1,4 +1,4 @@
-21
+26
 town_hall1
 town_hall2
 town_hall4
@@ -20,4 +20,8 @@ resource_4
 resource_5
 resource_6
 resource_7
-
+enemies
+hp
+visible
+not_visible
+void_icon
