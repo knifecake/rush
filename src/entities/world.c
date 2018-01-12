@@ -262,8 +262,8 @@ World *world_next_turn(World *w){
  int i = 0;
   while(i < w->num_tiles){
     //TODO: DEFINE ALEAT NUM
-    int tile_affected = aleat_num(0, w->num_tiles);
-    int affecting_event = aleat_num(0, w->num_events);
+    int tile_affected = aleat_num(0, w->num_tiles - 1);
+    int affecting_event = aleat_num(0, w->num_events - 1);
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
     i += aleat_num(0, w->num_tiles);
 }
