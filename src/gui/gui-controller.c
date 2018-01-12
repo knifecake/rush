@@ -108,7 +108,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
 
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     ui_redraw_sidebar();
-    return CTRL_OK;
+    return CTRL_NEXT_TURN;
 }
 
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
