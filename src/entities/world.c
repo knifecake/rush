@@ -1,8 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "../../lib/lineread.h"
+#include "../../lib/qrnd.h"
 
 #include "world.h"
 
@@ -36,6 +37,9 @@ struct _World {
 
     // player level
     int level;
+
+    // randomness source
+    rnd_state *rs;
 };
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -84,6 +88,8 @@ World *world_new(void) {
 
     World *w = NULL;
     w = oopsalloc(1, sizeof(World), "world_new");
+
+    w->rs = r_init(time(NULL));
 
     // LOAD RESOURCES
     char *resources_db = config_get("asset_dbs.resources");
@@ -261,11 +267,12 @@ World *world_next_turn(World *w){
   */
  int i = 0;
   while(i < w->num_tiles){
-    //TODO: DEFINE ALEAT NUM
-    int tile_affected = aleat_num(0, w->num_tiles - 1);
-    int affecting_event = aleat_num(0, w->num_events - 1);
+    /* int tile_affected = aleat_num(0, w->num_tiles - 1); */
+    /* int affecting_event = aleat_num(0, w->num_events - 1); */
+    int tile_affected = f_rnd(w->rs) * (w->num_tiles - 1);
+    int affecting_event = f_rnd(w->rs) * (w->num_events - 1);
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
-    i += aleat_num(0, w->num_tiles);
+    i += f_rnd(w->rs) * w->num_tiles;
 }
   return w;
 }

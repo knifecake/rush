@@ -2,6 +2,8 @@
 #include "../lib/error_handling.h"
 #include "../lib/config.h"
 #include <assert.h>
+#include <time.h>
+#include "../../lib/qrnd.h"
 
 struct _Map {
     Tile **tiles;
@@ -12,64 +14,15 @@ struct _Map {
 };
 
 /*
- * TODO: IMPORTANT, sergio si esto no es tuyo tenemos que atribuirlo.
- * Also, if this is private, by convention it should be named _aleat_num;
- */
-
-/*
  * Private functions
  */
 
-  /*
-   * In these functions neighbour is a number in the range [0,5].
-   * They are the neighbours of the hex clockwise being 0 the top one.
-   */
-    int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
-    int _tile_is_neighbour(int tile_index, int neighbour, bool odd);
 /*
- *
+ * In these functions neighbour is a number in the range [0,5].
+ * They are the neighbours of the hex clockwise being 0 the top one.
  */
-int aleat_num(int inf, int sup){
-  int n, r;
-  long end;
-
-  if(inf<sup){
-    n=sup-inf+1;
-  }
-  else if(sup<inf){
-    n=inf-sup+1;
-  }
-  else{
-    fprintf(stderr, "aleat_num: cant generate a random number between the same number\n");
-    return -1;
-  }
-
-  if ((n - 1) == RAND_MAX) {
-      return rand();
-  }
-  else {
-      /* Chop off all of the values that would cause skew...*/
-
-      end = RAND_MAX / n; /* truncate skew*/
-      assert (end > 0L);
-      end *= n;
-
-      /* ... and ignore results from rand() that fall above that limit.
-       (Worst case the loop condition should succeed 50% of the time,
-       so we can expect to bail out of this loop pretty quickly.)*/
-
-      while ((r = rand()) >= end);
-
-      r = r % n;
-      if(inf<sup){
-        r=inf+r;
-      }
-      else{
-        r=sup+r;
-      }
-      return r;
-    }
-}
+int _tile_calc_neighbour(int tile_index, int neighbour, int h, int odd);
+int _tile_is_neighbour(int tile_index, int neighbour, bool odd);
 
 int map_gen_standard(Map *m, int map_tiles) {
     if (!m || map_tiles < 0) {
@@ -94,21 +47,27 @@ int map_gen_standard(Map *m, int map_tiles) {
 
 int map_gen_random(Map *m, int map_tiles) {
     if (!m || map_tiles < 0) {
-        HE("invalid arguments", "map_gen_standard");
+        HE("invalid arguments", "map_gen_random");
         return UINT_ERROR;
     }
 
     if (m->num_tiles == 0 || !m->tiles) {
-        HE("no tiles to generate map", "map_gen_standard");
+        HE("no tiles to generate map", "map_gen_random");
+        return UINT_ERROR;
+    }
+
+    rnd_state *rs = r_init(time(NULL));
+    if (!rs) {
+        HE("could not initialize random source", "map_gen_random");
         return UINT_ERROR;
     }
 
     // by convention, we null terminate list of entities, although it might not be necessary here
-    m->map = oopsalloc(map_tiles + 1, sizeof(Tile *), "map_gen_standard");
+    m->map = oopsalloc(map_tiles + 1, sizeof(Tile *), "map_gen_random");
     m->map_tiles = map_tiles;
 
     for (int i = 0; i < m->map_tiles; i++) {
-      m->map[i] = tile_copy(m->tiles[aleat_num(0, m->num_tiles - 1)]);
+      m->map[i] = tile_copy(m->tiles[(int) f_rnd(rs) * (m->num_tiles - 1)]);
     }
 
     return !UINT_ERROR;
