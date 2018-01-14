@@ -51,8 +51,12 @@ int main(void) {
     cop_assoc(c, "attack", action_attack);
     cop_assoc(c, "redraw_ui", action_redraw_ui);
     cop_assoc(c, "next_turn", action_next_turn);
+    cop_assoc(c, "welcome", action_welcome);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
+
+    // say hello to the user
+    cop_exec(c, "welcome", w);
 
     // GAME LOOP
     char input;

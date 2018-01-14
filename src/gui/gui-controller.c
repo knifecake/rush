@@ -121,7 +121,17 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
 
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 {
-    return !UINT_ERROR;
+    if (!msg || num_msg < 1)
+        return CTRL_ERROR;
+
+    for (int k = 0; k < num_msg; k++) {
+        show_msg(msg[k]);
+
+        // if this is not the last message, listen for a keypress to continue
+        if (k < num_msg - 1)
+            term_read_key(stdin);
+    }
+    return CTRL_OK;
 }
 
 int action_next_turn(void *world, char *cmd, char **msg, int num_msg)

@@ -1,5 +1,6 @@
 # command file
-5 # number of commands
+6 # number of commands
+
 b
 build
 1
@@ -19,6 +20,13 @@ r
 redraw_ui
 1
 Redrawing all UI.
+
+welcome
+welcome
+3
+Welcome to this awesome game! You may exit at any time by pressing q (possibly multiple times). Press any key to continue reading.
+Right now, you need to start by building a town hall. Position yourself in a visible tile using the arrow keys.
+When you are ready, press b to show the building menu.
 
 # This command is run in case the command executed by the user is not defined.
 404_not_found
