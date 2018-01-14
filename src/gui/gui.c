@@ -46,12 +46,12 @@ int ui_setup(World *w)
 
     ui->w = w;
 
-    ui->font = ui_font_new(config_get("font path"));
+    ui->font = ui_font_new(config_get("general.font_path"));
     ui->map = ui_map_new(ui->w);
     ui->tp = ui_text_panel_new(ui->text_panel_dim, ui->font);
     ui->wi = ui_world_info_new(ui->w, ui->top_sidebar_dim);
     ui->ti = ui_tile_info_new(ui->w, ui->bottom_sidebar_dim);
-    ui->sprite_dict = load_sprite_dict_from_file(config_get("sprite db"));
+    ui->sprite_dict = load_sprite_dict_from_file(config_get("asset_dbs.sprites"));
 
     if (!ui->font || !ui->map || !ui->tp || !ui->ti || !ui->wi || !ui->sprite_dict) {
         HE("Could not initialize UI", "ui_setup");

@@ -4,32 +4,68 @@
 # the global config dictionary. See lib/config.h for more information on how to
 # use this module.
 
-resources db
+
+################################################################
+# General congfiguration
+################################################################
+
+# points to a directory (sans trailing slash) where sprites for printable ASCII
+# characters should be stored with their ASCII code as their filename: code.png
+
+general.font_path
+assets/img/pixeled
+
+general.initial_game_state
+assets/initial_game_state.txt
+
+
+
+################################################################
+# Asset DBs files
+################################################################
+
+asset_dbs.resources
 assets/resources.txt
 
-tiles db
+asset_dbs.tiles
 assets/tiles.txt
 
-buildings db
+asset_dbs.buildings
 assets/new-buildings.txt
 
-sprite db
+asset_dbs.sprites
 assets/sprites.txt
 
+asset_dbs.events
+assets/events.txt
+
+
+
+################################################################
+# Attack minigame configuration
+################################################################
+
+attack_minigame.enemy_sprite
+assets/img/enemies.png
+
+attack_minigame.player_sprite
+assets/img/resource_7.png
+
+# a higher number means a lower speed
+# hint: 50000 works well
+attack_minigame.enemy_speed
+50000
+
+
+
+################################################################
+# Other stuff that's left to organize
+################################################################
 sprite dir
 assets/img/
 
 audio dir
 assets/audio/
-
-events db
-assets/events.txt
-
-initial game state
-assets/initial_game_state.txt
-
-font path
-assets/img/pixeled
 
 hex_xlen
 64

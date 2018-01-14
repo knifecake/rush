@@ -86,9 +86,9 @@ World *world_new(void) {
     w = oopsalloc(1, sizeof(World), "world_new");
 
     // LOAD RESOURCES
-    char *resources_db = config_get("resources db");
+    char *resources_db = config_get("asset_dbs.resources");
     if (!resources_db) {
-        HE("don't know where to load resources from, set up a 'resources db' entry in config", "world_new");
+        HE("don't know where to load resources from, set up a 'asset_dbs.resources' entry in config", "world_new");
         free(w); return NULL;
     }
 
@@ -111,9 +111,9 @@ World *world_new(void) {
     fclose(rf);
 
     // LOAD TILES
-    char *tiles_db = config_get("tiles db");
+    char *tiles_db = config_get("asset_dbs.tiles");
     if (!tiles_db) {
-        HE("don't know where to load tiles from, set up a 'tiles db' entry in config", "world_new");
+        HE("don't know where to load tiles from, set up a 'asset_dbs.tiles' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources); free(w);
         return NULL;
     }
@@ -135,9 +135,9 @@ World *world_new(void) {
     fclose(tf);
 
     // LOAD BUILDINGS
-    char *buildings_db = config_get("buildings db");
+    char *buildings_db = config_get("asset_dbs.buildings");
     if (!buildings_db) {
-        HE("don't know where to load buildings from, set up a 'buildings db' entry in config", "world_new");
+        HE("don't know where to load buildings from, set up a 'asset_dbs.buildings' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
         map_destroy(w->map); free(w);
         return NULL;
@@ -162,9 +162,9 @@ World *world_new(void) {
     fclose(bf);
 
     // load events
-    char *events_db = config_get("events db");
+    char *events_db = config_get("asset_dbs.events");
     if (!events_db) {
-        HE("don't know where to load events from, set up an 'event db' entry in config", "world_new");
+        HE("don't know where to load events from, set up an 'asset_dbs.events' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
         map_destroy(w->map);
         building_list_destroy(w->buildings); free(w);
@@ -204,7 +204,7 @@ World *world_new(void) {
 
 
     // load initial game state
-    char *initial_game_state = config_get("initial game state");
+    char *initial_game_state = config_get("general.initial_game_state");
     if (!initial_game_state) {
         HE("don't know where to load initial game state from, not loading anything", "world_new");
     } else {

@@ -135,6 +135,8 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         ui_text_panel_print(ti->tp[line_index], rem_res);
         break;
       default:
+        // TODO: this line silences a warning, but this is bad practice
+        icon = NULL;
         break;
     }
   }

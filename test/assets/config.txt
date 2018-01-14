@@ -4,19 +4,19 @@
 # the global config dictionary. See lib/config.h for more information on how to
 # use this module.
 
-resources db
+asset_dbs.resources
 test/assets/resources.txt
 
-tiles db
+asset_dbs.tiles
 test/assets/tiles.txt
 
-buildings db
+asset_dbs.buildings
 test/assets/example_building_loader.txt
 
-events db
+asset_dbs.events
 test/assets/example_event_loader.txt
 
-sprite db
+asset_dbs.sprites
 test/assets/example_sprites.txt
 
 sprite dir

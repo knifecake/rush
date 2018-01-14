@@ -78,6 +78,7 @@ int main(void) {
                 switch (ret) {
                     case CTRL_NEXT_TURN:
                         action_next_turn(w, NULL, NULL, 0);
+                        break;
                     case CTRL_REDRAW_ALL_UI:
                         ui_draw_all();
                         break;

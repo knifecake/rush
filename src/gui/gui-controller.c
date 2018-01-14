@@ -5,6 +5,7 @@
 #include "../lib/error_handling.h"
 #include "../lib/messages.h"
 #include "../lib/terminal.h"
+#include "../lib/config.h"
 
 #include "../entities/world.h"
 #include "../entities/tile.h"
@@ -133,8 +134,14 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
 void *move_enemies(void *s)
 {
     SKGru *g = (SKGru *)s;
+    int speed = config_get_int("attack_minigame.enemy_speed");
+    if (speed == 0) {
+        HE("invalid speed set in config file. hitn: 5e4 works right", "move_enemies");
+        speed = 5e4;
+    }
+
     while (1) {
-        usleep(5e4);
+        usleep(speed);
         sk_gru_next_frame(g);
     }
     return NULL;
@@ -157,21 +164,21 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     }
 
     printf("\033[2J");
-    FILE *mar = fopen("assets/img/resource_7.png", "r");
-    Sprite *marabini = sprite_new(mar);
-    fclose(mar);
+    FILE *enemy_sprite_file = fopen(config_get("attack_minigame.enemy_sprite"), "r");
+    Sprite *enemy_sprite = sprite_new(enemy_sprite_file);
+    fclose(enemy_sprite_file);
 
-    FILE *gin = fopen("assets/img/resource_6.png", "r");
-    Sprite *ginebra = sprite_new(gin);
-    fclose(gin);
+    FILE *player_sprite_file = fopen(config_get("attack_minigame.player_sprite"), "r");
+    Sprite *player_sprite = sprite_new(player_sprite_file);
+    fclose(player_sprite_file);
 
     SKGru *g = sk_gru_new((UIRect) {5, 5, 300, 150}, 'M');
     for (int i = 0; i < num_enemies; i++){
-        SKMinion *e = sk_minion_new((UIRect) {55 + 30*i, 10 + 15*i, sprite_get_w(marabini), sprite_get_h(marabini)}, '1', '@', (SKVector) { -3, -2}, marabini);
+        SKMinion *e = sk_minion_new((UIRect) {55 + 30*i, 10 + 15*i, sprite_get_w(enemy_sprite), sprite_get_h(enemy_sprite)}, '1', '@', (SKVector) { -3, -2}, enemy_sprite);
         sk_gru_add_minion(g, e);
     }
 
-    SKMinion *p = sk_minion_new((UIRect) { 401, 51, sprite_get_w(ginebra), sprite_get_h(ginebra) }, 'P', 'P', (SKVector) { 0 }, ginebra);
+    SKMinion *p = sk_minion_new((UIRect) { 401, 51, sprite_get_w(player_sprite), sprite_get_h(player_sprite) }, 'P', 'P', (SKVector) { 0 }, player_sprite);
     sk_gru_add_minion(g, p);
     sk_gru_draw(g);
 
