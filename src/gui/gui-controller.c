@@ -19,10 +19,18 @@
 // TODO: this is a temporary function until building sprites are done
 Sprite *get_placeholder_sprite(Building *b)
 {
-    FILE *f = fopen("assets/img/building-placeholder.png", "r");
-    Sprite *placeholder_sprite = sprite_new(f);
-    fclose(f);
-    return placeholder_sprite;
+    char temporary[256]={'\0'};
+    sprintf(temporary,"%s",building_get_sprite(b));
+    int i = 0;
+    while (temporary[i] != '-') {
+      ++i;
+    }
+    temporary[i]='I';++i;
+    temporary[i]='C';++i;
+    temporary[i]='O';++i;
+    temporary[i]='N';++i;
+    temporary[i]='\0';++i;
+    return dict_get(ui_get_sprite_dict(), temporary);
 }
 
 //TODO:modify the sprintf so that it includes all the resources

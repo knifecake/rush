@@ -1,17 +1,64 @@
-26
-town_hall1
-town_hall2
-town_hall4
+79
+A VAR ICON
+A VAR - LVL 1
+A VAR - LVL 2
+A VAR - LVL 3
+A VAR - LVL 4
+A VAR - LVL 5
 background
-cursor_on
+BANK ICON
+BANK - LVL 1
+BANK - LVL 2
+BANK - LVL 3
+BANK - LVL 4
+BANK - LVL 5
+bill!
+bill
+building-placeholder
+CHURCH ICON
+CHURCH - LVL 1
+CHURCH - LVL 2
+CHURCH - LVL 3
+CLOCK ICON
+CLOCK - LVL 1
+CLOCK - LVL 2
+CLOCK - LVL 3
+CLOCK - LVL 4
+CLOCK - LVL 5
+clouds
+clouds!
+CODING LAB ICON
+CODING LAB - LVL 1
+CODING LAB - LVL 2
+COFFEE MAKER ICON
+COFFEE MAKER - LVL 1
+COFFEE MAKER - LVL 2
+COFFEE MAKER - LVL 3
+COFFEE MAKER - LVL 4
+COFFEE MAKER - LVL 5
+coffee_plant!
+coffee_plant
 cursor_off
-forest
+cursor_on
+del-list-cursor
+enemies
+EPS ICON
+EPS - LVL 1
+EPS - LVL 2
+EPS - LVL 3
+EPS - LVL 4
+EPS - LVL 5
+highway!
+highway
+hp
 interface
-quarry
-water
-forest!
-quarry!
-water!
+jaen!
+jaen
+list-cursor
+MARKET ICON
+MARKET - LVL 1
+MARKET - LVL 2
+not_visible
 resource_0
 resource_1
 resource_2
@@ -20,8 +67,14 @@ resource_4
 resource_5
 resource_6
 resource_7
-enemies
-hp
+space!
+space
+TOWN HALL ICON
+TOWN HALL - LVL 1
+TOWN HALL - LVL 2
+TOWN HALL - LVL 3
+TOWN HALL - LVL 4
+TOWN HALL - LVL 5
 visible
-not_visible
 void_icon
+welcome
