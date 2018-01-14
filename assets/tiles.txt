@@ -1,490 +1,153 @@
 ## Tile definition format
-23        # (int) number of tiles to be loaded
+6       # (int) number of tiles to be loaded
 7         # (int) length of resource multipliers / available resources lists
 
 # BEGIN tile 0
 
-1         # (int) tile_id
-forest    # (char *) sprite
+0         # (int) tile_id
+jaen    # (char *) sprite
 
-10.5     # (float) resource 0 multiplier
-3.75      # (float) resource 1 multiplier
-10.24     # ...
-0.3543
+2     # (float) resource 0 multiplier
+1      # (float) resource 1 multiplier
+1     # ...
+0.5
 0
-0
-0
+0.5
+1
 
-177261    # (int) quantity of resource 0 available
-13001     # (int) quantity of resource 1 available
-1212312   # ...
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
 0
-0
-0
-0
+1000
+1000
 
-10       # number of enemies
+7       # number of enemies
 
 # END TILE 0
 
-2
-quarry
+# BEGIN tile 1
 
-10.5
-3.75
-10.24
-0
-0
-0
-0
+1         # (int) tile_id
+highway    # (char *) sprite
 
-177261
-13001
-1212312
+1     # (float) resource 0 multiplier
+2      # (float) resource 1 multiplier
+1     # ...
+0.5
 0
-0
-0
-0
-
-7
-
-3
-water
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-5
-
-4
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-3
-
-5
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-8
-
-6
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
+0.5
 1
 
-7
-forest
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
+0
+1000
+1000
 
-10.5
-3.75
-10.24
-0
-0
-0
-0
+5       # number of enemies
 
-177261
-13001
-1212312
-0
-0
-0
-0
+# END TILE 1
 
+# BEGIN tile 2
+
+2         # (int) tile_id
+coffee_plant    # (char *) sprite
+
+1     # (float) resource 0 multiplier
+1      # (float) resource 1 multiplier
+2     # ...
+0.5
+0
+1
+0.5
+
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
+0
+1000
+1000
+
+3       # number of enemies
+
+# END TILE 2
+
+# BEGIN tile 3
+
+3         # (int) tile_id
+space    # (char *) sprite
+
+1     # (float) resource 0 multiplier
+1     # (float) resource 1 multiplier
+0.5     # ...
 4
-
-8
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-3
-
-9
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-4
-
-10
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-11
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-12
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-13
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-14
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-15
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-16
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-17
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
-0
-0
-0
-
-6
-
-18
-forest
-
-10.5
-3.75
-10.24
-0
-0
-0
-0
-
-177261
-13001
-1212312
-0
 0
-0
-0
+1
+0.5
 
-6
-
-19
-forest
-
-10.5
-3.75
-10.24
-0
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
 0
-0
-0
+1000
+1000
 
-177261
-13001
-1212312
-0
-0
-0
-0
+25      # number of enemies
 
-6
+# END TILE 3
 
-20
-forest
+# BEGIN tile 4
 
-10.5
-3.75
-10.24
-0
-0
-0
-0
+4         # (int) tile_id
+bill   # (char *) sprite
 
-177261
-13001
-1212312
+0.5     # (float) resource 0 multiplier
+1      # (float) resource 1 multiplier
+0.5     # ...
+0.5
 0
-0
-0
-0
+2
+1
 
-6
-
-21
-forest
-
-10.5
-3.75
-10.24
-0
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
 0
-0
-0
+1000
+1000
 
-177261
-13001
-1212312
-0
-0
-0
-0
+8       # number of enemies
 
-6
+# END TILE 4
 
-22
-forest
+# BEGIN tile 5
 
-10.5
-3.75
-10.24
-0
-0
-0
-0
+5         # (int) tile_id
+clouds   # (char *) sprite
 
-177261
-13001
-1212312
-0
+0.5     # (float) resource 0 multiplier
+0.5      # (float) resource 1 multiplier
+1     # ...
+0.5
 0
-0
-0
+1
+2.5
 
-6
-
-23
-forest
-
-10.5
-3.75
-10.24
-0
+1000    # (int) quantity of resource 0 available
+1000     # (int) quantity of resource 1 available
+1000   # ...
+1000
 0
-0
-0
+1000
+1000
 
-177261
-13001
-1212312
-0
-0
-0
-0
+10       # number of enemies
 
-6
+# END TILE 5

@@ -76,7 +76,7 @@ UIList *ui_list_new(void **s, int s_len, UIRect dim,
 
     l->dim = dim;
 
-    l->items_per_screen = 6;
+    l->items_per_screen = 8;
 
     l->sprite_height = l->sprite_width = 25;
 
@@ -141,11 +141,12 @@ void _ui_list_draw_sublist(UIList *l, int first_item)
         HE("invalid arguments", "_ui_list_draw_sublist");
         return;
     }
+    for (int i = first_item; i < l->len && i < first_item + l->items_per_screen; i++) {
+        int j = i - first_item;
+        int x = l->dim.x + (j % 2) * l->sprite_width;
+        int y = l->dim.y + j / 2 * l->sprite_height;
 
-    for (int i = first_item; i < l->len && i < l->items_per_screen; i++) {
-        int x = l->dim.x + (i % 2) * l->sprite_width;
-        int y = l->dim.y + i / 2 * l->sprite_height;
-        sprite_draw(stdout, l->get_li_sprite(l->list[i]), x, y);
+        sprite_draw(stdout, l->get_li_sprite(l->list[i]->info), x, y);
     }
 
     l->min_displayed_index = first_item;
@@ -167,9 +168,12 @@ void *ui_list_present(UIList *l)
     _ui_list_draw_sublist(l, l->cursor);
     while (key != '\n' && key != 'q')
     {
+      fprintf(stderr, "%d in ui_list_present\n", l->cursor);
         // draw another fragment of the list if we overflow this one
-        if (l->cursor < l->min_displayed_index || l->cursor >= l->min_displayed_index + l->items_per_screen)
-            _ui_list_draw_sublist(l, l->cursor);
+        if (l->cursor < l->min_displayed_index || l->cursor >= l->min_displayed_index + l->items_per_screen){
+              fprintf(stderr, "Entering \"if\" with a l->cursor value:%d\n",l->cursor);
+              _ui_list_draw_sublist(l, l->cursor);
+        }
 
         key = term_read_key(stdin);
 

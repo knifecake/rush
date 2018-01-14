@@ -1,4 +1,4 @@
-36       # number of buildings to load.
+37      # number of buildings to load.
 7       # length of resource lists
 
 #
@@ -6,7 +6,7 @@
 #
 
 101         # int building_id
-town_hall1  # (char *) sprite
+TOWN HALL - LVL 1  # (char *) sprite
 1           # current level of the building
 0           # player's level to build it
 
@@ -29,7 +29,7 @@ town_hall1  # (char *) sprite
 0
 
 102         # int building_id
-town_hall2  # (char *) sprite
+TOWN HALL - LVL 2  # (char *) sprite
 2           # current level of the building
 1           # player's level to build it
 
@@ -51,7 +51,7 @@ town_hall2  # (char *) sprite
 0
 
 103         # int building_id
-town_hall3  # (char *) sprite
+TOWN HALL - LVL 3  # (char *) sprite
 3           # current level of the building
 2           # player's level to build it
 
@@ -74,7 +74,7 @@ town_hall3  # (char *) sprite
 0
 
 104         # int building_id
-town_hall4  # (char *) sprite
+TOWN HALL - LVL 4 # (char *) sprite
 4           # current level of the building
 3           # player's level to build it
 
@@ -97,7 +97,7 @@ town_hall4  # (char *) sprite
 0
 
 105         # int building_id
-town_hall5  # (char *) sprite
+TOWN HALL - LVL 5 # (char *) sprite
 5           # current level of the building
 4           # player's level to build it
 
@@ -124,9 +124,9 @@ town_hall5  # (char *) sprite
 # RESOURCE MINES
 #
 
-# Basic 1 extractor
+# Basic 1 extractor - Currency
 111     # int building_id
-money_mine # (char *) sprite
+EPS - LVL 1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -149,7 +149,7 @@ money_mine # (char *) sprite
 0
 
 112     # int building_id
-money_mine # (char *) sprite
+EPS - LVL 2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -173,7 +173,7 @@ money_mine # (char *) sprite
 
 # Basic 1 extractor
 113     # int building_id
-money_mine # (char *) sprite
+EPS - LVL 3# (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -197,7 +197,7 @@ money_mine # (char *) sprite
 
 # Basic 1 extractor
 114     # int building_id
-money_mine # (char *) sprite
+EPS - LVL 4# (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -221,7 +221,7 @@ money_mine # (char *) sprite
 
 # Basic 1 extractor
 115     # int building_id
-money_mine # (char *) sprite
+EPS - LVL 5# (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -246,7 +246,7 @@ money_mine # (char *) sprite
 
 # Chococrispies extractor
 121     # int building_id
-ginebrita_mine # (char *) sprite
+A VAR - LVL 1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -269,7 +269,7 @@ ginebrita_mine # (char *) sprite
 0
 
 122     # int building_id
-ginebrita_mine # (char *) sprite
+A VAR - LVL 2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -292,7 +292,7 @@ ginebrita_mine # (char *) sprite
 0
 
 123     # int building_id
-ginebrita_mine # (char *) sprite
+A VAR - LVL 3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -315,7 +315,7 @@ ginebrita_mine # (char *) sprite
 0
 
 124     # int building_id
-ginebrita_mine # (char *) sprite
+A VAR - LVL 4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -338,7 +338,7 @@ ginebrita_mine # (char *) sprite
 0
 
 125     # int building_id
-ginebrita_mine # (char *) sprite
+A VAR - LVL 5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -363,7 +363,7 @@ ginebrita_mine # (char *) sprite
 
 # Basic 3 extractor
 131     # int building_id
-chococrispies_mine # (char *) sprite
+COFFEE MAKER - LVL 1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -386,7 +386,7 @@ chococrispies_mine # (char *) sprite
 0
 
 132     # int building_id
-chococrispies_mine # (char *) sprite
+COFFEE MAKER - LVL 2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -409,7 +409,7 @@ chococrispies_mine # (char *) sprite
 0
 
 133     # int building_id
-chococrispies_mine # (char *) sprite
+COFFEE MAKER - LVL 3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -432,7 +432,7 @@ chococrispies_mine # (char *) sprite
 0
 
 134     # int building_id
-chococrispies_mine # (char *) sprite
+COFFEE MAKER - LVL 4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -455,7 +455,7 @@ chococrispies_mine # (char *) sprite
 0
 
 135     # int building_id
-chococrispies_mine # (char *) sprite
+COFFEE MAKER - LVL 5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -480,7 +480,7 @@ chococrispies_mine # (char *) sprite
 
 # Special extractor
 141     # int building_id
-special_mine # (char *) sprite
+CLOCK - LVL 1 # (char *) sprite
 1      # current level of the building
 2     # player's level to build it
 
@@ -503,7 +503,7 @@ special_mine # (char *) sprite
 0
 
 142     # int building_id
-special_mine # (char *) sprite
+CLOCK - LVL 2 # (char *) sprite
 2      # current level of the building
 3     # player's level to build it
 
@@ -526,7 +526,7 @@ special_mine # (char *) sprite
 0
 
 143     # int building_id
-special_mine # (char *) sprite
+CLOCK - LVL 3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -542,14 +542,14 @@ special_mine # (char *) sprite
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
-35        # (int) quantity of resource 1 returned each turn
-0           # ...
+0        # (int) quantity of resource 1 returned each turn
+35          # ...
 0
 0
 0
 
 144     # int building_id
-special_mine # (char *) sprite
+CLOCK - LVL 4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -565,14 +565,14 @@ special_mine # (char *) sprite
 
 0       # (int) quantity of resource 2 returned each turn
 0       # (int) quantity of resource 3 returned each turn
-50        # (int) quantity of resource 1 returned each turn
-0           # ...
+0        # (int) quantity of resource 1 returned each turn
+50          # ...
 0
 0
 0
 
 145     # int building_id
-special_mine # (char *) sprite
+CLOCK - LVL 5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -588,8 +588,8 @@ special_mine # (char *) sprite
 
 0
 0
-70
 0
+70
 0
 0
 0
@@ -600,7 +600,7 @@ special_mine # (char *) sprite
 
 # harbour
 151
-harbour
+MARKET - LVL 1
 1
 2
 500
@@ -621,7 +621,7 @@ harbour
 0
 
 152
-harbour_2
+MARKET - LVL 2
 2
 4
 800
@@ -644,7 +644,7 @@ harbour_2
 
 # airport
 161
-airport
+CODING LAB - LVL 1
 1
 3
 400
@@ -665,7 +665,7 @@ airport
 0
 
 162
-airport_2
+CODING LAB - LVL 2
 2
 5
 800
@@ -691,7 +691,7 @@ airport_2
 
 # academy
 171
-academy_1
+CHURCH - LVL 1
 1
 1
 500
@@ -713,7 +713,7 @@ academy_1
 
 
 172
-academy_2
+CHURCH - LVL 2
 2
 2
 500
@@ -735,7 +735,7 @@ academy_2
 
 
 173
-academy_3
+CHURCH - LVL 3
 3
 4
 500
@@ -760,7 +760,7 @@ academy_3
 #
 
 181
-library
+BANK - LVL 1
 1
 2
 500
@@ -776,12 +776,12 @@ library
 0
 0
 0
-10
+0
 10
 0
 
 182
-library
+BANK - LVL 2
 2
 4
 500
@@ -797,38 +797,16 @@ library
 0
 0
 0
+0
 20
-20
 0
 
-191
-university
-1
-3
-500
-7500
-0           # (int) buiding's leveling resource 2 cost
-0           # (int) buiding's leveling resource 3 cost
-0           # ...
-0
-0
-0
-
-0
-0
-0
-0
-15
-15
-0
-
-
-192
-university
+183
+BANK - LVL 3
 2
-5
+4
 500
-21000
+12000
 0           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
@@ -836,11 +814,52 @@ university
 0
 0
 
+0
+0
+0
+0
+0
+30
+0
+
+184
+BANK - LVL 4
+2
+4
+500
+12000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
 
 0
 0
 0
 0
-30
-30
+0
+40
+0
+
+185
+BANK - LVL 5
+2
+4
+500
+12000
+0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 3 cost
+0           # ...
+0
+0
+0
+
+0
+0
+0
+0
+0
+50
 0

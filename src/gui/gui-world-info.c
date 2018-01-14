@@ -106,7 +106,6 @@ void ui_world_info_print_single_line(UIWorldInfo* wi, int i){
     ui_text_panel_print(wi->tp[i], info);
     free(info);
   }
-  fprintf(stderr, "%d\n", i);
   char res[20];
   Sprite *resource;
   sprintf(res, "resource_%d", i);

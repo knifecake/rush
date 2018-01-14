@@ -67,7 +67,12 @@ int map_gen_random(Map *m, int map_tiles) {
     m->map_tiles = map_tiles;
 
     for (int i = 0; i < m->map_tiles; i++) {
-      m->map[i] = tile_copy(m->tiles[(int) f_rnd(rs) * (m->num_tiles - 1)]);
+      //TODO: This will only print tile 4 when random returns exactly 1. This shouldn't happen.
+      // A possible solution might be multiplying by m->num_tiles instead of -1 and if 1 is returned
+      // We choose the last value.
+      int random = (int) (f_rnd(rs) * (m->num_tiles));
+      if (random == m->num_tiles) random = m->num_tiles - 1;
+      m->map[i] = tile_copy(m->tiles[random]);
     }
 
     return !UINT_ERROR;
