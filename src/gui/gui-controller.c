@@ -10,6 +10,8 @@
 #include "../entities/world.h"
 #include "../entities/tile.h"
 
+#include "../../lib/qrnd.h"
+
 #include <unistd.h>
 #include <pthread.h>
 #include <time.h>
@@ -172,13 +174,34 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     Sprite *player_sprite = sprite_new(player_sprite_file);
     fclose(player_sprite_file);
 
-    SKGru *g = sk_gru_new((UIRect) {5, 5, 300, 150}, 'M');
-    for (int i = 0; i < num_enemies; i++){
-        SKMinion *e = sk_minion_new((UIRect) {55 + 30*i, 10 + 15*i, sprite_get_w(enemy_sprite), sprite_get_h(enemy_sprite)}, '1', '@', (SKVector) { -3, -2}, enemy_sprite);
+    // TODO: tie this to game config
+    UIRect gru_dim = (UIRect) {5, 5, 300, 150};
+    SKGru *g = sk_gru_new(gru_dim, 'M');
+
+    rnd_state *rs = r_init(time(NULL));
+    for (int i = 0; i < num_enemies; i++) {
+        // TODO: maybe we can improve here
+        int rand_x = 2 + gru_dim.x + f_rnd(rs) * 2 * (gru_dim.w - sprite_get_w(enemy_sprite));
+        int rand_y = 2 + gru_dim.y + f_rnd(rs) * (gru_dim.h - sprite_get_h(enemy_sprite));
+        if (rand_x % 2 == 0)
+            rand_x -= 1;
+
+        int rand_dx = 2 * (f_rnd(rs) * 8 - 4);
+        int rand_dy = f_rnd(rs) * 8 - 4;
+
+        SKMinion *e = sk_minion_new(
+                (UIRect) {rand_x, rand_y, sprite_get_w(enemy_sprite), sprite_get_h(enemy_sprite)},
+                '1', '@',
+                (SKVector) { rand_dx, rand_dy},
+                enemy_sprite);
+
         sk_gru_add_minion(g, e);
     }
+    r_end(rs);
 
-    SKMinion *p = sk_minion_new((UIRect) { 401, 51, sprite_get_w(player_sprite), sprite_get_h(player_sprite) }, 'P', 'P', (SKVector) { 0 }, player_sprite);
+    SKMinion *p = sk_minion_new(
+            (UIRect) { 401, 51, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
+            'P', 'P', (SKVector) { 0 }, player_sprite);
     sk_gru_add_minion(g, p);
     sk_gru_draw(g);
 
