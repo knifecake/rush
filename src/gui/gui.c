@@ -40,9 +40,9 @@ int ui_setup(World *w)
 
     ui = oopsalloc(1, sizeof(UI), "ui_setup");
 
-    ui->top_sidebar_dim         = (UIRect) { .x = 260,  .y = 12,     .width = 60,    .height = 95 };
-    ui->bottom_sidebar_dim      = (UIRect) { .x = 260,  .y = 132,   .width = 60,    .height = 70 };
-    ui->text_panel_dim          = (UIRect) { .x = 1,    .y = 153,   .width = 250,   .height = 27 };
+    ui->top_sidebar_dim         = (UIRect) { .x = 260,  .y = 12,     .w = 60,    .h = 95 };
+    ui->bottom_sidebar_dim      = (UIRect) { .x = 260,  .y = 132,   .w = 60,    .h = 70 };
+    ui->text_panel_dim          = (UIRect) { .x = 1,    .y = 153,   .w = 250,   .h = 27 };
 
     ui->w = w;
 
@@ -58,11 +58,17 @@ int ui_setup(World *w)
         return UINT_ERROR;
     }
 
+    ui_draw_all();
+    return !UINT_ERROR;
+}
+
+void ui_draw_all()
+{
+    printf("\033[2J");
     ui_map_draw(ui->map);
     ui_draw_interface();
     ui_update_tile_info();
     ui_update_world_info();
-    return !UINT_ERROR;
 }
 
 void ui_teardown()

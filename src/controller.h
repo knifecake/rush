@@ -81,5 +81,9 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg);
 
 int action_generic(void *w, char *cmd, char **msg, int num_msg);
 
+int action_attack(void *w, char *cmd, char **msg, int num_msg);
+
+int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg);
+
 int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg);
 #endif

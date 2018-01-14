@@ -50,8 +50,8 @@ UIWorldInfo *ui_world_info_new(World *w, UIRect dim)
       wi->text_dim[i] = (UIRect) {
           .x = dim.x + RESOURCE_ICON_WIDTH,
           .y = dim.y + i * LINE_HEIGHT,
-          .width = dim.width  - RESOURCE_ICON_WIDTH,
-          .height = 7
+          .w = dim.w  - RESOURCE_ICON_WIDTH,
+          .h = 7
       };
 
       wi->tp[i] = ui_text_panel_new(wi->text_dim[i], ui_get_font());

@@ -4,9 +4,14 @@
 
 #include "../lib/error_handling.h"
 #include "../lib/messages.h"
+#include "../lib/terminal.h"
 
 #include "../entities/world.h"
 #include "../entities/tile.h"
+
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
 
 // TODO: this is a temporary function until building sprites are done
 Sprite *get_placeholder_sprite(Building *b)
@@ -114,6 +119,93 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 {
     return !UINT_ERROR;
+}
+
+int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
+{
+    if (!world_next_turn(world))
+        return CTRL_ERROR;
+
+    ui_redraw_sidebar();
+    return CTRL_OK;
+}
+
+void *move_enemies(void *s)
+{
+    SKGru *g = (SKGru *)s;
+    while (1) {
+        usleep(5e4);
+        sk_gru_next_frame(g);
+    }
+    return NULL;
+}
+
+int action_attack(void *world, char *cmd, char **msg, int num_msg)
+{
+
+    int tile_index = ui_get_cursor();
+    Tile *current_tile = world_tile_at_index(world, tile_index);
+    if (!current_tile) {
+        HE("error retrieving tile", "action_attack");
+        return CTRL_ERROR;
+    }
+
+    int num_enemies = tile_get_enemies(current_tile);
+    if (num_enemies == UINT_ERROR) {
+        HE("error retrieving number of enemies", "action_attack");
+        return CTRL_ERROR;
+    }
+
+    printf("\033[2J");
+    FILE *mar = fopen("assets/img/resource_7.png", "r");
+    Sprite *marabini = sprite_new(mar);
+    fclose(mar);
+
+    FILE *gin = fopen("assets/img/resource_6.png", "r");
+    Sprite *ginebra = sprite_new(gin);
+    fclose(gin);
+
+    SKGru *g = sk_gru_new((UIRect) {5, 5, 300, 150}, 'M');
+    for (int i = 0; i < num_enemies; i++){
+        SKMinion *e = sk_minion_new((UIRect) {55 + 30*i, 10 + 15*i, sprite_get_w(marabini), sprite_get_h(marabini)}, '1', '@', (SKVector) { -3, -2}, marabini);
+        sk_gru_add_minion(g, e);
+    }
+
+    SKMinion *p = sk_minion_new((UIRect) { 401, 51, sprite_get_w(ginebra), sprite_get_h(ginebra) }, 'P', 'P', (SKVector) { 0 }, ginebra);
+    sk_gru_add_minion(g, p);
+    sk_gru_draw(g);
+
+    pthread_t thr;
+    pthread_create(&thr, NULL, move_enemies, g);
+
+    int key;
+    while ((key = term_read_key(stdin)) != 'q') {
+        switch (key) {
+            case UP_ARROW:
+                sk_minion_update_position(p, 0, -2);
+                break;
+            case DOWN_ARROW:
+                sk_minion_update_position(p, 0, 2);
+                break;
+            case LEFT_ARROW:
+                sk_minion_update_position(p, -4, 0);
+                break;
+            case RIGHT_ARROW:
+                sk_minion_update_position(p, 4, 0);
+                break;
+            default:
+                break;
+        }
+    }
+    pthread_cancel(thr);
+    sk_gru_destroy(g);
+    fflush(stdout);
+    return CTRL_REDRAW_ALL_UI;
+}
+
+int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg)
+{
+    return CTRL_REDRAW_ALL_UI;
 }
 
 int action_generic(void *w, char *cmd, char **msg, int num_msg)

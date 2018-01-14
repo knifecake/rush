@@ -6,7 +6,7 @@
  */
 typedef struct {
     int x, y;
-    int width, height;
+    int w, h;
 } UIRect;
 
 

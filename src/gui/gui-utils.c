@@ -20,24 +20,24 @@ void ui_draw_rect(UIRect r, char border)
     fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
     // print the top border
-    for (; i < r.x + 2 * r.width; i++)
+    for (; i < r.x + 2 * r.w; i++)
         fputc(border, stdout);
 
     // print the side borders
-    for (j = r.y + 1; j < r.height + r.y; j++) {
+    for (j = r.y + 1; j < r.h + r.y; j++) {
         i = r.x;
         fprintf(stdout, "\033[%d;%dH", j, 2 * i);
         fputc(border, stdout);
-        for (; i < r.x + 2 * r.width - 1; i++)
+        for (; i < r.x + 2 * r.w - 1; i++)
             fputc(' ', stdout);
         fputc(border, stdout);
     }
 
     i = r.x;
-    j = r.y + r.height;
+    j = r.y + r.h;
     fprintf(stdout, "\033[%d;%dH", j, 2 * i);
 
-    for (; i < r.x + 2 * r.width; i++)
+    for (; i < r.x + 2 * r.w; i++)
         fputc(border, stdout);
 
 }

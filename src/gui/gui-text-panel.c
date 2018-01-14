@@ -55,9 +55,9 @@ UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font)
     // calculate inner dimensions with padding
     /* tp->inner_dim.x = tp->outer_dim.x + 2 * tp->padding; */
     /* tp->inner_dim.y = tp->outer_dim.y + tp->padding; */
-    /* tp->inner_dim.height = tp->outer_dim.height - 2 * tp->padding; */
+    /* tp->inner_dim.h = tp->outer_dim.h - 2 * tp->padding; */
     /* // account for both margins and for the double x pixels */
-    /* tp->inner_dim.width = tp->outer_dim.width - 2 * 2 * tp->padding; */
+    /* tp->inner_dim.w = tp->outer_dim.w - 2 * 2 * tp->padding; */
     // TODO: temporarily (or not) disable inner dimmensions
     tp->inner_dim = outer_dim;
 
@@ -92,13 +92,13 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
     {
         // if this does not fit horizontally, move down a line
         // alternatively, it this character is a new line, do the same
-        if (x + tp->char_width > tp->inner_dim.x + tp->inner_dim.width || msg[i] == '\n') {
+        if (x + tp->char_width > tp->inner_dim.x + tp->inner_dim.w || msg[i] == '\n') {
             x = tp->inner_dim.x;
             y += tp->char_height + tp->padding;
         }
 
         // if this does not fit vertically, stop printing
-        if (y + tp->char_height >= tp->inner_dim.y + tp->inner_dim.height) {
+        if (y + tp->char_height >= tp->inner_dim.y + tp->inner_dim.h) {
             break;
         }
 

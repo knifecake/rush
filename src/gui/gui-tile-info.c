@@ -30,8 +30,8 @@ UITileInfo *ui_tile_info_new(World *w, UIRect dim)
       ti->text_coords[i] = (UIRect) {
           .x = dim.x + RESOURCE_ICON_WIDTH,
           .y = dim.y + i * LINE_HEIGHT,
-          .width = dim.width - RESOURCE_ICON_WIDTH,
-          .height = ui_font_get_char_height(ui_get_font()) + 1
+          .w = dim.w - RESOURCE_ICON_WIDTH,
+          .h = ui_font_get_char_height(ui_get_font()) + 1
       };
 
       ti->tp[i] = ui_text_panel_new(ti->text_coords[i], ui_get_font());

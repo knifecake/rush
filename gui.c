@@ -48,6 +48,9 @@ int main(void) {
 
     // associate our game commands with it
     cop_assoc(c, "build", action_build);
+    cop_assoc(c, "attack", action_attack);
+    cop_assoc(c, "redraw_ui", action_redraw_ui);
+    cop_assoc(c, "next_turn", action_next_turn);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 
@@ -71,8 +74,16 @@ int main(void) {
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 
-                cop_exec(c, cmd, w);
-                // ui_update_world_info();
+                int ret = cop_exec(c, cmd, w);
+                switch (ret) {
+                    case CTRL_NEXT_TURN:
+                        action_next_turn(w, NULL, NULL, 0);
+                    case CTRL_REDRAW_ALL_UI:
+                        ui_draw_all();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

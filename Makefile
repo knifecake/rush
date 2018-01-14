@@ -1,6 +1,6 @@
 CC			= gcc
 CFLAGS	= -Wall -g3 -std=c99
-LDFLAGS	= -lm -lpng
+LDFLAGS	= -lm -lpng -lpthread
 
 BUILD_DIR = build
 
@@ -32,8 +32,8 @@ $(BUILD_DIR)/tui: tui.o $(tui_obj) $(obj)
 $(BUILD_DIR)/gui: gui.o $(gui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/minigame: minigame.o src/lib/terminal.o src/lib/error_handling.o src/lib/sprite-png.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) -lpthread
+$(BUILD_DIR)/minigame: minigame.o $(gui_obj) $(obj)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # compiles all tests
 .PHONY: test

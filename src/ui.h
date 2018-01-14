@@ -33,6 +33,11 @@ UI *ui;
 #include "ui-utils.h"
 
 /*
+ * A kind of SpriteKit for the terminal
+ */
+#include "ui-sprite-kit.h"
+
+/*
  * GENERAL UI FUNCTIONS
  *
  * The following functions are called once to prepare the UI for drawing.
@@ -48,6 +53,11 @@ int ui_setup(World *w);
  * Frees all memory allocated by ui_setup.
  */
 void ui_teardown();
+
+/*
+ * Draw all the user interface.
+ */
+void ui_draw_all();
 
 
 /*
