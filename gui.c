@@ -17,7 +17,7 @@
 #define CMD_FILE "assets/cmd.txt"
 
 
-int main(void) {
+int main(int argc, char **argv) {
     // init terminal (saving previous state)
     term_setup(stdin, stdout);
 
@@ -27,15 +27,20 @@ int main(void) {
     // load assets
     World *w = world_new();
     if (!w) {
+        term_teardown(stdin, stdout);
         HE("FATAL: could not load some asset", "main");
 
         config_destroy();
-        term_teardown(stdin, stdout);
         abort();
     }
 
-    // instruct user to resize the screen
-    term_resize_hint(stdin, stdout, config_get_int("screen_height"), config_get_int("screen_width"));
+    // TODO: this is a small hack, do this properly with getopts
+    if (argc != 2) {
+        // instruct user to resize the screen
+        term_resize_hint(stdin, stdout, config_get_int("screen_height"), config_get_int("screen_width"));
+    }
+
+
 
     // setup UI
     ui_setup(w);
@@ -51,8 +56,14 @@ int main(void) {
     cop_assoc(c, "attack", action_attack);
     cop_assoc(c, "redraw_ui", action_redraw_ui);
     cop_assoc(c, "next_turn", action_next_turn);
+    cop_assoc(c, "welcome", action_welcome);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
+
+    if (argc != 2) {
+        // say hello to the user
+        cop_exec(c, "welcome", w);
+    }
 
     // GAME LOOP
     char input;
