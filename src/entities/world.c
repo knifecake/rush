@@ -502,3 +502,28 @@ int world_update_neighbours(World *w, int tile_index){
   }
   return !UINT_ERROR;
 }
+
+Building *_world_find_building_upgrade(World *w, int building_id){
+  if(!w) return NULL;
+  for (int i = 0; i < w->num_buildings; i++) {
+    if(building_id + 1 == building_get_id(w->buildings[i])){
+      return w->buildings[i];
+    }
+  }
+  return NULL;
+}
+
+int world_upgrade_building(World *w, int tile_index){
+  if(!w || tile_index < 0 || tile_index >= w->map_tiles) return -1;
+  Map *m = world_get_map(w);
+  Tile **list = map_get_map_tiles(m);
+  Building *current = tile_get_building(list[tile_index]);
+  if(!current) return WORLD_UPGRADE_NO_BUILDING;
+  int id = building_get_id(current);
+  //Finds upgrade building
+  Building *b = _world_find_building_upgrade(w, id);
+  if (!b) return WORLD_UPGRADE_MAX_LEVEL; //If no upgrade is encountered, it's in max level already
+
+  //Builds it
+  return world_build_on_tile(w, tile_index, b);
+}

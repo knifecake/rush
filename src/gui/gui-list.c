@@ -168,7 +168,6 @@ void *ui_list_present(UIList *l)
     _ui_list_draw_sublist(l, l->cursor);
     while (key != '\n' && key != 'q')
     {
-      fprintf(stderr, "%d in ui_list_present\n", l->cursor);
         // draw another fragment of the list if we overflow this one
         if (l->cursor < l->min_displayed_index || l->cursor >= l->min_displayed_index + l->items_per_screen){
               fprintf(stderr, "Entering \"if\" with a l->cursor value:%d\n",l->cursor);

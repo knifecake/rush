@@ -57,19 +57,20 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     int tile_index = ui_get_cursor();
 
     // get a list of available buildings for that tile
-    Building **bs = world_get_buildings(w);
+    //Building **bs = world_get_buildings(w);
 
-    // assemble a list that is compatible with the UI-library
+    /*// assemble a list that is compatible with the UI-library
     UIList *ui_l = ui_list_new((void *)bs,
             world_get_num_buildings(w),
             ui_get_top_sidebar_dim(),
             (ui_get_li_string_fun)building_get_desc,
-            (ui_get_li_sprite_fun)get_placeholder_sprite);
+            (ui_get_li_sprite_fun)get_placeholder_sprite);*/
 
     show_msg("What do you want to build this tile?\nUse the arrow keys to select a building on the top right.");
 
     // display the list: passes control to the uilist, will return a pointer to the list item that was chosen
-    Building *b = ui_list_present(ui_l);
+    //Building *b = ui_list_present(ui_l);
+    Building *b = ui_control_build_panel();
 
     if (!b) {
         show_msg("Okay, nothing will be built\n\n");
@@ -94,7 +95,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
             show_msg("You need to level up before building this. Hint: upgrade townhall.");
             break;
         case WORLD_BUILD_NO_MONEY:
-            show_msg("You need to save more to build this");
+            show_msg("You need to save more to build this.");
             break;
         case WORLD_BUILD_OCCUPIED:
             show_msg("There already is a building on that tile. You may only upgrade it to a higher level.");
@@ -106,7 +107,7 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
             show_msg("The tile is not visible.");
             break;
         default:
-            show_msg("An error ocurred and nothing was built");
+            show_msg("An error ocurred and nothing was built.");
             ui_redraw_sidebar();
             return CTRL_ERROR;
     }
@@ -125,6 +126,44 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // TODO: think about if signaling a common UI redraw from the return value is a good idea
     ui_redraw_sidebar();
     return CTRL_NEXT_TURN;
+}
+
+int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
+{
+    if (!w || !cmd || !msg || num_msg < 1) {
+        HE("invalid parameters", "action_build");
+        return UINT_ERROR;
+    }
+    int result = world_upgrade_building(w, ui_get_cursor());
+    switch (result) {
+      case WORLD_UPGRADE_NO_BUILDING:
+          show_msg("There is no building to upgrade");
+          break;
+      case WORLD_UPGRADE_MAX_LEVEL:
+          show_msg("This is currently in its max level");
+          break;
+      case WORLD_BUILD_SUCCESS_LEVEL_UP:
+          show_msg("Building was constructed and you leveled up!");
+          break;
+      case WORLD_BUILD_NO_LEVEL:
+          show_msg("You need to level up before upgrading this. Hint: upgrade townhall.");
+          break;
+      case WORLD_BUILD_NO_MONEY:
+          show_msg("You need to save more to upgrade this.");
+          break;
+      case WORLD_BUILD_SUCCESS_UPGRADE:
+          show_msg("The building on this tile was upgraded to the next level.");
+          break;
+      case WORLD_BUILD_NO_LIGHT:
+          show_msg("The tile is not visible.");
+          break;
+      default:
+          show_msg("An error ocurred and nothing was upgraded.");
+          return CTRL_ERROR;
+    }
+    ui_redraw_tile(ui_get_cursor());
+    ui_redraw_sidebar();
+    return CTRL_OK;
 }
 
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
