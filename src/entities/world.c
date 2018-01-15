@@ -280,7 +280,11 @@ World *world_next_turn(World *w){
 
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
     i += f_rnd(w->rs) * w->num_tiles;
-}
+
+    if(tile_get_building(w->tiles[tile_affected])){
+      building_edit_health(tile_get_building(w->tiles[tile_affected]),event_get_damage(w->events[affecting_event]));
+    }
+  }
 
 w->turn++;
 
