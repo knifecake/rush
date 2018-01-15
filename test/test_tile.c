@@ -28,7 +28,7 @@ int main(void) {
     assert("tile refuses to link a new building",
             UINT_ERROR == tile_build(t, NULL));
 
-    Event *e = event_new("Earthquake", rm, 1, 1);
+    Event *e = event_new("Earthquake", rm, 1, 1, -100);
 
     assert("can link a tile and an event",
             t = tile_set_event(t, e));

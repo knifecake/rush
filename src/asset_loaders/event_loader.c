@@ -44,6 +44,8 @@ Event **load_events_from_file(FILE *fp, int num_resources){
     int id = atoi(buff); free(buff);
     buff = fgetll(fp);
     int num_turns = atoi(buff); free(buff);
+    buff = fgetll(fp);
+    int damage = atoi(buff); free(buff);
     char *name = fgetll(fp);
     if (!name){
       HE("could not retrieve name for an event", "load_events_from_file")
@@ -63,7 +65,7 @@ Event **load_events_from_file(FILE *fp, int num_resources){
       }
       mult[j] = atof(buff);free(buff);
     }
-    events[i] = event_new (name, mult, id, num_turns);
+    events[i] = event_new (name, mult, id, num_turns, damage);
     free(name);free(mult);
     if(!events[i]){
       HE("could not create event", "load_events_from_file")
