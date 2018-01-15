@@ -185,6 +185,16 @@ Tile *world_tile_at_index(World *w, int tile_index);
  */
 #define WORLD_BUILD_NO_LIGHT 8
 
+/*
+ * Building wasn't upgraded due to no building existed.
+ */
+#define WORLD_UPGRADE_NO_BUILDING 9
+
+/*
+ * Building wasn't upgraded due to no further upgrade existed.
+ */
+#define WORLD_UPGRADE_MAX_LEVEL 10
+
 int world_build_on_tile(World *w, int tile_index, Building *b);
 
 #endif

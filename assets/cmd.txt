@@ -1,10 +1,15 @@
 # command file
-6 # number of commands
+7 # number of commands
 
 b
 build
 1
 Hello. This command was executed through the CoP.
+
+u
+upgrade
+1
+Hello. Me huele el pito a canela. Placeholder.
 
 a
 attack
