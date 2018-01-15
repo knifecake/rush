@@ -19,8 +19,10 @@
 
 struct _World {
     Resource **resources;
-	int wallet[MAX_RESOURCES];
+    int wallet[MAX_RESOURCES];
     int num_resources;
+
+    int turn;
 
     // keeps a canonical copy of each type of tile
     Tile **tiles;
@@ -104,6 +106,8 @@ World *world_new(void) {
         free(w);
         return NULL;
     }
+
+    w->turn=0;
 
     w->resources = oopsalloc(MAX_RESOURCES, sizeof(Resource *), "world_new");
 
@@ -265,17 +269,33 @@ World *world_next_turn(World *w){
   / TODO: See how many events we want to manage with and modify this
   / so that the probabilties are consistent with that
   */
- int i = 0;
+
+  int affecting_event = f_rnd(w->rs) * (w->num_events - 1);
+
+  int i = 0;
   while(i < w->num_tiles){
     /* int tile_affected = aleat_num(0, w->num_tiles - 1); */
     /* int affecting_event = aleat_num(0, w->num_events - 1); */
     int tile_affected = f_rnd(w->rs) * (w->num_tiles - 1);
-    int affecting_event = f_rnd(w->rs) * (w->num_events - 1);
+
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
     i += f_rnd(w->rs) * w->num_tiles;
 }
+
+w->turn++;
+
   return w;
 }
+
+int world_get_turn(World *w){
+  if(!w){
+    HE("invalid parameters", "world_get_turn")
+    return INT_ERROR;
+  }
+
+  return w->turn;
+}
+
 
 int *world_get_wallet(World *w)
 {

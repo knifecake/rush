@@ -24,7 +24,7 @@ earthquake # (char *) name
 
 1          # (int) id
 2          # (int) number of turns
--100       # (int) damage
+-150       # (int) damage
 tsunami    # (char *) name
 
 0.26       # (float) resource 0 multiplier
@@ -36,3 +36,75 @@ tsunami    # (char *) name
 1
 
 # END: event 1
+
+
+# BEGIN: event 2
+
+2          # (int) id
+2          # (int) number of turns
+-200       # (int) damage
+fire       # (char *) name
+
+0.2        # (float) resource 0 multiplier
+0.3       # (float) resource 1 multiplier
+0.4          # ...
+1
+1
+1
+1
+
+# END: event 2
+
+
+# BEGIN: event 3
+
+3          # (int) id
+5          # (int) number of turns
+-75        # (int) damage
+tornado    # (char *) name
+
+0.05        # (float) resource 0 multiplier
+0.15        # (float) resource 1 multiplier
+0.25        # ...
+1
+1
+1
+1
+
+# END: event 3
+
+
+# BEGIN: event 4
+
+4          # (int) id
+3          # (int) number of turns
+-10        # (int) damage
+holidays   # (char *) name
+
+0.5        # (float) resource 0 multiplier
+2          # (float) resource 1 multiplier
+1          # ...
+1
+1
+1
+1
+
+# END: event 4
+
+
+# BEGIN: event 5
+
+5          # (int) id
+2          # (int) number of turns
+-25        # (int) damage
+weekend    # (char *) name
+
+1.2        # (float) resource 0 multiplier
+1.5        # (float) resource 1 multiplier
+0.75          # ...
+1
+1
+1
+1
+
+# END: event 5

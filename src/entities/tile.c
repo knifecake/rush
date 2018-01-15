@@ -198,6 +198,10 @@ int tile_build (Tile *tile, Building *bp){
     HE("invalid resource_id", "tile_collect_resources")
     return INT_ERROR;
   }
+  if(!tile->building){
+    HE("building is null","tile_collect_resources")
+    return 0;
+  }
   int base_resource = building_get_base_resources(tile->building, resource_id);
   if (tile->remaining_resources [resource_id]< base_resource){
     base_resource = tile->remaining_resources[resource_id];
@@ -233,6 +237,7 @@ int tile_collect_resources(Tile *tile, int resource_index){
   return 0;
 }
 
+
 Tile *tile_next_turn(Tile *tile, int *resources){
   if (!tile){
     HE("invalid tile pointer", "tile_next_turn")
@@ -243,7 +248,7 @@ Tile *tile_next_turn(Tile *tile, int *resources){
     return NULL;
   }
   for(int i = 0; i < MAX_RESOURCES; ++i){
-    resources[i] = tile_get_resource_per_turn(tile, i);
+    resources[i] = tile_collect_resources(tile, i);
   }
   if(tile->event){
     if(!event_next_turn(tile->event)){
