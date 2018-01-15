@@ -98,8 +98,14 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         Building *b;
         b = tile_get_building(tile);
         if(!b){
-          sprintf(enem_hp, "NONE");
-          icon = dict_get(ui_get_sprite_dict(), "void_icon");
+            // if no building is present, there may be enemies
+            if (tile_get_enemies(tile) >= 0) {
+                sprintf(enem_hp, "%07d", tile_get_enemies(tile));
+                icon = dict_get(ui_get_sprite_dict(), "enemies");
+            } else {
+              sprintf(enem_hp, "NONE");
+              icon = dict_get(ui_get_sprite_dict(), "void_icon");
+            }
         }else{
           sprintf(enem_hp, "%07d", building_get_health(b));
           icon = dict_get(ui_get_sprite_dict(), "hp");

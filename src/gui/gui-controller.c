@@ -337,6 +337,8 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
         }
 
         switch (key) {
+            case 't':
+                goto win;
             case 's':
             case 'q':
                 goto surrender;

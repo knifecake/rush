@@ -98,7 +98,7 @@ space    # (char *) sprite
 1000
 1000
 
-25      # number of enemies
+5      # number of enemies
 
 # END TILE 3
 
@@ -148,6 +148,6 @@ clouds   # (char *) sprite
 1000
 1000
 
-10       # number of enemies
+2      # number of enemies
 
 # END TILE 5
