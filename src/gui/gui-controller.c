@@ -66,14 +66,14 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
             (ui_get_li_string_fun)building_get_desc,
             (ui_get_li_sprite_fun)get_placeholder_sprite);*/
 
-    show_msg("What do you want to build this tile?\nUse the arrow keys to select a building on the top right.");
+    show_msg(msg[0]);
 
     // display the list: passes control to the uilist, will return a pointer to the list item that was chosen
     //Building *b = ui_list_present(ui_l);
     Building *b = ui_control_build_panel();
 
     if (!b) {
-        show_msg("Okay, nothing will be built\n\n");
+        show_msg(msg[1]);
         ui_redraw_sidebar();
         return CTRL_OK;
     }
@@ -84,30 +84,33 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // communicate the result to the user and update neighbours
     switch(result) {
         case WORLD_BUILD_SUCCESS_LEVEL_UP:
-            show_msg("Building was constructed and you leveled up!");
+            show_msg(msg[2]);
             world_update_neighbours(w, tile_index);
             break;
         case WORLD_BUILD_SUCCESS:
-            show_msg("Building was constructed!");
+            show_msg(msg[3]);
             world_update_neighbours(w, tile_index);
             break;
         case WORLD_BUILD_NO_LEVEL:
-            show_msg("You need to level up before building this. Hint: upgrade townhall.");
+            show_msg(msg[4]);
             break;
         case WORLD_BUILD_NO_MONEY:
-            show_msg("You need to save more to build this.");
+            show_msg(msg[5]);
             break;
         case WORLD_BUILD_OCCUPIED:
-            show_msg("There already is a building on that tile. You may only upgrade it to a higher level.");
+            show_msg(msg[6]);
             break;
         case WORLD_BUILD_SUCCESS_UPGRADE:
-            show_msg("The building on this tile was upgraded to the next level.");
+            show_msg(msg[7]);
             break;
         case WORLD_BUILD_NO_LIGHT:
-            show_msg("The tile is not visible.");
+            show_msg(msg[8]);
+            break;
+        case WORLD_BUILD_ENEMIES_PRESENT:
+            show_msg(msg[10]);
             break;
         default:
-            show_msg("An error ocurred and nothing was built.");
+            show_msg(msg[9]);
             ui_redraw_sidebar();
             return CTRL_ERROR;
     }
@@ -134,6 +137,8 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
         HE("invalid parameters", "action_build");
         return UINT_ERROR;
     }
+
+    // TODO: move messages to the command file
     int result = world_upgrade_building(w, ui_get_cursor());
     switch (result) {
       case WORLD_UPGRADE_NO_BUILDING:
@@ -190,18 +195,49 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     return CTRL_OK;
 }
 
-void *move_enemies(void *s)
+typedef enum { ERROR, NOT_ENDED, PLAYER_LOST, PLAYER_WON } _game_state_t;
+
+static _game_state_t _game_state;
+
+static SKMinion *_game_player;
+
+static int _game_speed;
+
+void _game_ended(SKGru *g, SKMinion *player)
+{
+    if (!g || !player) {
+        HE("invalid arguments", "_game_ended");
+        _game_state = ERROR;
+    }
+
+    UIRect *player_pos = sk_minion_get_dim(player);
+    UIRect *gru_pos = sk_gru_get_dim(g);
+    if (!player_pos || !gru_pos) {
+        HE("could not get player position", "_game_ended");
+        _game_state = ERROR;
+    }
+
+    if (player_pos->x > gru_pos->x + 2 * gru_pos->w)
+        _game_state = PLAYER_WON;
+
+    if (sk_gru_minion_collides_with_others(g, player))
+        _game_state = PLAYER_LOST;
+}
+
+void *_move_enemies(void *s)
 {
     SKGru *g = (SKGru *)s;
-    int speed = config_get_int("attack_minigame.enemy_speed");
-    if (speed == 0) {
-        HE("invalid speed set in config file. hitn: 5e4 works right", "move_enemies");
-        speed = 5e4;
+    if (!g || !_game_player) {
+        HE("invalid arguments or NULL global player", "_move_enemies");
+        return NULL;
     }
 
     while (1) {
-        usleep(speed);
+        usleep(_game_speed);
         sk_gru_next_frame(g);
+        _game_ended(g, _game_player);
+        if (_game_state != NOT_ENDED)
+            return NULL;
     }
     return NULL;
 }
@@ -216,10 +252,30 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
         return CTRL_ERROR;
     }
 
+    if (!tile_get_visible(current_tile)) {
+        show_msg(msg[1]);
+        return CTRL_OK;
+    }
+
     int num_enemies = tile_get_enemies(current_tile);
-    if (num_enemies == UINT_ERROR) {
-        HE("error retrieving number of enemies", "action_attack");
-        return CTRL_ERROR;
+    if (num_enemies == 0) {
+        show_msg(msg[4]);
+        return CTRL_OK;
+    } else if (num_enemies == -1) {
+        show_msg(msg[5]);
+        return CTRL_OK;
+    }
+
+    int soldiers = world_get_resource_quantity(world, config_get_int("attack_minigame.soldier_resource"));
+    if (soldiers < 1) {
+        show_msg(msg[0]);
+        return CTRL_OK;
+    }
+
+    _game_speed = config_get_int("attack_minigame.enemy_speed");
+    if (_game_speed == 0) {
+        HE("invalid speed set in config file. hitn: 5e4 works right", "move_enemies");
+        _game_speed = 5e4;
     }
 
     printf("\033[2J");
@@ -232,9 +288,16 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     fclose(player_sprite_file);
 
     // TODO: tie this to game config
-    UIRect gru_dim = (UIRect) {5, 5, 300, 150};
+    UIRect gru_dim = (UIRect) {40, 5, 300, 150};
     SKGru *g = sk_gru_new(gru_dim, 'M');
 
+    // create the player
+    _game_player = sk_minion_new(
+            (UIRect) { 11, 11, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
+            'P', 'P', (SKVector) { 0 }, player_sprite);
+    sk_gru_add_minion(g, _game_player);
+
+    // create the enemies
     rnd_state *rs = r_init(time(NULL));
     for (int i = 0; i < num_enemies; i++) {
         // TODO: maybe we can improve here
@@ -256,38 +319,64 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     }
     r_end(rs);
 
-    SKMinion *p = sk_minion_new(
-            (UIRect) { 401, 51, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
-            'P', 'P', (SKVector) { 0 }, player_sprite);
-    sk_gru_add_minion(g, p);
     sk_gru_draw(g);
 
     pthread_t thr;
-    pthread_create(&thr, NULL, move_enemies, g);
+    pthread_create(&thr, NULL, _move_enemies, g);
 
+    _game_state = NOT_ENDED;
     int key;
-    while ((key = term_read_key(stdin)) != 'q') {
+    while ((key = term_read_key(stdin))) {
+        switch (_game_state) {
+            case PLAYER_WON:
+                goto win;
+            case PLAYER_LOST:
+                goto loose;
+            default:
+                break;
+        }
+
         switch (key) {
+            case 's':
+            case 'q':
+                goto surrender;
             case UP_ARROW:
-                sk_minion_update_position(p, 0, -2);
+                sk_minion_update_position(_game_player, 0, -2);
                 break;
             case DOWN_ARROW:
-                sk_minion_update_position(p, 0, 2);
+                sk_minion_update_position(_game_player, 0, 2);
                 break;
             case LEFT_ARROW:
-                sk_minion_update_position(p, -4, 0);
+                sk_minion_update_position(_game_player, -4, 0);
                 break;
             case RIGHT_ARROW:
-                sk_minion_update_position(p, 4, 0);
+                sk_minion_update_position(_game_player, 4, 0);
                 break;
             default:
                 break;
         }
     }
+
+    char *output = NULL;
+win:
+    // mark the tile as conquered
+    tile_conquer(current_tile);
+    output = msg[2];
+    goto finish;
+
+loose:
+    output = msg[3];
+    goto finish;
+
+surrender:
+    output = msg[6];
+
+finish:
     pthread_cancel(thr);
     sk_gru_destroy(g);
-    fflush(stdout);
-    return CTRL_REDRAW_ALL_UI;
+    ui_draw_all();
+    show_msg(output);
+    return CTRL_OK;
 }
 
 int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg)

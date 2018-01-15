@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
                 }
                 ui_update_tile_info();
             }
-            else {
+            else if (' ' <= input && input <= '~'){
                 // turn the given command into a string
                 sprintf(cmd, "%c", input);
 

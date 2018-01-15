@@ -3,8 +3,18 @@
 
 b
 build
-1
-Hello. This command was executed through the CoP.
+11
+What do you want to build this tile?\nUse the arrow keys to select a building on the top right.
+Okay, nothing will be built.
+Building was constructed and you leveled up!
+Building was constructed!
+You need to level up before building this. Hint: upgrade townhall.
+You need to save more to build this.
+There already is a building on that tile. You may only upgrade it to a higher level.
+The building on this tile was upgraded to the next level.
+The tile is not visible.
+An error ocurred and nothing was built.
+There are enemies on this tile. Attack it first with a.
 
 u
 upgrade
@@ -13,8 +23,14 @@ Hello. Me huele el pito a canela. Placeholder.
 
 a
 attack
-1
-Hello. This is a sample message.
+7
+You don't have enough troops to attack this tile. Hint: get troops by building army camps.
+This tile is not yet visible. Build something next to it to be able to attack it.
+You won! Now this tile is yours and you can build here!
+You lost the battle. Come back another time with more troops to increase your chance.
+There are no enemies on this tile. No need to attack! Go ahead an build something.
+This tile is already in your control. Do you really want to attack yourself?
+You surrendered and lost 1 extra soldier (in addition to the ones you already lost).
 
 n
 next_turn

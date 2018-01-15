@@ -157,6 +157,17 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
+int tile_conquer(Tile *tile)
+{
+    if (!tile) {
+        HE("invalid arguments", "tile_conquer");
+        return UINT_ERROR;
+    }
+
+    tile->enemies = -1;
+    return !UINT_ERROR;
+}
+
 int tile_set_visible(Tile *t, bool visible){
   if(!t){
     HE("Input error", "tile_set_visible")

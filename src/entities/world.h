@@ -195,6 +195,11 @@ Tile *world_tile_at_index(World *w, int tile_index);
  */
 #define WORLD_UPGRADE_MAX_LEVEL 10
 
+/*
+ * Building was not constructed because the tile was occupied by enemies.
+ */
+#define WORLD_BUILD_ENEMIES_PRESENT 11
+
 int world_build_on_tile(World *w, int tile_index, Building *b);
 
 #endif

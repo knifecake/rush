@@ -448,6 +448,10 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     if(!visible)
         return WORLD_BUILD_NO_LIGHT;
 
+    // if there are enemies on the tile, refuse to build
+    if (tile_get_enemies(map_tile_at_index(w->map, tile_index)) != -1)
+        return WORLD_BUILD_ENEMIES_PRESENT;
+
     // if tile is occupied, reject buildings that are not an upgrade
     int is_upgrade = building_is_upgrade(b, tile_get_building(map_tile_at_index(w->map, tile_index)));
     if (tile_get_building(map_tile_at_index(w->map, tile_index)) && !is_upgrade)

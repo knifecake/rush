@@ -80,6 +80,11 @@ Tile *tile_set_event (Tile *, Event *);
 int tile_set_visible(Tile *, bool);
 
 /*
+ * Marks the tile as conquered (sets enemies to -1).
+ */
+int tile_conquer(Tile *tile);
+
+/*
  * TODO: Decide what tile_next_turn has to manage.
  * - event: calls function event_next_turn and then checks if the event has
  *          finished. If so, it frees the mem allocated by the event and sets

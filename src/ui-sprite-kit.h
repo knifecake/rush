@@ -33,6 +33,7 @@ SKMinionRelativePosition sk_minion_relative_pos(SKMinion *m1, SKMinion *m2);
 
 void sk_minion_step(SKMinion *m);
 
+UIRect *sk_minion_get_dim(SKMinion *m);
 /*
  * SKGru: a group of particles contained in a rectangle.
  */
@@ -47,3 +48,11 @@ void sk_gru_add_minion(SKGru *g, SKMinion *m);
 void sk_gru_draw(SKGru *g);
 
 void sk_gru_next_frame(SKGru *g);
+
+/*
+ * True if the minion p is touching or overlaping any other minion in the SKGru
+ * g given.
+ */
+bool sk_gru_minion_collides_with_others(SKGru *g, SKMinion *p);
+
+UIRect *sk_gru_get_dim(SKGru *g);

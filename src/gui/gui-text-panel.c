@@ -125,7 +125,24 @@ int ui_text_panel_print(UITextPanel *tp, char *msg)
         usleep(tp->typewriter_effect);
     }
 
+    tp->msg = msg;
     return strlen(msg);
+}
+
+int ui_text_panel_draw(UITextPanel *tp)
+{
+    if (!tp) {
+        HE("invalid arguments", "ui_text_panel_draw");
+        return UINT_ERROR;
+    }
+
+    /* tp->msg = "hello"; */
+    if (tp->msg)
+        ui_text_panel_print(tp, tp->msg);
+    else
+        ui_text_panel_clear(tp);
+
+    return !UINT_ERROR;
 }
 
 int ui_text_panel_clear(UITextPanel *tp)
@@ -135,6 +152,7 @@ int ui_text_panel_clear(UITextPanel *tp)
         return UINT_ERROR;
     }
 
+    /* tp->msg = NULL; */
     ui_clear_rect(tp->inner_dim);
     return !UINT_ERROR;
 }

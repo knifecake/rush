@@ -69,6 +69,7 @@ void ui_draw_all()
     printf("\033[2J");
     ui_map_draw(ui->map);
     ui_draw_interface();
+    ui_text_panel_draw(ui->tp);
     ui_update_tile_info();
     ui_update_world_info();
 }

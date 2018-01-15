@@ -25,6 +25,12 @@ UITextPanel *ui_text_panel_new(UIRect outer_dim, UIFont *font);
 void ui_text_panel_destroy(UITextPanel *tp);
 
 /*
+ * Draw the text panel. If some text was drawn and it wasn't cleared, it draws
+ * it again.
+ */
+int ui_text_panel_draw(UITextPanel *tp);
+
+/*
  * Prints a string of text in the UI text panel.
  *
  * Returns UINT_ERROR on error.

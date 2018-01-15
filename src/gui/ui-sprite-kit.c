@@ -169,6 +169,16 @@ void sk_minion_step(SKMinion *m)
     sk_minion_move(m, m->dim.x + 2 * m->speed.x, m->dim.y + m->speed.y);
 }
 
+UIRect *sk_minion_get_dim(SKMinion *g)
+{
+    if (!g) {
+        HE("invalid arguments", "sk_minion_get_dim");
+        return NULL;
+    }
+
+    return &g->dim;
+}
+
 #define MAX_MINIONS 10
 struct _SKGru {
     SKMinion *minions[MAX_MINIONS];
@@ -267,4 +277,30 @@ void sk_gru_next_frame(SKGru *g)
 
         sk_minion_step(g->minions[i]);
     }
+}
+
+bool sk_gru_minion_collides_with_others(SKGru *g, SKMinion *p)
+{
+    if (!g || !p) {
+        HE("invalid arguments", "sk_gru_minion_collides_with_others");
+        return false;
+    }
+
+    for (int i = 0; i < g->num_minions; i++) {
+        if (g->minions[i] != p && sk_minion_relative_pos(g->minions[i], p) != APART) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+UIRect *sk_gru_get_dim(SKGru *g)
+{
+    if (!g) {
+        HE("invalid arguments", "sk_gru_get_dim");
+        return NULL;
+    }
+
+    return &g->dim;
 }
