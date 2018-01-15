@@ -45,6 +45,11 @@ void world_destroy(World *);
  */
 World *world_next_turn(World *);
 
+/*
+ * Return the turn of the game
+ */
+int world_get_turn(World *);
+
 
 /*
  * Returns the wallet of the player
