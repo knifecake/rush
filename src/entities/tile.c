@@ -189,7 +189,7 @@ int tile_build (Tile *tile, Building *bp){
         3. After that, it checks if an event is active in that tile. If that is the case,
         it multiplies the previous value by the event multiplier and converts the result to an int again */
 
-int tile_collect_resources(Tile * tile, int resource_id){
+/*int tile_collect_resources(Tile * tile, int resource_id){
   if (!tile){
     HE("invalid tile pointer", "tile_collect_resources")
     return INT_ERROR;
@@ -197,6 +197,10 @@ int tile_collect_resources(Tile * tile, int resource_id){
   if (resource_id < 0 || resource_id > MAX_RESOURCES){
     HE("invalid resource_id", "tile_collect_resources")
     return INT_ERROR;
+  }
+  if(!tile->building){
+    HE("building is null","tile_collect_resources")
+    return 0;
   }
   int base_resource = building_get_base_resources(tile->building, resource_id);
   if (tile->remaining_resources [resource_id]< base_resource){
@@ -206,7 +210,34 @@ int tile_collect_resources(Tile * tile, int resource_id){
     tile -> remaining_resources[resource_id] -= base_resource;
   }
   return (int) base_resource * tile->resource_multipliers[resource_id];
+}*/
+
+
+int tile_collect_resources(Tile *tile, int resource_index){
+  int base;
+  float multiplier;
+  if(resource_index == -1){
+    return 0;
+  }
+  if(tile_get_building(tile)){
+    base = building_get_base_resources(tile_get_building(tile), resource_index);
+
+    int rr = tile_get_remaining_resources(tile, resource_index);
+    rr -= base;
+    if(rr < 0){
+      base += rr;
+      rr = 0;
+    }
+    tile->remaining_resources[resource_index] = rr;
+    if (tile->event){
+      multiplier = event_get_mult(tile->event)[resource_index];
+      base = (int)base*multiplier;
+    }
+    return base * tile_get_resource_multipliers(tile,resource_index);
+  }
+  return 0;
 }
+
 
 Tile *tile_next_turn(Tile *tile, int *resources){
   if (!tile){
@@ -218,7 +249,7 @@ Tile *tile_next_turn(Tile *tile, int *resources){
     return NULL;
   }
   for(int i = 0; i < MAX_RESOURCES; ++i){
-    resources[i] = tile_get_resource_per_turn(tile, i);
+    resources[i] = tile_collect_resources(tile, i);
   }
   if(tile->event){
     if(!event_next_turn(tile->event)){
