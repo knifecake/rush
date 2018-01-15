@@ -44,7 +44,7 @@ int main(void) {
             (int )(rr[0] * rm[0]) == tile_collect_resources(t, 0));
 
     assert("refuses to collect a resource with an invalid id",
-            INT_ERROR == tile_collect_resources(t, MAX_RESOURCES + 1));
+            0 == tile_collect_resources(t, MAX_RESOURCES + 1));
 
             int resources[MAX_RESOURCES]= {0, 0, 0};
     assert("event finishes when number of turns reaches 0",

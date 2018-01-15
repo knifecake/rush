@@ -19,8 +19,10 @@
 
 struct _World {
     Resource **resources;
-	int wallet[MAX_RESOURCES];
+    int wallet[MAX_RESOURCES];
     int num_resources;
+
+    int turn;
 
     // keeps a canonical copy of each type of tile
     Tile **tiles;
@@ -104,6 +106,8 @@ World *world_new(void) {
         free(w);
         return NULL;
     }
+
+    w->turn=0;
 
     w->resources = oopsalloc(MAX_RESOURCES, sizeof(Resource *), "world_new");
 
@@ -274,8 +278,21 @@ World *world_next_turn(World *w){
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
     i += f_rnd(w->rs) * w->num_tiles;
 }
+
+w->turn++;
+
   return w;
 }
+
+int world_get_turn(World *w){
+  if(!w){
+    HE("invalid parameters", "world_get_turn")
+    return INT_ERROR;
+  }
+
+  return w->turn;
+}
+
 
 int *world_get_wallet(World *w)
 {
