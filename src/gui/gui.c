@@ -23,6 +23,7 @@ struct _UI {
     UIMap *map;
     UIWorldInfo *wi;
     UITileInfo *ti;
+    UIBuildPanel *bp;
     UITextPanel *tp;
     Dict *sprite_dict;
 
@@ -52,7 +53,8 @@ int ui_setup(World *w)
     ui->wi = ui_world_info_new(ui->w, ui->top_sidebar_dim);
     ui->ti = ui_tile_info_new(ui->w, ui->bottom_sidebar_dim);
     ui->sprite_dict = load_sprite_dict_from_file(config_get("asset_dbs.sprites"));
-
+    ui->bp = ui_build_panel_new(world_get_buildings(ui->w));
+    
     if (!ui->font || !ui->map || !ui->tp || !ui->ti || !ui->wi || !ui->sprite_dict) {
         HE("Could not initialize UI", "ui_setup");
         return UINT_ERROR;
@@ -169,4 +171,11 @@ void ui_draw_interface()
         return;
 
     sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "interface"), 0, 0);
+}
+Building *ui_control_build_panel(){
+  if(!ui){
+    HE("Null user interface - REALLY WEIRD ERROR", "ui_control_build_panel")
+    return NULL;
+  }
+  return ui_build_panel_control(ui->bp);
 }

@@ -96,6 +96,8 @@ int ui_update_tile_info();
 
 void ui_redraw_sidebar();
 
+Building *ui_control_build_panel();
+
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();
 
@@ -132,6 +134,8 @@ void ui_draw_interface();
 #include "ui-map.h"
 
 #include "ui-text-panel.h"
+
+#include "ui-build-panel.h"
 
 /*
  * GENERIC UI COMPONENTS:

@@ -121,9 +121,13 @@ void sprite_destroy(Sprite *s)
  */
 void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
 {
-    if (!s || x0 < 0 || y0 < 0) {
+    if (x0 < 0 || y0 < 0) {
         HE("invalid params", "sprite_draw")
         return;
+    }
+    if(!s){
+      HE("sprite is null", "sprite_draw")
+      return;
     }
     x0++;
     y0++;

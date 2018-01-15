@@ -1,12 +1,10 @@
-79
-A VAR ICON
+80
 A VAR - LVL 1
 A VAR - LVL 2
 A VAR - LVL 3
 A VAR - LVL 4
 A VAR - LVL 5
 background
-BANK ICON
 BANK - LVL 1
 BANK - LVL 2
 BANK - LVL 3
@@ -14,23 +12,31 @@ BANK - LVL 4
 BANK - LVL 5
 bill!
 bill
+building_icon_0
+building_icon_1
+building_icon_2
+building_icon_3
+building_icon_4
+building_icon_5
+building_icon_6
+building_icon_7
+building_icon_8
 building-placeholder
-CHURCH ICON
+build_panel_back
+build_panel_cursor_off
+build_panel_cursor_on
 CHURCH - LVL 1
 CHURCH - LVL 2
 CHURCH - LVL 3
-CLOCK ICON
 CLOCK - LVL 1
 CLOCK - LVL 2
 CLOCK - LVL 3
 CLOCK - LVL 4
 CLOCK - LVL 5
-clouds
 clouds!
-CODING LAB ICON
+clouds
 CODING LAB - LVL 1
 CODING LAB - LVL 2
-COFFEE MAKER ICON
 COFFEE MAKER - LVL 1
 COFFEE MAKER - LVL 2
 COFFEE MAKER - LVL 3
@@ -40,9 +46,7 @@ coffee_plant!
 coffee_plant
 cursor_off
 cursor_on
-del-list-cursor
 enemies
-EPS ICON
 EPS - LVL 1
 EPS - LVL 2
 EPS - LVL 3
@@ -54,8 +58,6 @@ hp
 interface
 jaen!
 jaen
-list-cursor
-MARKET ICON
 MARKET - LVL 1
 MARKET - LVL 2
 not_visible
@@ -69,7 +71,6 @@ resource_6
 resource_7
 space!
 space
-TOWN HALL ICON
 TOWN HALL - LVL 1
 TOWN HALL - LVL 2
 TOWN HALL - LVL 3
