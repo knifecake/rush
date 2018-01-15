@@ -37,7 +37,7 @@ typedef struct _Event Event;
  *
  * Returns NULL on error. Num_Turns NEED to be >= 1.
  */
-Event *event_new(char*, float*, int, int);
+Event *event_new(char*, float*, int, int, int);
 
 
 /*
@@ -65,6 +65,7 @@ int event_get_id (Event *);
 char *event_get_name(Event *);
 float *event_get_mult(Event *);
 int event_get_num_turns(Event *);
+int event_get_damage(Event *);
 
 /*
  * Prints the given resource, for debugging purposes.

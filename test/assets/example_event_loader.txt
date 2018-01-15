@@ -6,6 +6,7 @@
 
 1          # (int) id
 3          # (int) number of turns
+-100       # (int) damage
 earthquake # (char *) name
 
 0.2        # (float) resource 0 multiplier
@@ -18,6 +19,7 @@ earthquake # (char *) name
 
 1          # (int) id
 2          # (int) number of turns
+-100       # (int) damage
 tsunami    # (char *) name
 
 0.26       # (float) resource 0 multiplier

@@ -8,11 +8,12 @@
 struct _Event{
   int id;
   int num_turns;
+  int damage;
   char name[MAX_EVENT_NAME+1];
   float mult[MAX_RESOURCES];
 };
 
-Event *event_new (char *name, float *mult, int id, int num_turns){
+Event *event_new (char *name, float *mult, int id, int num_turns, int damage){
   if(!name){
     HE("missing event name", "event_new")
     return NULL;
@@ -25,14 +26,15 @@ Event *event_new (char *name, float *mult, int id, int num_turns){
     HE("missing event\'s resouce multipliers", "event_new")
     return NULL;
   }
-  if(id<0 || num_turns < 1){
-    HE("incorrect values for id or num_turns", "event_new")
+  if(id<0 || num_turns < 1 || damage>0){
+    HE("incorrect values for id, num_turns or damage", "event_new")
     return NULL;
   }
 
   Event *e = oopsalloc(1, sizeof(Event), "event_new");
   e->id = id;
   e->num_turns = num_turns;
+  e->damage = damage;
   for (size_t i = 0; i < MAX_RESOURCES-1; i++) {
     e->mult[i] = mult[i];
   }
@@ -51,7 +53,7 @@ Event *event_copy(Event *src){
     return NULL;
   }
   Event *dest;
-  dest = event_new(src->name, src->mult, src->id, src->num_turns);
+  dest = event_new(src->name, src->mult, src->id, src->num_turns, src->damage);
   if (!dest){
     HE("creating dest event was not possible", "event_copy")
     return NULL;
@@ -98,6 +100,13 @@ int event_get_num_turns(Event *e){
     return -1;
   }
   return e->num_turns;
+}
+int event_get_damage(Event *e){
+  if(!e){
+    HE("null event", "event_get_damage")
+    return -1;
+  }
+  return e->damage;
 }
 
 void event_print(FILE *s, Event *e)

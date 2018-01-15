@@ -14,13 +14,14 @@ int main(void) {
     mult[i]= i * 2.3;
   }
 
-  assert("cannot create event with invalid name", !event_new("thisstringislongerthanthirtytwocharacters", mult, 1, 3));
-  assert("cannot create event with invalid multipliers", !event_new("sample1", NULL, 1, 3));
-  assert("cannot create event with invalid id", !event_new("sample1", mult, -1, 3));
-  assert("cannot create event with invalid number of turns", !event_new("sample1", mult, 1, 0));
+  assert("cannot create event with invalid name", !event_new("thisstringislongerthanthirtytwocharacters", mult, 1, 3, -100));
+  assert("cannot create event with invalid multipliers", !event_new("sample1", NULL, 1, 3, -100));
+  assert("cannot create event with invalid id", !event_new("sample1", mult, -1, 3, -100));
+  assert("cannot create event with invalid number of turns", !event_new("sample1", mult, 1, 0, -100));
+  assert("cannot create event with invalid damage", !event_new("sample1", mult, 1, 3, 1));
   assert("cannot set next turn with invalid event", !event_next_turn(NULL));
 
-  Event *e = event_new("sample", mult, 1, 3);
+  Event *e = event_new("sample", mult, 1, 3, -100);
   assert("can create event with valid parameters", e);
 
   turns = event_get_num_turns(e); /* turns == 3 */
