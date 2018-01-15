@@ -76,8 +76,8 @@ void ui_tile_info_print_single_line (UITileInfo *ti, int tile_index, int line_in
         icon = dict_get(ui_get_sprite_dict(), "not_visible");
         break;
       case 1:;
-        char *enem_hp = oopsalloc(strlen("0000000") + 1, sizeof(char), "ui_tile_info_print_single_line");
-        sprintf(enem_hp, "%07d", tile_get_enemies(tile));
+        char *enem_hp = oopsalloc(strlen("??????") + 1, sizeof(char), "ui_tile_info_print_single_line");
+        sprintf(enem_hp, "??????");
         ui_text_panel_print(ti->tp[line_index], enem_hp);
         free(enem_hp);
         icon = dict_get(ui_get_sprite_dict(), "enemies");
