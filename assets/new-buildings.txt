@@ -6,7 +6,7 @@
 #
 
 101         # int building_id
-TOWN HALL - LVL 1  # (char *) sprite
+town_hall_1  # (char *) sprite
 1           # current level of the building
 0           # player's level to build it
 
@@ -29,7 +29,7 @@ TOWN HALL - LVL 1  # (char *) sprite
 0
 
 102         # int building_id
-TOWN HALL - LVL 2  # (char *) sprite
+town_hall_2  # (char *) sprite
 2           # current level of the building
 1           # player's level to build it
 
@@ -51,7 +51,7 @@ TOWN HALL - LVL 2  # (char *) sprite
 0
 
 103         # int building_id
-TOWN HALL - LVL 3  # (char *) sprite
+town_hall_3  # (char *) sprite
 3           # current level of the building
 2           # player's level to build it
 
@@ -74,7 +74,7 @@ TOWN HALL - LVL 3  # (char *) sprite
 0
 
 104         # int building_id
-TOWN HALL - LVL 4 # (char *) sprite
+town_hall_4 # (char *) sprite
 4           # current level of the building
 3           # player's level to build it
 
@@ -97,7 +97,7 @@ TOWN HALL - LVL 4 # (char *) sprite
 0
 
 105         # int building_id
-TOWN HALL - LVL 5 # (char *) sprite
+town_hall_5 # (char *) sprite
 5           # current level of the building
 4           # player's level to build it
 
@@ -126,7 +126,7 @@ TOWN HALL - LVL 5 # (char *) sprite
 
 # Basic 1 extractor - Currency
 111     # int building_id
-EPS - LVL 1 # (char *) sprite
+eps_1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -149,7 +149,7 @@ EPS - LVL 1 # (char *) sprite
 0
 
 112     # int building_id
-EPS - LVL 2 # (char *) sprite
+eps_2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -173,7 +173,7 @@ EPS - LVL 2 # (char *) sprite
 
 # Basic 1 extractor
 113     # int building_id
-EPS - LVL 3# (char *) sprite
+eps_3# (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -197,7 +197,7 @@ EPS - LVL 3# (char *) sprite
 
 # Basic 1 extractor
 114     # int building_id
-EPS - LVL 4# (char *) sprite
+eps_4# (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -221,7 +221,7 @@ EPS - LVL 4# (char *) sprite
 
 # Basic 1 extractor
 115     # int building_id
-EPS - LVL 5# (char *) sprite
+eps_5# (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -246,7 +246,7 @@ EPS - LVL 5# (char *) sprite
 
 # Chococrispies extractor
 121     # int building_id
-A VAR - LVL 1 # (char *) sprite
+a_var_1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -269,7 +269,7 @@ A VAR - LVL 1 # (char *) sprite
 0
 
 122     # int building_id
-A VAR - LVL 2 # (char *) sprite
+a_var_2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -292,7 +292,7 @@ A VAR - LVL 2 # (char *) sprite
 0
 
 123     # int building_id
-A VAR - LVL 3 # (char *) sprite
+a_var_3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -315,7 +315,7 @@ A VAR - LVL 3 # (char *) sprite
 0
 
 124     # int building_id
-A VAR - LVL 4 # (char *) sprite
+a_var_4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -338,7 +338,7 @@ A VAR - LVL 4 # (char *) sprite
 0
 
 125     # int building_id
-A VAR - LVL 5 # (char *) sprite
+a_var_5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -363,7 +363,7 @@ A VAR - LVL 5 # (char *) sprite
 
 # Basic 3 extractor
 131     # int building_id
-COFFEE MAKER - LVL 1 # (char *) sprite
+coffee_maker_1 # (char *) sprite
 1      # current level of the building
 1     # player's level to build it
 
@@ -386,7 +386,7 @@ COFFEE MAKER - LVL 1 # (char *) sprite
 0
 
 132     # int building_id
-COFFEE MAKER - LVL 2 # (char *) sprite
+coffee_maker_2 # (char *) sprite
 2      # current level of the building
 2     # player's level to build it
 
@@ -409,7 +409,7 @@ COFFEE MAKER - LVL 2 # (char *) sprite
 0
 
 133     # int building_id
-COFFEE MAKER - LVL 3 # (char *) sprite
+coffee_maker_3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -432,7 +432,7 @@ COFFEE MAKER - LVL 3 # (char *) sprite
 0
 
 134     # int building_id
-COFFEE MAKER - LVL 4 # (char *) sprite
+coffee_maker_4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -455,7 +455,7 @@ COFFEE MAKER - LVL 4 # (char *) sprite
 0
 
 135     # int building_id
-COFFEE MAKER - LVL 5 # (char *) sprite
+coffee_maker_5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -480,7 +480,7 @@ COFFEE MAKER - LVL 5 # (char *) sprite
 
 # Special extractor
 141     # int building_id
-CLOCK - LVL 1 # (char *) sprite
+clock_1 # (char *) sprite
 1      # current level of the building
 2     # player's level to build it
 
@@ -503,7 +503,7 @@ CLOCK - LVL 1 # (char *) sprite
 0
 
 142     # int building_id
-CLOCK - LVL 2 # (char *) sprite
+clock_2 # (char *) sprite
 2      # current level of the building
 3     # player's level to build it
 
@@ -526,7 +526,7 @@ CLOCK - LVL 2 # (char *) sprite
 0
 
 143     # int building_id
-CLOCK - LVL 3 # (char *) sprite
+clock_3 # (char *) sprite
 3      # current level of the building
 2     # player's level to build it
 
@@ -549,7 +549,7 @@ CLOCK - LVL 3 # (char *) sprite
 0
 
 144     # int building_id
-CLOCK - LVL 4 # (char *) sprite
+clock_4 # (char *) sprite
 4      # current level of the building
 3     # player's level to build it
 
@@ -572,7 +572,7 @@ CLOCK - LVL 4 # (char *) sprite
 0
 
 145     # int building_id
-CLOCK - LVL 5 # (char *) sprite
+clock_5 # (char *) sprite
 5      # current level of the building
 3     # player's level to build it
 
@@ -600,7 +600,7 @@ CLOCK - LVL 5 # (char *) sprite
 
 # harbour
 151
-MARKET - LVL 1
+market_1
 1
 2
 500
@@ -621,7 +621,7 @@ MARKET - LVL 1
 0
 
 152
-MARKET - LVL 2
+market_2
 2
 4
 800
@@ -644,7 +644,7 @@ MARKET - LVL 2
 
 # airport
 161
-CODING LAB - LVL 1
+coding_lab_1
 1
 3
 400
@@ -665,7 +665,7 @@ CODING LAB - LVL 1
 0
 
 162
-CODING LAB - LVL 2
+coding_lab_2
 2
 5
 800
@@ -691,7 +691,7 @@ CODING LAB - LVL 2
 
 # academy
 171
-CHURCH - LVL 1
+church_1
 1
 1
 500
@@ -713,7 +713,7 @@ CHURCH - LVL 1
 
 
 172
-CHURCH - LVL 2
+church_2
 2
 2
 500
@@ -735,7 +735,7 @@ CHURCH - LVL 2
 
 
 173
-CHURCH - LVL 3
+church_3
 3
 4
 500
@@ -760,7 +760,7 @@ CHURCH - LVL 3
 #
 
 181
-BANK - LVL 1
+bank_1
 1
 2
 500
@@ -781,7 +781,7 @@ BANK - LVL 1
 0
 
 182
-BANK - LVL 2
+bank_2
 2
 4
 500
@@ -802,7 +802,7 @@ BANK - LVL 2
 0
 
 183
-BANK - LVL 3
+bank_3
 2
 4
 500
@@ -823,7 +823,7 @@ BANK - LVL 3
 0
 
 184
-BANK - LVL 4
+bank_4
 2
 4
 500
@@ -844,7 +844,7 @@ BANK - LVL 4
 0
 
 185
-BANK - LVL 5
+bank_5
 2
 4
 500

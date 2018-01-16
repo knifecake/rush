@@ -17,7 +17,7 @@
 #include <time.h>
 
 // TODO: this is a temporary function until building sprites are done
-Sprite *get_placeholder_sprite(Building *b)
+/*Sprite *get_placeholder_sprite(Building *b)
 {
     char temporary[256]={'\0'};
     sprintf(temporary,"%s",building_get_sprite(b));
@@ -31,7 +31,7 @@ Sprite *get_placeholder_sprite(Building *b)
     temporary[i]='N';++i;
     temporary[i]='\0';++i;
     return dict_get(ui_get_sprite_dict(), temporary);
-}
+}*/
 
 //TODO:modify the sprintf so that it includes all the resources
 char *building_get_desc(Building *b)
@@ -170,7 +170,36 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
     ui_redraw_sidebar();
     return CTRL_OK;
 }
-
+int action_exchange(void *w, char *cmd, char **msg, int num_msg){
+  if (!w || !cmd || !msg || num_msg < 1) {
+      HE("invalid parameters", "action_build");
+      return UINT_ERROR;
+  }
+  int tile_index = ui_get_cursor(); //TODO: Improve this.
+  show_msg(msg[0]);
+  int price, res_id;
+  if(WORLD_EXCHANGE_NOT_POSSIBLE == world_exchange(w, tile_index, 0, 0, 0)){
+    show_msg(msg[1]);
+    ui_redraw_sidebar();
+    return CTRL_OK;
+  }
+  price = ui_control_exchange_panel(&res_id);
+  int result = world_exchange(w, tile_index, price, 0, res_id);
+  switch (result) {
+    case WORLD_EXCHANGE_NO_MONEY:
+      show_msg(msg[2]);
+      break;
+    case WORLD_EXCHANGE_DONE:
+      show_msg(msg[3]);
+      break;
+    default:
+      show_msg(msg[4]);
+      ui_redraw_sidebar();
+      return CTRL_ERROR;
+  }
+  ui_redraw_sidebar();
+  return CTRL_OK;
+}
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 {
     if (!msg || num_msg < 1)
