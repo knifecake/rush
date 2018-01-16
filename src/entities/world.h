@@ -142,7 +142,14 @@ int world_update_neighbours(World *w,int tile_index);
  * Returns the tile at the given index, NULL on error.
  */
 Tile *world_tile_at_index(World *w, int tile_index);
+/*
+ * Returns the price conversion of first resource into the second
+ */
+ int world_upgrade_building(World *w, int tile_index);
 
+ int world_get_price_exchange(int price, int resource_from, int resource_to);
+
+ int world_exchange(World *w, int tile_index, int price, int res_from, int res_to);
 /*
  * Builds on the current tile if the following are met:
  *  - Player has building unlocking level
@@ -152,59 +159,71 @@ Tile *world_tile_at_index(World *w, int tile_index);
  *  one of the following:
  */
 
+
+int world_build_on_tile(World *w, int tile_index, Building *b);
 /*
- * Player does not have enough resources to build this.
- */
+* Player does not have enough resources to build this.
+*/
 #define WORLD_BUILD_NO_MONEY 2
 
 /*
- * Player's level is not hight enough. This building hasn't unlocked.
- */
+* Player's level is not hight enough. This building hasn't unlocked.
+*/
 #define WORLD_BUILD_NO_LEVEL 3
 
 /*
- * Building was successfully constructed.
- */
+* Building was successfully constructed.
+*/
 #define WORLD_BUILD_SUCCESS 4
 
 /*
- * Building was successfully construted and caused the player to move 1 level
- * up.
- */
+* Building was successfully construted and caused the player to move 1 level
+* up.
+*/
 #define WORLD_BUILD_SUCCESS_LEVEL_UP 5
 
 /*
- * Building could not be constructed because there is a building of a different
- * kind on this tile.
- */
+* Building could not be constructed because there is a building of a different
+* kind on this tile.
+*/
 #define WORLD_BUILD_OCCUPIED 6
 
 /*
- * Building was successfully constructed and overrides the previous building
- * upgrading it.
- */
+* Building was successfully constructed and overrides the previous building
+* upgrading it.
+*/
 #define WORLD_BUILD_SUCCESS_UPGRADE 7
 
 /*
- * Building wasn't successfully constructed due to tile was not visible
- */
+* Building wasn't successfully constructed due to tile was not visible
+*/
 #define WORLD_BUILD_NO_LIGHT 8
 
 /*
- * Building wasn't upgraded due to no building existed.
- */
+* Building wasn't upgraded due to no building existed.
+*/
 #define WORLD_UPGRADE_NO_BUILDING 9
 
 /*
- * Building wasn't upgraded due to no further upgrade existed.
- */
+* Building wasn't upgraded due to no further upgrade existed.
+*/
 #define WORLD_UPGRADE_MAX_LEVEL 10
 
 /*
  * Building was not constructed because the tile was occupied by enemies.
  */
 #define WORLD_BUILD_ENEMIES_PRESENT 11
-
-int world_build_on_tile(World *w, int tile_index, Building *b);
+/*
+ * Exchange was not executed because tile wasnt a market
+ */
+#define WORLD_EXCHANGE_NOT_POSSIBLE 12
+/*
+ * Exchange was not executed because you had not enough money
+ */
+#define WORLD_EXCHANGE_NO_MONEY 13
+/*
+ * Exchange was successfull
+ */
+#define WORLD_EXCHANGE_DONE 14
 
 #endif

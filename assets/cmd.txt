@@ -1,5 +1,5 @@
 # command file
-7 # number of commands
+8 # number of commands
 
 b
 build
@@ -21,6 +21,15 @@ upgrade
 1
 Hello. Me huele el pito a canela. Placeholder.
 
+e
+exchange
+5
+Increase the number of manolos with arrow keys (left and right). Then select the resource you want to get and press enter.
+You dont have a market in this tile!
+You dont have the required manolos amount to execute this trade!
+Trade successful!
+A weird error occurred.
+
 a
 attack
 7
@@ -29,7 +38,7 @@ This tile is not yet visible. Build something next to it to be able to attack it
 You won! Now this tile is yours and you can build here!
 You lost the battle. Come back another time with more troops to increase your chance.
 There are no enemies on this tile. No need to attack! Go ahead an build something.
-This tile is already in your control. Do you really want to attack yourself?
+This tile is already under your control. Do you really want to attack yourself?
 You surrendered and lost 1 extra soldier (in addition to the ones you already lost).
 
 n

@@ -551,3 +551,32 @@ int world_upgrade_building(World *w, int tile_index){
   //Builds it
   return world_build_on_tile(w, tile_index, b);
 }
+
+//TODO: Complete this
+
+int world_get_price_exchange(int price, int resource_from, int resource_to){
+  if(resource_from == resource_to){
+    return resource_from;
+  }
+  switch (resource_from) {
+    case 0:
+      if (resource_to == 1) return (int) (price * 1.5);
+      if (resource_to == 2) return (int) (price * 1.1);
+    default: return price;
+  }
+}
+
+int world_exchange(World *w, int tile_index, int price, int res_from, int res_to){
+  if(!w) return INT_ERROR;
+  Map *m = world_get_map(w);
+  Tile **list = map_get_map_tiles(m);
+  Building *current = tile_get_building(list[tile_index]);
+  if(!building_is_market(current)){
+    return WORLD_EXCHANGE_NOT_POSSIBLE;
+  }
+  if(price > w->wallet[res_from]) return WORLD_EXCHANGE_NO_MONEY;
+  int addition = world_get_price_exchange(price, res_from, res_to);
+  w->wallet[res_from] -= price;
+  w->wallet[res_to] += addition;
+  return WORLD_EXCHANGE_DONE;
+}

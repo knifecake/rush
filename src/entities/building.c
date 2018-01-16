@@ -170,6 +170,12 @@ int building_is_upgrade(Building *b1, Building *b2)
     return b1->level / 10 == b2->level / 10 && b1->id == b2->id + 1;
 }
 
+bool building_is_market(Building *b){
+  if(!b) return false;
+  if(b->id == 151|| b->id == 152) return true;
+  return false;
+}
+
 void building_print(FILE *f, Building *bp)
 {
 	if (!bp) {
