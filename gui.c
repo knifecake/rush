@@ -18,9 +18,6 @@
 
 
 int main(int argc, char **argv) {
-    // init terminal (saving previous state)
-    term_setup(stdin, stdout);
-
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
 
@@ -40,15 +37,14 @@ int main(int argc, char **argv) {
         term_resize_hint(stdin, stdout, config_get_int("screen_height"), config_get_int("screen_width"));
     }
 
-
-
-    // setup UI
-    ui_setup(w);
-
     // load cop
     // TODO: decide what to do about error handling
     FILE *cf = fopen(CMD_FILE, "r");
     CoP *c = cop_new(cf);
+    if (!c) {
+        HE("could not load CoP", "main");
+        return EXIT_FAILURE;
+    }
     fclose(cf);
 
     // associate our game commands with it
@@ -60,6 +56,12 @@ int main(int argc, char **argv) {
     cop_assoc(c, "welcome", action_welcome);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
+
+    // init terminal (saving previous state)
+    term_setup(stdin, stdout);
+
+    // setup UI
+    ui_setup(w);
 
     if (argc != 2) {
         // say hello to the user

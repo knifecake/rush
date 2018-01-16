@@ -142,28 +142,28 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
     int result = world_upgrade_building(w, ui_get_cursor());
     switch (result) {
       case WORLD_UPGRADE_NO_BUILDING:
-          show_msg("There is no building to upgrade");
+          show_msg(msg[0]);
           break;
       case WORLD_UPGRADE_MAX_LEVEL:
-          show_msg("This is currently in its max level");
+          show_msg(msg[1]);
           break;
       case WORLD_BUILD_SUCCESS_LEVEL_UP:
-          show_msg("Building was constructed and you leveled up!");
+          show_msg(msg[2]);
           break;
       case WORLD_BUILD_NO_LEVEL:
-          show_msg("You need to level up before upgrading this. Hint: upgrade townhall.");
+          show_msg(msg[3]);
           break;
       case WORLD_BUILD_NO_MONEY:
-          show_msg("You need to save more to upgrade this.");
+          show_msg(msg[4]);
           break;
       case WORLD_BUILD_SUCCESS_UPGRADE:
-          show_msg("The building on this tile was upgraded to the next level.");
+          show_msg(msg[5]);
           break;
       case WORLD_BUILD_NO_LIGHT:
           show_msg("The tile is not visible.");
           break;
       default:
-          show_msg("An error ocurred and nothing was upgraded.");
+          show_msg(msg[6]);
           return CTRL_ERROR;
     }
     ui_redraw_tile(ui_get_cursor());

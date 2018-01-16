@@ -18,8 +18,14 @@ There are enemies on this tile. Attack it first with a.
 
 u
 upgrade
-1
-Hello. Me huele el pito a canela. Placeholder.
+7
+There is no building to upgrade.
+This is building is already at it maximum level.
+Building was upgraded and you leveled up.
+You need to level-up before upgrading this building. Hint: upgrade townhall.
+You need more resources to upgrade this building.
+The building on this tile was upgraded to the next level.
+An error ocurred. The building was not upgraded.
 
 a
 attack
