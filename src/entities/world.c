@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include "../../lib/lineread.h"
 #include "../../lib/qrnd.h"
@@ -272,15 +273,38 @@ World *world_next_turn(World *w){
 
   int affecting_event = f_rnd(w->rs) * (w->num_events - 1);
 
+  /*
   int i = 0;
-  while(i < w->num_tiles){
+  while(i < w->num_tiles){*/
     /* int tile_affected = aleat_num(0, w->num_tiles - 1); */
     /* int affecting_event = aleat_num(0, w->num_events - 1); */
-    int tile_affected = f_rnd(w->rs) * (w->num_tiles - 1);
+  /*  int tile_affected = f_rnd(w->rs) * (w->num_tiles - 1);
 
     tile_set_event(w->tiles[tile_affected], w->events[affecting_event]);
     i += f_rnd(w->rs) * w->num_tiles;
-}
+
+    if(tile_get_building(w->tiles[tile_affected])){
+      building_edit_health(tile_get_building(w->tiles[tile_affected]),event_get_damage(w->events[affecting_event]));
+    }
+  }
+  */
+
+  for(int i=0; i<w->map_tiles; i++){
+    int probabilty= (int) i_rnd(w->rs)%100;
+
+    if(probabilty<world_get_percentage_event(w)){
+      Tile *t = map_tile_at_index(w->map, i);
+
+      if(tile_get_event(t)){
+        continue;
+      }
+      tile_set_event(t, w->events[affecting_event]);
+
+      if(tile_get_building(t)){
+        building_edit_health(tile_get_building(t), event_get_damage(w->events[affecting_event]));
+      }
+    }
+  }
 
 w->turn++;
 
@@ -294,6 +318,18 @@ int world_get_turn(World *w){
   }
 
   return w->turn;
+}
+
+
+int world_get_percentage_event(World *w){
+  if(!w){
+    HE("invalid parameters", "world_get_percentage_event")
+    return INT_ERROR;
+  }
+  int turn = world_get_turn(w);
+  int percentage = (int) 40*log10(turn/20);
+
+  return percentage;
 }
 
 

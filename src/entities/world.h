@@ -50,6 +50,11 @@ World *world_next_turn(World *);
  */
 int world_get_turn(World *);
 
+/*
+ *Return the probabilty (percentage) of an event
+ */
+int world_get_percentage_event(World *);
+
 
 /*
  * Returns the wallet of the player
