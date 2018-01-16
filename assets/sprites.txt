@@ -1,15 +1,16 @@
-80
-A VAR - LVL 1
-A VAR - LVL 2
-A VAR - LVL 3
-A VAR - LVL 4
-A VAR - LVL 5
+84
+a_var_1
+a_var_2
+a_var_3
+a_var_4
+a_var_5
 background
-BANK - LVL 1
-BANK - LVL 2
-BANK - LVL 3
-BANK - LVL 4
-BANK - LVL 5
+bank_1
+bank_2
+bank_3
+bank_4
+bank_5
+big_manolos
 bill!
 bill
 building_icon_0
@@ -25,41 +26,44 @@ building-placeholder
 build_panel_back
 build_panel_cursor_off
 build_panel_cursor_on
-CHURCH - LVL 1
-CHURCH - LVL 2
-CHURCH - LVL 3
-CLOCK - LVL 1
-CLOCK - LVL 2
-CLOCK - LVL 3
-CLOCK - LVL 4
-CLOCK - LVL 5
+church_1
+church_2
+church_3
+clock_1
+clock_2
+clock_3
+clock_4
+clock_5
 clouds!
 clouds
-CODING LAB - LVL 1
-CODING LAB - LVL 2
-COFFEE MAKER - LVL 1
-COFFEE MAKER - LVL 2
-COFFEE MAKER - LVL 3
-COFFEE MAKER - LVL 4
-COFFEE MAKER - LVL 5
+coding_lab_1
+coding_lab_2
+coffee_maker_1
+coffee_maker_2
+coffee_maker_3
+coffee_maker_4
+coffee_maker_5
 coffee_plant!
 coffee_plant
 cursor_off
 cursor_on
 enemies
-EPS - LVL 1
-EPS - LVL 2
-EPS - LVL 3
-EPS - LVL 4
-EPS - LVL 5
+eps_1
+eps_2
+eps_3
+eps_4
+eps_5
+exchange_panel_back
+exchange_panel_cursor_off
+exchange_panel_cursor_on
 highway!
 highway
 hp
 interface
 jaen!
 jaen
-MARKET - LVL 1
-MARKET - LVL 2
+market_1
+market_2
 not_visible
 resource_0
 resource_1
@@ -71,11 +75,11 @@ resource_6
 resource_7
 space!
 space
-TOWN HALL - LVL 1
-TOWN HALL - LVL 2
-TOWN HALL - LVL 3
-TOWN HALL - LVL 4
-TOWN HALL - LVL 5
+town_hall_1
+town_hall_2
+town_hall_3
+town_hall_4
+town_hall_5
 visible
 void_icon
 welcome

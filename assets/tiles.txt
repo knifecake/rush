@@ -15,7 +15,7 @@ jaen    # (char *) sprite
 0.5
 1
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
@@ -40,7 +40,7 @@ highway    # (char *) sprite
 0.5
 1
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
@@ -65,7 +65,7 @@ coffee_plant    # (char *) sprite
 1
 0.5
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
@@ -90,7 +90,7 @@ space    # (char *) sprite
 1
 0.5
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
@@ -115,7 +115,7 @@ bill   # (char *) sprite
 2
 1
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
@@ -140,7 +140,7 @@ clouds   # (char *) sprite
 1
 2.5
 
-1000    # (int) quantity of resource 0 available
+5000    # (int) quantity of resource 0 available
 1000     # (int) quantity of resource 1 available
 1000   # ...
 1000
