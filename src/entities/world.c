@@ -289,14 +289,19 @@ World *world_next_turn(World *w){
   }
   */
 
-  for(int i=0; i<w->num_tiles; i++){
+  for(int i=0; i<w->map_tiles; i++){
     int probabilty= (int) i_rnd(w->rs)%100;
-    
-    if(probabilty<world_get_percentage_event(w)){
-      tile_set_event(w->tiles[i], w->events[affecting_event]);
 
-      if(tile_get_building(w->tiles[i])){
-        building_edit_health(tile_get_building(w->tiles[i]),event_get_damage(w->events[affecting_event]));
+    if(probabilty<world_get_percentage_event(w)){
+      Tile *t = map_tile_at_index(w->map, i);
+
+      if(tile_get_event(t)){
+        continue;
+      }
+      tile_set_event(t, w->events[affecting_event]);
+
+      if(tile_get_building(t)){
+        building_edit_health(tile_get_building(t), event_get_damage(w->events[affecting_event]));
       }
     }
   }
@@ -322,7 +327,7 @@ int world_get_percentage_event(World *w){
     return INT_ERROR;
   }
   int turn = world_get_turn(w);
-  int percentage = (int) 4000*log10(turn/20);
+  int percentage = (int) 40*log10(turn/20);
 
   return percentage;
 }
