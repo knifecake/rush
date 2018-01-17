@@ -208,6 +208,26 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     if (!world_next_turn(world))
         return CTRL_ERROR;
 
+//We iterate over the map to show the player the new events that occur every turn.
+    int ntiles = world_get_num_tiles(world);
+
+    for (int i = 0; i < ntiles; i++){
+        Tile *t = world_tile_at_index(world, i);
+
+        if(tile_get_building(t) && tile_get_event(t)){
+            Event *e = tile_get_event(t);
+            int id = event_get_id(e);
+            Event **original_events = world_get_events(world);
+
+        //If the number of turns of the event in the tile is the same as the number of turns
+        // that this event is about to last, then it is a new one and we should show it.
+        //TODO: change the message so that it isnt here in the code.
+            if(event_get_num_turns(e) == event_get_num_turns(original_events[id])){
+                show_msg("New event %d in tile n. %d", id, i);
+        }
+      }
+    }
+
     ui_redraw_sidebar();
     return CTRL_OK;
 }
