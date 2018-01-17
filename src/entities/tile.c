@@ -73,6 +73,9 @@ Tile *tile_new (int id, const char *sprite, float *resource_multipliers, int *re
 
 void tile_destroy (Tile *tile) {
   if(!tile) return;
+  if (tile->building) {
+      building_destroy(tile->building);
+  }
   if(tile->event){
     event_destroy(tile->event);
     tile->event=NULL;
@@ -325,6 +328,15 @@ Tile *tile_copy(Tile* src){
     HE("Error copying the tile", "tile_copy")
     return NULL;
   }
+
+  Building *b;
+  Event *e;
+  if ((b = tile_get_building(src)))
+    tile_build(dest, b);
+
+  if ((e = tile_get_event(src)))
+    tile_set_event(dest, e);
+
   return dest;
 }
 

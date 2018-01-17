@@ -108,9 +108,10 @@ int tile_conquer(Tile *tile);
 #define TILE_NEXT_TURN_EVENT_ENDED 2
 #define TILE_NEXT_TURN_OK 1
 int tile_next_turn (Tile *, int *);
+
 /*
- * Given a tile and a building, links them, does not allocate memory.
- * Returns UINT_ERROR on error. TODO: Should this allocate memory itself?
+ * Given a tile and a building, links them, copying the building as needed.
+ * Returns UINT_ERROR on error.
  */
 int tile_build (Tile *, Building *);
 
@@ -131,6 +132,8 @@ int tile_get_resource_per_turn(Tile *, int);
 int tile_find_resource_index(Tile *);
 /*
  * Returns a copy of the given tile or NULL on error.
+ * The copy is a deep copy in the sense that it also copies any events or
+ * buildings associated with this tile.
  */
  Tile *tile_copy(Tile*);
 /*

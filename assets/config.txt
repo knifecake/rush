@@ -117,7 +117,7 @@ columns_in_screen #This must be an odd number
 7
 
 screen_width
-620
+640
 
 screen_height
 180
