@@ -283,7 +283,7 @@ void *_move_enemies(void *s)
         sk_gru_next_frame(g);
         _game_ended(g, _game_player);
         if (_game_state != NOT_ENDED) {
-            
+            return NULL;
         }
     }
     return NULL;
@@ -386,9 +386,8 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
                 break;
         }
 
-    int ncode = world_get_resource_quantity(world, config_get_int("attack_minigame.speed_resource"));
-    int speed = ((int)(2 + ncode/5) > 12) ? 12 : (int)(2 + ncode/5);
-    fprintf(stderr, "speed es %d\n", speed);
+        int ncode = world_get_resource_quantity(world, config_get_int("attack_minigame.speed_resource"));
+        int speed = ((int)(2 + ncode/5) > 12) ? 12 : (int)(2 + ncode/5);
         switch (key) {
             case 't':
                 goto win;
