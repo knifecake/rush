@@ -1,9 +1,19 @@
-#
-# I don't know what this is yet
-#
+#archives to load
+assets/resources.txt
+assets/tiles.txt
+assets/new-buildings.txt
+assets/events.txt
 
-## Inital resource quantities
-7 # number of resources that follow
+#n_turns
+0
+
+#level
+0
+
+#num_resources
+7
+
+#resources
 5000 # quantity of resource 1
 5000 # quantity of resource 2
 5000 # ...
