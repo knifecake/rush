@@ -186,7 +186,12 @@ int tile_build (Tile *tile, Building *bp){
     HE("invalid building", "tile_build")
     return UINT_ERROR;
   }
-  tile->building = bp;
+  tile->building = building_copy(bp);
+  if (!tile->building) {
+      HE("could not duplicate building", "tile_build");
+      return UINT_ERROR;
+  }
+
   return !UINT_ERROR;
 }
 
@@ -249,14 +254,14 @@ int tile_collect_resources(Tile *tile, int resource_index){
 }
 
 
-Tile *tile_next_turn(Tile *tile, int *resources){
+int tile_next_turn(Tile *tile, int *resources){
   if (!tile){
     HE("invalid tile pointer", "tile_next_turn")
-    return NULL;
+        return UINT_ERROR;
   }
   if (!resources){
     HE("invalid resources pointer", "tile_next_turn")
-    return NULL;
+        return UINT_ERROR;
   }
   for(int i = 0; i < MAX_RESOURCES; ++i){
     resources[i] = tile_collect_resources(tile, i);
@@ -264,14 +269,15 @@ Tile *tile_next_turn(Tile *tile, int *resources){
   if(tile->event){
     if(!event_next_turn(tile->event)){
       HE("error nexting event turn", "tile_next_turn")
-      return NULL;
+          return UINT_ERROR;
     }
     if(event_get_num_turns(tile->event) == 0){
       event_destroy(tile->event);
       tile->event = NULL;
+      return TILE_NEXT_TURN_EVENT_ENDED;
     }
   }
-  return tile;
+  return TILE_NEXT_TURN_OK;
 }
 int tile_get_resource_per_turn(Tile *tile, int resource_index){
   int base;

@@ -56,6 +56,16 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
     // get the current tile index
     int tile_index = ui_get_cursor();
 
+    if (!tile_get_visible(world_tile_at_index(w, tile_index))) {
+        show_msg(msg[8]);
+        return CTRL_OK;
+    }
+
+    if (0 < tile_get_enemies(world_tile_at_index(w, tile_index))) {
+        show_msg(msg[10]);
+        return CTRL_OK;
+    }
+
     show_msg(msg[0]);
 
     Building *b = ui_control_build_panel();
@@ -91,12 +101,6 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         case WORLD_BUILD_SUCCESS_UPGRADE:
             show_msg(msg[7]);
             break;
-        case WORLD_BUILD_NO_LIGHT:
-            show_msg(msg[8]);
-            break;
-        case WORLD_BUILD_ENEMIES_PRESENT:
-            show_msg(msg[10]);
-            break;
         case WORLD_BUILD_TOOMANY_TOWNHALLS:
             show_msg(msg[11]);
             break;
@@ -129,12 +133,13 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
         return UINT_ERROR;
     }
 
-    // TODO: move messages to the command file
+    if (!tile_get_building(world_tile_at_index(w, ui_get_cursor()))) {
+        show_msg(msg[0]);
+        return CTRL_OK;
+    }
+
     int result = world_upgrade_building(w, ui_get_cursor());
     switch (result) {
-      case WORLD_UPGRADE_NO_BUILDING:
-          show_msg(msg[0]);
-          break;
       case WORLD_UPGRADE_MAX_LEVEL:
           show_msg(msg[1]);
           break;
@@ -150,16 +155,13 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
       case WORLD_BUILD_SUCCESS_UPGRADE:
           show_msg(msg[5]);
           break;
-      case WORLD_BUILD_NO_LIGHT:
-          show_msg("The tile is not visible.");
-          break;
       default:
           show_msg(msg[6]);
           return CTRL_ERROR;
     }
     ui_redraw_tile(ui_get_cursor());
     ui_redraw_sidebar();
-    return CTRL_OK;
+    return CTRL_NEXT_TURN;
 }
 int action_exchange(void *w, char *cmd, char **msg, int num_msg){
   if (!w || !cmd || !msg || num_msg < 1) {
@@ -208,27 +210,31 @@ int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 
 int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
 {
-    if (!world_next_turn(world))
+    int ntiles = world_get_num_tiles(world);
+    int *tiles_to_update = oopsalloc(ntiles, sizeof(int), "action_next_turn");
+    if (!world_next_turn(world, tiles_to_update))
         return CTRL_ERROR;
 
-//We iterate over the map to show the player the new events that occur every turn.
-    int ntiles = world_get_num_tiles(world);
+    for (int i = 0; tiles_to_update[i]; i++) {
+        ui_redraw_tile(tiles_to_update[i]);
+    }
 
+//We iterate over the map to show the player the new events that occur every turn.
     for (int i = 0; i < ntiles; i++){
         Tile *t = world_tile_at_index(world, i);
 
         if(tile_get_visible(t) && tile_get_event(t)){
+            ui_redraw_tile(i);
             Event *e = tile_get_event(t);
             int id = event_get_id(e);
             Event **original_events = world_get_events(world);
 
-        //If the number of turns of the event in the tile is the same as the number of turns
-        // that this event is about to last, then it is a new one and we should show it.
-        //TODO: change the message so that it isnt here in the code.
+            //If the number of turns of the event in the tile is the same as the number of turns
+            // that this event is about to last, then it is a new one and we should show it.
             if(event_get_num_turns(e) == event_get_num_turns(original_events[id])){
                 show_msg(msg[1], event_get_name(e), i);
+            }
         }
-      }
     }
 
     ui_redraw_sidebar();

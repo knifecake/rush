@@ -43,7 +43,7 @@ void world_destroy(World *);
 /*
  * Updates the world between turns of the player.
  */
-World *world_next_turn(World *);
+World *world_next_turn(World *, int *tiles_to_update);
 
 /*
  * Return the turn of the game

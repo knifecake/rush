@@ -250,7 +250,7 @@ void world_destroy(World *w) {
 }
 
 //Maybe we need to call some other functions like create events
-World *world_next_turn(World *w){
+World *world_next_turn(World *w, int *tiles_to_update){
   if(!w){
     HE("invalid parameters", "world_player_turn");
     return NULL;
@@ -260,9 +260,11 @@ World *world_next_turn(World *w){
   / the turns of the active events
   */
 
+  int num_tiles_to_update = 0;
   for(int i = 0; i < w->map_tiles; i++){
     int *resources = (int *) oopsalloc(MAX_RESOURCES, sizeof(int), "world_next_turn");
-    tile_next_turn(map_tile_at_index(w->map, i), resources);
+    if (TILE_NEXT_TURN_EVENT_ENDED == tile_next_turn(map_tile_at_index(w->map, i), resources))
+        tiles_to_update[num_tiles_to_update++] = i;
     for(int j = 0; j < w->num_resources; j++){
       w->wallet[j] += resources[j];
     }

@@ -50,6 +50,24 @@ int * cost, int * base_resources, const char *sprite, const char *description){
   return bp;
 }
 
+Building *building_copy(const Building *original)
+{
+    if (!original) {
+        HE("invalid arguments", "building_copy");
+        return NULL;
+    }
+
+    return building_new(
+            original->id,
+            original->level,
+            original->unlocking_level,
+            original->health,
+            (int *)original->cost,
+            (int *)original->base_resources,
+            original->sprite,
+            original->description);
+}
+
 void building_destroy (Building *bp){
   if (!bp) {
     HE("pointer is NULL", "building_destroy");

@@ -35,6 +35,8 @@ typedef struct _Building Building;
  */
 Building *building_new(int, int, int, int, int *, int *, const char *, const char *description);
 
+Building *building_copy(const Building *original);
+
 /*
  * Frees memory allocated by building_new, it will only free it if the pointer
  * is not NULL.
