@@ -31,7 +31,7 @@ our story, although the game dynamics will remain the same.
 
 # Project architecture
 
-![Game architecture diagram](https://i.imgur.com/XoYpIfp.png)
+![Game architecture diagram](assets/img/game-arch.png)
 
 We've finally settled on the following architecture:
 
