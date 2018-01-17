@@ -376,6 +376,9 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
                 break;
         }
 
+    int ncode = world_get_resource_quantity(world, config_get_int("attack_minigame.speed_resource"));
+    int speed = ((int)(2 + ncode/5) > 12) ? 12 : (int)(2 + ncode/5);
+    fprintf(stderr, "speed es %d\n", speed);
         switch (key) {
             case 't':
                 goto win;
@@ -383,16 +386,16 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
             case 'q':
                 goto surrender;
             case UP_ARROW:
-                sk_minion_update_position(_game_player, 0, -2);
+                sk_minion_update_position(_game_player, 0, -speed);
                 break;
             case DOWN_ARROW:
-                sk_minion_update_position(_game_player, 0, 2);
+                sk_minion_update_position(_game_player, 0, speed);
                 break;
             case LEFT_ARROW:
-                sk_minion_update_position(_game_player, -4, 0);
+                sk_minion_update_position(_game_player, -2*speed, 0);
                 break;
             case RIGHT_ARROW:
-                sk_minion_update_position(_game_player, 4, 0);
+                sk_minion_update_position(_game_player, 2*speed, 0);
                 break;
             default:
                 break;

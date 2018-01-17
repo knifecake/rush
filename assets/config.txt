@@ -64,6 +64,8 @@ attack_minigame.enemy_speed
 attack_minigame.soldier_resource
 6
 
+attack_minigame.speed_resource
+4
 
 ################################################################
 # Other stuff that's left to organize
