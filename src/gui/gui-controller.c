@@ -214,7 +214,7 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     for (int i = 0; i < ntiles; i++){
         Tile *t = world_tile_at_index(world, i);
 
-        if(tile_get_building(t) && tile_get_event(t)){
+        if(tile_get_visible(t) && tile_get_event(t)){
             Event *e = tile_get_event(t);
             int id = event_get_id(e);
             Event **original_events = world_get_events(world);
@@ -223,7 +223,7 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
         // that this event is about to last, then it is a new one and we should show it.
         //TODO: change the message so that it isnt here in the code.
             if(event_get_num_turns(e) == event_get_num_turns(original_events[id])){
-                show_msg("New event %d in tile n. %d", id, i);
+                show_msg(msg[1], event_get_name(e), i);
         }
       }
     }

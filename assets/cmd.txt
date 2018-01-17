@@ -49,8 +49,9 @@ You surrendered and lost 1 extra soldier (in addition to the ones you already lo
 
 n
 next_turn
-1
+2
 Moving onto the next turn.
+New event %s in tile n. %d
 
 r
 redraw_ui
