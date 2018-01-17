@@ -42,11 +42,11 @@ attack
 8
 You don't have enough troops to attack this tile. Hint: get troops by building army camps.
 This tile is not yet visible. Build something next to it to be able to attack it.
-You won! Now this tile is yours and you can build here! Press n to continue.
-You lost the battle. Come back another time with more troops to increase your chance. Press n to continue.
+You won! Now this tile is yours and you can build here!
+You lost the battle. Come back another time with more troops to increase your chance.
 There are no enemies on this tile. No need to attack! Go ahead an build something.
 This tile is already under your control. Do you really want to attack yourself?
-You surrendered and lost 1 extra soldier (in addition to the ones you already lost). Press n to continue.
+You surrendered and lost 1 extra soldier (in addition to the ones you already lost).
 Be prepared! Your objective is to get from A to B without any of the flying marabinis touching you. You have %d attempts but you may surrender earlier by typing s.
 
 n

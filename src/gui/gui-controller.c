@@ -432,7 +432,7 @@ finish:
     sk_gru_destroy(g);
     ui_draw_all();
     show_msg(output);
-    while (term_read_key(stdin) != 'n');
+    while (term_is_arrow_key(term_read_key(stdin)));
     show_msg("");
     return CTRL_OK;
 }
