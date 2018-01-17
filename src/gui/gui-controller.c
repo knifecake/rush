@@ -187,6 +187,11 @@ int action_exchange(void *w, char *cmd, char **msg, int num_msg){
     return CTRL_OK;
   }
   price = ui_control_exchange_panel(&res_id);
+  if(price == UINT_ERROR){
+    show_msg(msg[5]);
+    ui_redraw_sidebar();
+    return CTRL_OK;
+  }
   int result = world_exchange(w, tile_index, price, 0, res_id);
   switch (result) {
     case WORLD_EXCHANGE_NO_MONEY:
@@ -203,6 +208,43 @@ int action_exchange(void *w, char *cmd, char **msg, int num_msg){
   ui_redraw_sidebar();
   return CTRL_OK;
 }
+int action_hack(void *w, char *cmd, char **msg, int num_msg){
+  if (!w || !cmd || !msg || num_msg < 1) {
+      HE("invalid parameters", "action_build");
+      return UINT_ERROR;
+  }
+  int tile_index = ui_get_cursor();
+  int price, res_id;
+  show_msg(msg[0]);
+  if(WORLD_CODING_NOT_POSSIBLE == world_hack(w, tile_index, 0, 0, 0)){
+    show_msg(msg[1]);
+    ui_redraw_sidebar();
+    return CTRL_OK;
+  }
+  int res_from;
+  price = ui_control_code_panel(&res_from, &res_id);
+  if(price == UINT_ERROR){
+    show_msg(msg[5]);
+    ui_redraw_sidebar();
+    return CTRL_OK;
+  }
+  int result = world_hack(w, tile_index, price, res_from, res_id);
+  switch (result) {
+    case WORLD_CODING_NO_ECTS:
+      show_msg(msg[2]);
+      break;
+    case WORLD_CODING_DONE:
+      show_msg(msg[3]);
+      break;
+    default:
+      show_msg(msg[4]);
+      ui_redraw_sidebar();
+      return CTRL_ERROR;
+  }
+  ui_redraw_sidebar();
+  return CTRL_OK;
+}
+
 int action_welcome(void *world, char *cmd, char **msg, int num_msg)
 {
     if (!msg || num_msg < 1)

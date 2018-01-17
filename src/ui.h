@@ -100,6 +100,8 @@ Building *ui_control_build_panel();
 
 int ui_control_exchange_panel(int *res_id);
 
+int ui_control_code_panel(int *res_from, int *res_id);
+
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();
 
@@ -140,6 +142,8 @@ void ui_draw_interface();
 #include "ui-build-panel.h"
 
 #include "ui-exchange-panel.h"
+
+#include "ui-code-lab-panel.h"
 
 /*
  * GENERIC UI COMPONENTS:

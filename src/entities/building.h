@@ -95,12 +95,15 @@ int building_get_base_resources(Building *, const int);
  */
 int building_is_townhall(Building *bp);
 
+
 /*
  * Returns trye if the two given buildings are of the same class.
  */
 int building_is_upgrade(Building *b1, Building *b2);
 
 bool building_is_market(Building *b);
+
+bool building_is_coding_lab(Building *b);
 
 void building_print(FILE *s, Building *bp);
 #endif

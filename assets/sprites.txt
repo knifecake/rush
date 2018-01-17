@@ -1,4 +1,4 @@
-84
+92
 a_var_1
 a_var_2
 a_var_3
@@ -10,6 +10,8 @@ bank_2
 bank_3
 bank_4
 bank_5
+big_code
+big_ects
 big_manolos
 bill!
 bill
@@ -38,6 +40,7 @@ clouds!
 clouds
 coding_lab_1
 coding_lab_2
+coding_panel_back
 coffee_maker_1
 coffee_maker_2
 coffee_maker_3
@@ -74,6 +77,10 @@ resource_4
 resource_5
 resource_6
 resource_7
+skill_0
+skill_1
+skill_2
+skill_3
 space!
 space
 town_hall_1

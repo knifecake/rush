@@ -224,6 +224,12 @@ bool building_is_market(Building *b){
   return false;
 }
 
+bool building_is_coding_lab(Building *b){
+  if(!b) return false;
+  if(b->id == 161|| b->id == 162) return true;
+  return false;
+}
+
 void building_print(FILE *f, Building *bp)
 {
 	if (!bp) {

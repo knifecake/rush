@@ -3,6 +3,7 @@
 
 524     # int building_id
 mine
+desc. 1
 3       # current level of the building
 14      # player's level to build it
 
@@ -16,6 +17,7 @@ mine
 
 520     # int building_id
 hello
+desc. 2
 6      # current level of the building
 1     # player's level to build it
 
@@ -29,6 +31,7 @@ hello
 
 527     # int building_id
 bye
+desc. 3
 1       # current level of the building
 0      # player's level to build it
 

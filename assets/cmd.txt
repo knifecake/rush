@@ -1,5 +1,5 @@
 # command file
-8 # number of commands
+9 # number of commands
 
 b
 build
@@ -30,12 +30,23 @@ An error ocurred. The building was not upgraded.
 
 e
 exchange
-5
+6
 Increase the number of manolos with arrow keys (left and right). Then select the resource you want to get and press enter.
 You dont have a market in this tile!
 You dont have the required manolos amount to execute this trade!
 Trade successful!
 A weird error occurred.
+Alright, no trades, I get it.
+
+h
+hack
+6
+Increase the number of ECTS with arrow keys (left and right). Then select the piece of code and press enter. If you want to hack yourself a skill select it and press enter.
+You dont have a computing lab in this tile!
+You dont have the required ects or pieces of code to execute this trade!
+Well hacked!
+A weird error occurred.
+No hack no gain.
 
 a
 attack

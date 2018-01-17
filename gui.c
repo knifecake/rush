@@ -60,6 +60,7 @@ int main(int argc, char **argv) {
     cop_assoc(c, "build", action_build);
     cop_assoc(c, "upgrade", action_upgrade);
     cop_assoc(c, "exchange", action_exchange);
+    cop_assoc(c, "hack", action_hack);
     cop_assoc(c, "attack", action_attack);
     cop_assoc(c, "redraw_ui", action_redraw_ui);
     cop_assoc(c, "next_turn", action_next_turn);
