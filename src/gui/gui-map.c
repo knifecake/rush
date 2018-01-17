@@ -130,6 +130,11 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
         HE("error drawing event cursor in given index", "ui_map_redraw_tile");
         return;
     }
+  } else {
+    if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, "cursor_off")) {
+        HE("error drawing event cursor in given index", "ui_map_redraw_tile");
+        return;
+    }
   }
 }
 void ui_map_redraw_neighbours(UIMap *m, int current_tile){
@@ -216,9 +221,10 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
 
   coord = _relative_coordinates(m, index);
   if (!_tile_is_in_screen(m, index)){
-    fprintf(stderr, "%d %d\n",m->first_index, index);
-    HE("Coordinates out of map view", "_draw_sprite_in_index")
-    return UINT_ERROR;
+    /* fprintf(stderr, "%d %d\n",m->first_index, index); */
+    /* HE("Coordinates out of map view", "_draw_sprite_in_index") */
+    /* return UINT_ERROR; */
+      return !UINT_ERROR;
   }
   if(UINT_ERROR == _coordinates_by_index(m, coord, &x, &y)){
     HE("Error while calculating index Coordinates", "_draw_sprite_in_index")

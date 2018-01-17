@@ -12,7 +12,7 @@ You need to level up before building this. Hint: upgrade townhall.
 You need to save more to build this.
 There already is a building on that tile. You may only upgrade it to a higher level.
 The building on this tile was upgraded to the next level.
-The tile is not visible.
+The tile is not visible. Build something next to it first.
 An error ocurred and nothing was built.
 There are enemies on this tile. Attack it first with a.
 There are already enough townhalls... Don't you think?

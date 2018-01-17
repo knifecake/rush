@@ -91,9 +91,13 @@ int tile_conquer(Tile *tile);
  *          the event pointer to NULL again.
  *
  *
- * Returns NULL on error. Returns modified tile on success.
+ * Returns
+ *  - TILE_NEXT_TURN_EVENT_ENDED if an event just ended.
+ *  - TILE_NEXT_TURN_OK
  */
-Tile *tile_next_turn (Tile *, int *);
+#define TILE_NEXT_TURN_EVENT_ENDED 2
+#define TILE_NEXT_TURN_OK 1
+int tile_next_turn (Tile *, int *);
 /*
  * Given a tile and a building, links them, does not allocate memory.
  * Returns UINT_ERROR on error. TODO: Should this allocate memory itself?
