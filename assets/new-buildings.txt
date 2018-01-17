@@ -36,8 +36,8 @@ Townhall. Your main building. You live here.
 1           # player's level to build it
 
 2000        # building's health points
-7000        # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+7000        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -59,8 +59,8 @@ Townhall. Your main building. You live here.
 2           # player's level to build it
 
 4000        # building's health points
-10500       # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+10500       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -83,8 +83,8 @@ Townhall. Your main building. You live here.
 3           # player's level to build it
 
 8000        # building's health points
-17500       # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+17500       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -107,8 +107,8 @@ Townhall. Your main building. You live here.
 4           # player's level to build it
 
 16000       # building's health points
-28000       # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+28000       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -137,8 +137,8 @@ EPS. Farm manolos, your currency. 20 cents each.
 1     # player's level to build it
 
 250    # building's health points
-1000    # (int) buiding's leveling resource 1 cost
-0       # (int) buiding's leveling resource 2 cost
+0       # (int) buiding's leveling resource 1 cost
+1000    # (int) buiding's leveling resource 2 cost
 0       # (int) buiding's leveling resource 3 cost
 0       # ...
 0
@@ -161,8 +161,8 @@ EPS. Farm manolos, your currency. 20 cents each.
 2     # player's level to build it
 
 400    # building's health points
-1500    # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+00          # (int) buiding's leveling resource 1 cost
+1500        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -186,8 +186,8 @@ EPS. Farm manolos, your currency. 20 cents each.
 2     # player's level to build it
 
 700    # building's health points
-2500    # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+2500        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -211,8 +211,8 @@ EPS. Farm manolos, your currency. 20 cents each.
 3     # player's level to build it
 
 1300    # building's health points
-4000    # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+4000        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -236,8 +236,8 @@ EPS. Farm manolos, your currency. 20 cents each.
 3     # player's level to build it
 
 2500    # building's health points
-6000    # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+6000        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -262,8 +262,8 @@ A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 1     # player's level to build it
 
 250    # building's health points
-1000    # (int) buiding's leveling resource 1 cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling resource 1 cost
+1000        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -286,8 +286,8 @@ A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 2     # player's level to build it
 
 400    # building's health points
-1500    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling cost
+1500        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -310,8 +310,8 @@ A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 2     # player's level to build it
 
 700    # building's health points
-2500    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+2500           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -334,8 +334,8 @@ A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 3     # player's level to build it
 
 1300    # building's health points
-4000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+4000          # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -358,8 +358,8 @@ A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 3     # player's level to build it
 
 2500    # building's health points
-6000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+6000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -384,8 +384,8 @@ Coffee maker. Simple as that. You need this to survive. What else?
 1     # player's level to build it
 
 250    # building's health points
-1000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+1000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -408,8 +408,8 @@ Coffee maker. Simple as that. You need this to survive. What else?
 2     # player's level to build it
 
 400    # building's health points
-1500    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+1500           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -432,8 +432,8 @@ Coffee maker. Simple as that. You need this to survive. What else?
 2     # player's level to build it
 
 700    # building's health points
-2500    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+2500           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -456,8 +456,8 @@ Coffee maker. Simple as that. You need this to survive. What else?
 3     # player's level to build it
 
 1300    # building's health points
-4000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+4000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -480,8 +480,8 @@ Coffee maker. Simple as that. You need this to survive. What else?
 3     # player's level to build it
 
 2500    # building's health points
-6000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+6000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -506,8 +506,8 @@ Tic-tac (toe?). Get those minutes if you dont wanna die!
 2     # player's level to build it
 
 250    # building's health points
-3750    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+3750           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -530,8 +530,8 @@ Tic-tac (toe?). Get those minutes if you dont wanna die!
 3     # player's level to build it
 
 400    # building's health points
-6250    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+6250           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -554,8 +554,8 @@ Tic-tac (toe?). Get those minutes if you dont wanna die!
 2     # player's level to build it
 
 700    # building's health points
-10000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+10000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -578,8 +578,8 @@ Tic-tac (toe?). Get those minutes if you dont wanna die!
 3     # player's level to build it
 
 1400    # building's health points
-15000    # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0    # (int) buiding's leveling cost
+15000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -602,8 +602,8 @@ Tic-tac (toe?). Get those minutes if you dont wanna die!
 3     # player's level to build it
 
 2500    # building's health points
-25000 # (int) buiding's leveling cost
-0           # (int) buiding's leveling resource 2 cost
+0           # (int) buiding's leveling cost
+25000       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -629,8 +629,8 @@ Wanna spend those manolos folk? Throw them in here!
 1
 2
 500
-4500
-0           # (int) buiding's leveling resource 2 cost
+0
+4500           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -651,8 +651,8 @@ Wanna spend those manolos folk? Throw them in here!
 2
 4
 800
-14000
-0           # (int) buiding's leveling resource 2 cost
+0
+14000       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -674,8 +674,8 @@ You hacker... spend ECTS. Win skills.
 1
 3
 400
-10000
-0           # (int) buiding's leveling resource 2 cost
+0
+10000       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -696,8 +696,8 @@ You hacker... spend ECTS. Win skills.
 2
 5
 800
-27000
-0           # (int) buiding's leveling resource 2 cost
+0
+27000       # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -723,8 +723,8 @@ Produces soldiers. There is nothing better than an army of MARABINI warriors.
 1
 1
 500
-1500
-0           # (int) buiding's leveling resource 2 cost
+0
+1500           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -746,8 +746,8 @@ Produces soldiers. There is nothing better than an army of MARABINI warriors.
 2
 2
 500
-300
-0           # (int) buiding's leveling resource 2 cost
+0
+3000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -769,8 +769,8 @@ Produces soldiers. There is nothing better than an army of MARABINI warriors.
 3
 4
 500
-10000
-0           # (int) buiding's leveling resource 2 cost
+0
+10000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -795,8 +795,8 @@ Don't study, buy your ECTS here instead :=)
 1
 2
 500
-3750
-0           # (int) buiding's leveling resource 2 cost
+0
+3750        # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -817,8 +817,8 @@ Don't study, buy your ECTS here instead :=)
 2
 4
 500
-12000
-0           # (int) buiding's leveling resource 2 cost
+0
+12000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -839,8 +839,8 @@ Don't study, buy your ECTS here instead :=)
 2
 4
 500
-12000
-0           # (int) buiding's leveling resource 2 cost
+0
+12000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -861,8 +861,8 @@ Don't study, buy your ECTS here instead :=)
 2
 4
 500
-12000
-0           # (int) buiding's leveling resource 2 cost
+0
+12000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0
@@ -883,8 +883,8 @@ Don't study, buy your ECTS here instead :=)
 2
 4
 500
-12000
-0           # (int) buiding's leveling resource 2 cost
+0
+12000           # (int) buiding's leveling resource 2 cost
 0           # (int) buiding's leveling resource 3 cost
 0           # ...
 0

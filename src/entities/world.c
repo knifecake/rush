@@ -327,7 +327,7 @@ int world_get_percentage_event(World *w){
     return INT_ERROR;
   }
   int turn = world_get_turn(w);
-  int percentage = (int) 40*log10(turn/20);
+  int percentage = (int) 33-1000/(turn*log10(turn));
 
   return percentage;
 }
