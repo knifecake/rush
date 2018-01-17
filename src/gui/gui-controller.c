@@ -161,7 +161,7 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
     }
     ui_redraw_tile(ui_get_cursor());
     ui_redraw_sidebar();
-    return CTRL_OK;
+    return CTRL_NEXT_TURN;
 }
 int action_exchange(void *w, char *cmd, char **msg, int num_msg){
   if (!w || !cmd || !msg || num_msg < 1) {
