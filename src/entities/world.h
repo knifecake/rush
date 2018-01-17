@@ -31,7 +31,7 @@ typedef struct _World World;
  * Returns a new world object. Receives an array of pointers to all the
  * available tiles and buildings. Returns NULL on failure.
  */
-World *world_new(void);
+World *world_new(char *);
 
 /*
  * Destroys a world, freeing all associated objects.

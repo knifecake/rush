@@ -48,21 +48,31 @@ struct _World {
     int n_townhalls;
 };
 
-int _world_load_game_state(World *w, char *game_state_file)
+int _world_load_game_state(World *w, FILE *game_state_file)
 {
     if (!w || !game_state_file) {
         HE("invalid arguments", "_world_load_game_state");
         return UINT_ERROR;
     }
 
-    FILE *gs = fopen(game_state_file, "r");
-    if (!gs) {
-        HE("cannot open game state file", "_world_load_game_state");
+    // read the number of turns
+    char *buff = fgetll(game_state_file);
+    if (!buff) {
+        HE("could not read number of turns", "_world_load_game_state");
         return UINT_ERROR;
     }
+    w->turn = atoi(buff);
 
-    // read number of resources
-    char *buff = fgetll(gs);
+    //read the level of the player
+    buff = fgetll(game_state_file);
+    if (!buff) {
+        HE("could not read level of the player", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+    w->level = atoi(buff);
+
+    //read the wallet of the player
+    buff = fgetll(game_state_file);
     if (!buff) {
         HE("could not read number of resources", "_world_load_game_state");
         return UINT_ERROR;
@@ -75,7 +85,7 @@ int _world_load_game_state(World *w, char *game_state_file)
 
     for (int i = 0; i < w->num_resources; i++) {
         // read the quentity of the i-th resource
-        buff = fgetll(gs);
+        buff = fgetll(game_state_file);
         if (!buff) {
             HE("could not read quantity of a resource", "_world_load_game_state");
             return UINT_ERROR;
@@ -85,20 +95,20 @@ int _world_load_game_state(World *w, char *game_state_file)
         w->wallet[i] = atoi(buff); free(buff);
     }
 
-    fclose(gs);
-
     return !UINT_ERROR;
 }
 
-World *world_new(void) {
+World *world_new(char *archive) {
 
     World *w = NULL;
     w = oopsalloc(1, sizeof(World), "world_new");
 
     w->rs = r_init(time(NULL));
 
-    // LOAD RESOURCES
-    char *resources_db = config_get("asset_dbs.resources");
+    FILE *game_file = fopen(archive, "r");
+
+    //LOAD RESOURCES
+    char *resources_db = fgetll(game_file);
     if (!resources_db) {
         HE("don't know where to load resources from, set up a 'asset_dbs.resources' entry in config", "world_new");
         free(w); return NULL;
@@ -110,8 +120,6 @@ World *world_new(void) {
         free(w);
         return NULL;
     }
-
-    w->turn=0;
 
     w->resources = oopsalloc(MAX_RESOURCES, sizeof(Resource *), "world_new");
 
@@ -125,7 +133,7 @@ World *world_new(void) {
     fclose(rf);
 
     // LOAD TILES
-    char *tiles_db = config_get("asset_dbs.tiles");
+    char *tiles_db = fgetll(game_file);
     if (!tiles_db) {
         HE("don't know where to load tiles from, set up a 'asset_dbs.tiles' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources); free(w);
@@ -149,7 +157,7 @@ World *world_new(void) {
     fclose(tf);
 
     // LOAD BUILDINGS
-    char *buildings_db = config_get("asset_dbs.buildings");
+    char *buildings_db = fgetll(game_file);
     if (!buildings_db) {
         HE("don't know where to load buildings from, set up a 'asset_dbs.buildings' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
@@ -176,7 +184,7 @@ World *world_new(void) {
     fclose(bf);
 
     // load events
-    char *events_db = config_get("asset_dbs.events");
+    char *events_db = fgetll(game_file);
     if (!events_db) {
         HE("don't know where to load events from, set up an 'asset_dbs.events' entry in config", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
@@ -187,7 +195,7 @@ World *world_new(void) {
 
     FILE *ef = fopen(events_db, "r");
     if (!bf) {
-        HE("could not open buildings db file", "world_new");
+        HE("could not open events db file", "world_new");
         resource_list_destroy(w->resources, w->num_resources);
         map_destroy(w->map);
         building_list_destroy(w->buildings); free(w);
@@ -209,6 +217,11 @@ World *world_new(void) {
     for (w->num_buildings = 0; w->buildings[w->num_buildings]; w->num_buildings++);
     for (w->num_events = 0; w->events[w->num_events]; w->num_events++);
 
+    // load initial game state
+    if (UINT_ERROR == _world_load_game_state(w, game_file)) {
+            HE("initial game state could not be loaded", "world_new");
+        }
+
     // create the map
     int height  = config_get_int("map height");
     int columns = config_get_int("map columns");
@@ -217,15 +230,7 @@ World *world_new(void) {
     w->map = map_new(w->tiles, w->num_tiles, map_gen_random, w->map_tiles);
     w->n_townhalls = 0;
 
-    // load initial game state
-    char *initial_game_state = config_get("general.initial_game_state");
-    if (!initial_game_state) {
-        HE("don't know where to load initial game state from, not loading anything", "world_new");
-    } else {
-        if (UINT_ERROR == _world_load_game_state(w, initial_game_state)) {
-            HE("initial game state could not be loaded", "world_new");
-        }
-    }
+    fclose(game_file);
 
     //TODO: Change these lines below when issue #21 is fixed.
     int initial_tile = config_get_int("initial cursor");

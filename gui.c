@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     load_config_from_file(CONFIG_FILE);
 
     // load assets
-    World *w = world_new();
+    World *w = world_new("assets/initial_game_state.txt");
     if (!w) {
         term_teardown(stdin, stdout);
         HE("FATAL: could not load some asset", "main");
