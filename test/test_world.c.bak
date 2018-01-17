@@ -20,7 +20,7 @@
 int main(void) {
     load_config_from_file(TEST_CONFIG_FILE);
 
-    World *w = world_new();
+    World *w = world_new("assets/initial_game_state.txt");
     assert("can create world", w);
 
     int *wallet= world_get_wallet(w);

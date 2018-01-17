@@ -13,8 +13,6 @@ obj = $(src:.c=.o) \
 
 gui_src = $(wildcard src/gui/*.c)
 gui_obj = $(gui_src:.c=.o)
-tui_src = $(wildcard src/tui/*.c)
-tui_obj = $(tui_src:.c=.o)
 
 test_sources = $(wildcard test/test_*.c)
 test_exes = $(test_sources:.c=.test)
@@ -26,9 +24,6 @@ test_exes = $(test_sources:.c=.test)
 .PHONY: game
 game: $(BUILD_DIR)/gui
 
-$(BUILD_DIR)/tui: tui.o $(tui_obj) $(obj)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-
 $(BUILD_DIR)/gui: gui.o $(gui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -39,15 +34,23 @@ test: $(test_exes)
 	@$(foreach test,$(test_exes), echo "Running $(test)..."; $(test); echo "";)
 
 # compiles whichever test you tell it to
-# TODO: fix this rule to only compile the test_*.o that have changed
-test_%.test: $(obj) $(tui_obj) test/minitest.o test/*.c
+test_%.test: $(obj) $(gui_obj) test/minitest.o test/*.c
 	@echo "Compiling $(@)"
 	$(CC) $(CFLAGS) -c -o $(@:.test=.o) $(@:.test=.c)
-	$(CC) $(CFLAGS) -o $@ $(@:.test=.o) $(obj) $(tui_obj) test/minitest.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(@:.test=.o) $(obj) $(gui_obj) test/minitest.o $(LDFLAGS)
 
 # compiles the test library
 test/minitest.o:
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+DIST_NAME=Baquedano_Cordero_Hernandis_Sanchez_1251
+.PHONY: dist
+dist:
+	rm -rf $(DIST_NAME) $(DIST_NAME).zip
+	mkdir -p $(DIST_NAME)
+	cp -r *.c *.md src lib assets test build *.c Makefile $(DIST_NAME)/
+	zip -r $(DIST_NAME).zip $(DIST_NAME)
+	rm -r $(DIST_NAME)
 
 .PHONY: docker
 docker:
@@ -61,3 +64,4 @@ clear:
 clean: clear
 	@rm -rf $(BUILD_DIR)/*
 	@rm -rf $(test_exes)
+	@rm -rf $(DIST_NAME) $(DIST_NAME).zip
