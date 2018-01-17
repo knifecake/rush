@@ -150,11 +150,13 @@ Tile *world_tile_at_index(World *w, int tile_index);
 /*
  * Returns the price conversion of first resource into the second
  */
- int world_upgrade_building(World *w, int tile_index);
+int world_upgrade_building(World *w, int tile_index);
 
- int world_get_price_exchange(int price, int resource_from, int resource_to);
+int world_get_price_exchange(int price, int resource_from, int resource_to);
 
- int world_exchange(World *w, int tile_index, int price, int res_from, int res_to);
+int world_exchange(World *w, int tile_index, int price, int res_from, int res_to);
+
+int world_get_skill_price(World *w, int skill_id);
 /*
  * Builds on the current tile if the following are met:
  *  - Player has building unlocking level
@@ -163,7 +165,7 @@ Tile *world_tile_at_index(World *w, int tile_index);
  *  returns UINT_ERROR if an error ocurred. In other circumstances it returns
  *  one of the following:
  */
-
+int world_hack(World *w, int tile_index, int price, int resource_from, int resource_to);
 
 int world_build_on_tile(World *w, int tile_index, Building *b);
 /*
@@ -230,5 +232,17 @@ int world_build_on_tile(World *w, int tile_index, Building *b);
  * Exchange was successfull
  */
 #define WORLD_EXCHANGE_DONE 14
+/*
+ * Coding was not executed because tile was not a market
+ */
+#define WORLD_CODING_NOT_POSSIBLE 15
+/*
+ * Coding was not executed because you had not enough ects
+ */
+#define WORLD_CODING_NO_ECTS 16
+/*
+ * Exchange was successfull
+ */
+#define WORLD_CODING_DONE 17
 
 #endif

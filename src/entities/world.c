@@ -591,6 +591,7 @@ int world_upgrade_building(World *w, int tile_index){
 //TODO: Complete this
 
 int world_get_price_exchange(int price, int resource_from, int resource_to){
+  //TODO: Load these from files
   if(resource_from == resource_to){
     return resource_from;
   }
@@ -598,6 +599,8 @@ int world_get_price_exchange(int price, int resource_from, int resource_to){
     case 0:
       if (resource_to == 1) return (int) (price * 1.5);
       if (resource_to == 2) return (int) (price * 1.1);
+    case 5:
+      if(resource_to == 4) return (int) (price * 0.1);
     default: return price;
   }
 }
@@ -615,4 +618,39 @@ int world_exchange(World *w, int tile_index, int price, int res_from, int res_to
   w->wallet[res_from] -= price;
   w->wallet[res_to] += addition;
   return WORLD_EXCHANGE_DONE;
+}
+
+int world_get_skill_price(World *w, int skill_id){
+  //TODO: Load these from files
+  switch (skill_id) {
+    case 0: return 20;
+    case 1: return 40;
+    case 2: return 80;
+    case 3: return 1400;
+    default: return 0;
+  }
+  return 0;
+}
+
+int world_hack(World *w, int tile_index, int price, int res_from, int res_to){
+  if(!w) return INT_ERROR;
+  Map *m = world_get_map(w);
+  Tile **list = map_get_map_tiles(m);
+  Building *current = tile_get_building(list[tile_index]);
+  if(!building_is_coding_lab(current)){
+    return WORLD_CODING_NOT_POSSIBLE;
+  }
+  int cash;
+  if(res_from == 4){
+    cash = world_get_skill_price(w, res_to);
+  }else{
+    cash = price;
+  }
+  if(cash > w->wallet[res_from]) return WORLD_CODING_NO_ECTS;
+  if(res_from == 5){
+    int addition = world_get_price_exchange(price, res_from, res_to);
+    w->wallet[res_to] += addition;
+  }
+  w->wallet[res_from] -= cash;
+  return WORLD_CODING_DONE;
 }

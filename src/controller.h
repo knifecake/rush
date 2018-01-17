@@ -79,6 +79,8 @@ int action_upgrade(void *world, char *cmd, char **msg, int num_msg);
 
 int action_exchange(void *world, char *cmd, char **msg, int num_msg);
 
+int action_hack(void *world, char *cmd, char **msg, int num_msg);
+
 int action_welcome(void *world, char *cmd, char **msg, int num_msg);
 
 int action_next_turn(void *world, char *cmd, char **msg, int num_msg);

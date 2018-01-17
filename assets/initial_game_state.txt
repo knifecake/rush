@@ -4,7 +4,7 @@
 
 ## Inital resource quantities
 7 # number of resources that follow
-5000 # quantity of resource 1
+50000 # quantity of resource 1
 5000 # quantity of resource 2
 5000 # ...
 0

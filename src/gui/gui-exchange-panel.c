@@ -9,7 +9,7 @@
 #include <string.h>
 #include <math.h>
 
-UIRect prices[]={
+UIRect ex_prices[]={
    {270,37,39,7}, //Payment
    {276,61,39,7}, //Gin income
    {276,85,39,7} //Coffee income
@@ -37,7 +37,7 @@ UIExchangePanel *ui_exchange_panel_new(World *w){
   if(!w) return NULL;
   UIExchangePanel *ep = oopsalloc(1, sizeof(UIExchangePanel), "ui_exchange_panel_new");
   for (int i = 0; i < 3; ++i) {
-    ep->tp[i] = ui_text_panel_new(prices[i], ui_get_font());
+    ep->tp[i] = ui_text_panel_new(ex_prices[i], ui_get_font());
   }
   ep->cursor = 0;
   ep->price = 0;
@@ -55,6 +55,7 @@ int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id){
     return UINT_ERROR;
   }
   _panel_draw(exchangepanel, 259, 6);
+  _redraw_cursor(exchangepanel, exchangepanel->cursor);
   _rewrite_prices(exchangepanel);
   int key = HERE_ARROW;
   while(key != '\n' && key != 'q'){
@@ -91,10 +92,20 @@ int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id){
       }
     }
   }
+  if(key == 'q'){
+    ui_draw_interface();
+    ui_redraw_sidebar();
+    exchangepanel->price = 0;
+    exchangepanel->cursor = 0;
+    return UINT_ERROR;
+  }
   ui_draw_interface();
   ui_redraw_sidebar();
   *resource_id = exchangepanel->cursor + 1;
-  return exchangepanel->price;
+  exchangepanel->cursor = 0;
+  int price_ret = exchangepanel->price;
+  exchangepanel->price = 0;
+  return price_ret;
 }
 
 void ui_exchange_panel_destroy(UIExchangePanel *ep){
@@ -118,11 +129,11 @@ void _redraw_cursor(UIExchangePanel *ep, int old_cursor){
 }
 
 void _rewrite_prices(UIExchangePanel *ep){
-  char prices[8];
-  sprintf(prices, "%07d", ep->price);
+  char prices[9];
+  sprintf(prices, "%08d", ep->price);
   ui_text_panel_print(ep->tp[0], prices);
-  sprintf(prices, "%07d", world_get_price_exchange(ep->price, 0, 1));
+  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 1));
   ui_text_panel_print(ep->tp[1], prices);
-  sprintf(prices, "%07d", world_get_price_exchange(ep->price, 0, 2));
+  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 2));
   ui_text_panel_print(ep->tp[2], prices);
 }
