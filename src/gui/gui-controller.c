@@ -282,8 +282,9 @@ void *_move_enemies(void *s)
         usleep(_game_speed);
         sk_gru_next_frame(g);
         _game_ended(g, _game_player);
-        if (_game_state != NOT_ENDED)
-            return NULL;
+        if (_game_state != NOT_ENDED) {
+            
+        }
     }
     return NULL;
 }
@@ -323,6 +324,9 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
         HE("invalid speed set in config file. hitn: 5e4 works right", "move_enemies");
         _game_speed = 5e4;
     }
+
+    show_msg(msg[7], soldiers);
+    term_read_key(stdin);
 
     printf("\033[2J");
     FILE *enemy_sprite_file = fopen(config_get("attack_minigame.enemy_sprite"), "r");
@@ -414,9 +418,11 @@ win:
 
 loose:
     output = msg[3];
+    world_wallet_delta(world, config_get_int("attack_minigame.soldier_resource"), -1);
     goto finish;
 
 surrender:
+    world_wallet_delta(world, config_get_int("attack_minigame.soldier_resource"), -1);
     output = msg[6];
 
 finish:
@@ -424,6 +430,8 @@ finish:
     sk_gru_destroy(g);
     ui_draw_all();
     show_msg(output);
+    while (term_read_key(stdin) != 'n');
+    show_msg("");
     return CTRL_OK;
 }
 
