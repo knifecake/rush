@@ -50,6 +50,12 @@ World *world_new(char *);
  */
 void world_destroy(World *);
 
+
+/*
+ * Finish the game.
+ */
+int world_game_finished(World *);
+
 /*
  * Updates the world between turns of the player.
  */
