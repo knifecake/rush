@@ -53,6 +53,7 @@ eps_2
 eps_3
 eps_4
 eps_5
+event_cursor_on
 exchange_panel_back
 exchange_panel_cursor_off
 exchange_panel_cursor_on

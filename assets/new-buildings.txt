@@ -7,6 +7,7 @@
 
 101         # int building_id
 town_hall_1  # (char *) sprite
+Townhall. Your main building. You live here.
 1           # current level of the building
 0           # player's level to build it
 
@@ -30,6 +31,7 @@ town_hall_1  # (char *) sprite
 
 102         # int building_id
 town_hall_2  # (char *) sprite
+Townhall. Your main building. You live here.
 2           # current level of the building
 1           # player's level to build it
 
@@ -52,6 +54,7 @@ town_hall_2  # (char *) sprite
 
 103         # int building_id
 town_hall_3  # (char *) sprite
+Townhall. Your main building. You live here.
 3           # current level of the building
 2           # player's level to build it
 
@@ -75,6 +78,7 @@ town_hall_3  # (char *) sprite
 
 104         # int building_id
 town_hall_4 # (char *) sprite
+Townhall. Your main building. You live here.
 4           # current level of the building
 3           # player's level to build it
 
@@ -98,6 +102,7 @@ town_hall_4 # (char *) sprite
 
 105         # int building_id
 town_hall_5 # (char *) sprite
+Townhall. Your main building. You live here.
 5           # current level of the building
 4           # player's level to build it
 
@@ -127,6 +132,7 @@ town_hall_5 # (char *) sprite
 # Basic 1 extractor - Currency
 111     # int building_id
 eps_1 # (char *) sprite
+EPS. Farm manolos, your currency. 20 cents each.
 1      # current level of the building
 1     # player's level to build it
 
@@ -150,6 +156,7 @@ eps_1 # (char *) sprite
 
 112     # int building_id
 eps_2 # (char *) sprite
+EPS. Farm manolos, your currency. 20 cents each.
 2      # current level of the building
 2     # player's level to build it
 
@@ -174,6 +181,7 @@ eps_2 # (char *) sprite
 # Basic 1 extractor
 113     # int building_id
 eps_3# (char *) sprite
+EPS. Farm manolos, your currency. 20 cents each.
 3      # current level of the building
 2     # player's level to build it
 
@@ -198,6 +206,7 @@ eps_3# (char *) sprite
 # Basic 1 extractor
 114     # int building_id
 eps_4# (char *) sprite
+EPS. Farm manolos, your currency. 20 cents each.
 4      # current level of the building
 3     # player's level to build it
 
@@ -222,6 +231,7 @@ eps_4# (char *) sprite
 # Basic 1 extractor
 115     # int building_id
 eps_5# (char *) sprite
+EPS. Farm manolos, your currency. 20 cents each.
 5      # current level of the building
 3     # player's level to build it
 
@@ -247,6 +257,7 @@ eps_5# (char *) sprite
 # Chococrispies extractor
 121     # int building_id
 a_var_1 # (char *) sprite
+A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 1      # current level of the building
 1     # player's level to build it
 
@@ -270,6 +281,7 @@ a_var_1 # (char *) sprite
 
 122     # int building_id
 a_var_2 # (char *) sprite
+A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 2      # current level of the building
 2     # player's level to build it
 
@@ -293,6 +305,7 @@ a_var_2 # (char *) sprite
 
 123     # int building_id
 a_var_3 # (char *) sprite
+A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 3      # current level of the building
 2     # player's level to build it
 
@@ -316,6 +329,7 @@ a_var_3 # (char *) sprite
 
 124     # int building_id
 a_var_4 # (char *) sprite
+A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 4      # current level of the building
 3     # player's level to build it
 
@@ -339,6 +353,7 @@ a_var_4 # (char *) sprite
 
 125     # int building_id
 a_var_5 # (char *) sprite
+A Var, or Bal, or Bar... I do not know. Get gin to build. Surprised?
 5      # current level of the building
 3     # player's level to build it
 
@@ -364,6 +379,7 @@ a_var_5 # (char *) sprite
 # Basic 3 extractor
 131     # int building_id
 coffee_maker_1 # (char *) sprite
+Coffee maker. Simple as that. You need this to survive. What else?
 1      # current level of the building
 1     # player's level to build it
 
@@ -387,6 +403,7 @@ coffee_maker_1 # (char *) sprite
 
 132     # int building_id
 coffee_maker_2 # (char *) sprite
+Coffee maker. Simple as that. You need this to survive. What else?
 2      # current level of the building
 2     # player's level to build it
 
@@ -410,6 +427,7 @@ coffee_maker_2 # (char *) sprite
 
 133     # int building_id
 coffee_maker_3 # (char *) sprite
+Coffee maker. Simple as that. You need this to survive. What else?
 3      # current level of the building
 2     # player's level to build it
 
@@ -433,6 +451,7 @@ coffee_maker_3 # (char *) sprite
 
 134     # int building_id
 coffee_maker_4 # (char *) sprite
+Coffee maker. Simple as that. You need this to survive. What else?
 4      # current level of the building
 3     # player's level to build it
 
@@ -456,6 +475,7 @@ coffee_maker_4 # (char *) sprite
 
 135     # int building_id
 coffee_maker_5 # (char *) sprite
+Coffee maker. Simple as that. You need this to survive. What else?
 5      # current level of the building
 3     # player's level to build it
 
@@ -481,6 +501,7 @@ coffee_maker_5 # (char *) sprite
 # Special extractor
 141     # int building_id
 clock_1 # (char *) sprite
+Tic-tac (toe?). Get those minutes if you dont wanna die!
 1      # current level of the building
 2     # player's level to build it
 
@@ -504,6 +525,7 @@ clock_1 # (char *) sprite
 
 142     # int building_id
 clock_2 # (char *) sprite
+Tic-tac (toe?). Get those minutes if you dont wanna die!
 2      # current level of the building
 3     # player's level to build it
 
@@ -527,6 +549,7 @@ clock_2 # (char *) sprite
 
 143     # int building_id
 clock_3 # (char *) sprite
+Tic-tac (toe?). Get those minutes if you dont wanna die!
 3      # current level of the building
 2     # player's level to build it
 
@@ -550,6 +573,7 @@ clock_3 # (char *) sprite
 
 144     # int building_id
 clock_4 # (char *) sprite
+Tic-tac (toe?). Get those minutes if you dont wanna die!
 4      # current level of the building
 3     # player's level to build it
 
@@ -573,6 +597,7 @@ clock_4 # (char *) sprite
 
 145     # int building_id
 clock_5 # (char *) sprite
+Tic-tac (toe?). Get those minutes if you dont wanna die!
 5      # current level of the building
 3     # player's level to build it
 
@@ -598,9 +623,9 @@ clock_5 # (char *) sprite
 # INFRASTRUCTURE
 #
 
-# harbour
 151
 market_1
+Wanna spend those manolos folk? Throw them in here!
 1
 2
 500
@@ -622,6 +647,7 @@ market_1
 
 152
 market_2
+Wanna spend those manolos folk? Throw them in here!
 2
 4
 800
@@ -642,9 +668,9 @@ market_2
 0
 
 
-# airport
 161
 coding_lab_1
+You hacker... spend ECTS. Win skills.
 1
 3
 400
@@ -666,6 +692,7 @@ coding_lab_1
 
 162
 coding_lab_2
+You hacker... spend ECTS. Win skills.
 2
 5
 800
@@ -692,6 +719,7 @@ coding_lab_2
 # academy
 171
 church_1
+Produces soldiers. There is nothing better than an army of MARABINI warriors.
 1
 1
 500
@@ -714,6 +742,7 @@ church_1
 
 172
 church_2
+Produces soldiers. There is nothing better than an army of MARABINI warriors.
 2
 2
 500
@@ -736,6 +765,7 @@ church_2
 
 173
 church_3
+Produces soldiers. There is nothing better than an army of MARABINI warriors.
 3
 4
 500
@@ -761,6 +791,7 @@ church_3
 
 181
 bank_1
+Don't study, buy your ECTS here instead :=)
 1
 2
 500
@@ -782,6 +813,7 @@ bank_1
 
 182
 bank_2
+Don't study, buy your ECTS here instead :=)
 2
 4
 500
@@ -803,6 +835,7 @@ bank_2
 
 183
 bank_3
+Don't study, buy your ECTS here instead :=)
 2
 4
 500
@@ -824,6 +857,7 @@ bank_3
 
 184
 bank_4
+Don't study, buy your ECTS here instead :=)
 2
 4
 500
@@ -845,6 +879,7 @@ bank_4
 
 185
 bank_5
+Don't study, buy your ECTS here instead :=)
 2
 4
 500

@@ -25,7 +25,7 @@ struct _UIBuildPanel {
 
 /* Private functions */
 int _get_lvl_one_building_by_cursor(int cursor);
-char *_get_message_by_cursor(int cursor);
+char *_get_message_by_cursor(UIBuildPanel *buildpanel, int cursor);
 
 UIBuildPanel *ui_build_panel_new(Building ** list){
   UIBuildPanel *bp;
@@ -144,9 +144,9 @@ Building *ui_build_panel_control(UIBuildPanel *buildpanel){
       ui_build_panel_move_cursor(buildpanel, key);
     }
     if(old_cursor != buildpanel->cursor){
-      char message[128];
-      strcpy(message,_get_message_by_cursor(buildpanel->cursor));
-      ui_show_msg(message);
+        char *msg = _get_message_by_cursor(buildpanel, buildpanel->cursor);
+        ui_show_msg(msg);
+        free(msg);
     }
   }
   if(key == 'q'){
@@ -185,28 +185,31 @@ int _get_lvl_one_building_by_cursor(int cursor){
   return UINT_ERROR;
 }
 
-char *_get_message_by_cursor(int cursor){
-  switch (cursor) {
-    case 0:
-      return "TOWNHALL. YOUR MAIN BUILDING. YOU LIVE HERE."; //Town Hall
-    case 1:
-      return "EPS. FARM \"MANOLOS\". YOUR CURRENCY. 20 CENTS EACH."; //EPS
-    case 2:
-      return "A VAR, OR BAL, OR BAR... I DO NOT KNOW. GET GIN TO BUILD. SURPRISED?"; //A Var
-    case 3:
-      return "COFFEE MAKER. SIMPLE AS THAT. YOU NEED THIS TO SURVIVE. WHAT ELSE?"; //Coffee maker
-    case 4:
-      return "TIC-TAC (TOE?). GET THOSE MINUTES IF YOU DONT WANNA DIE!"; //Clock
-    case 5:
-      return "DONT STUDY! BUY YOUR ECTS INSTEAD ;)"; //Bank
-    case 6:
-      return "PRODUCES SOLDIERS. THERE IS NOTHING BETTER THAN AN ARMY OF MARABINI WARRIORS"; //Church
-    case 7:
-      return "WANNA SPENT THOSE MANOLOS FOLK?. THROW THEM HERE."; //Market
-    case 8:
-      return "YOU HACKER... .SPEND ECTS. WIN SKILLS."; //Computer
-    default:
-      HE("Cursor out of range", "_get_lvl_one_building_by_cursor");
-      return NULL;
+char *_get_message_by_cursor(UIBuildPanel *buildpanel, int cursor) {
+    char *msg = oopsalloc(200, sizeof(char), "_get_message_by_cursor");
+    strcpy(msg, "Umm...");
+  int selected_building_id = _get_lvl_one_building_by_cursor(cursor);
+  int building_index = 0;
+  for (int i = 0; buildpanel->list[i]; i++) {
+      if (selected_building_id == building_get_id(buildpanel->list[i])) {
+          building_index = i;
+          sprintf(msg, "%s\nPrice:", building_get_description(buildpanel->list[i]));
+      }
   }
+
+  int cost = 0, added_items = 0;
+  for (int i = 0; i < MAX_RESOURCES; i++) {
+      cost = building_get_cost(buildpanel->list[building_index], i);
+      if (cost != 0) {
+          char *resource_name = resource_get_name(world_get_resources(ui_get_world())[i]);
+          sprintf(msg, "%s %d %s", msg, cost, resource_name);
+          added_items++;
+      }
+  }
+
+  if (added_items == 0) {
+      sprintf(msg, "%s free!", msg);
+  }
+
+  return msg;
 }

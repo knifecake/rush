@@ -4,6 +4,7 @@
 
 #include "../lib/error_handling.h"
 
+#define MAX_DESCRIPTION 100
 #define MAX_SPRITE_NAME 32
 
 struct _Building {
@@ -14,10 +15,11 @@ struct _Building {
   int cost[MAX_RESOURCES];   /*Cost of building or leveling it up*/
   int base_resources[MAX_RESOURCES]; /* Quantity of resources returned each time */
   char sprite[MAX_SPRITE_NAME + 1];
+  char description[MAX_DESCRIPTION + 1];
 };
 
 Building *building_new (int id, int level, int unlocking_level, int health,
-int * cost, int * base_resources, const char *sprite){
+int * cost, int * base_resources, const char *sprite, const char *description){
   if(!sprite){
     HE("cannot create building, missing sprite name", "building_new")
     return NULL;
@@ -26,8 +28,13 @@ int * cost, int * base_resources, const char *sprite){
     HE("cannot create building, sprite name too long", "building_new")
     return NULL;
   }
+  if (!description || strlen(description) > MAX_DESCRIPTION) {
+      HE("description missing or too long", "building_new");
+      return NULL;
+  }
   Building *bp = oopsalloc(1, sizeof(Building), "building_new");
   strcpy(bp->sprite, sprite);
+  strcpy(bp->description, description);
   bp -> id = id;
   bp -> level = level;
   bp -> unlocking_level = unlocking_level;
@@ -80,7 +87,7 @@ Building *building_edit_health (Building* bp, int increment){
 int building_get_id (Building *bp){
   if(!bp){
     HE("Pointer is NULL", "building_get_id");
-    return -1;
+    return UINT_ERROR;
   }
   return bp -> id;
 }
@@ -98,7 +105,7 @@ char *building_get_name(Building *bp)
 int building_get_level (Building *bp){
   if(!bp){
     HE("pointer is NULL", "building_get_level");
-    return -1;
+    return UINT_ERROR;
   }
   return bp -> level;
 }
@@ -106,7 +113,7 @@ int building_get_level (Building *bp){
 int building_get_unlocking_level (Building *bp){
   if(!bp){
     HE("pointer is NULL", "building_get_unlocking_level");
-    return -1;
+    return UINT_ERROR;
   }
   return bp -> unlocking_level;
 }
@@ -114,7 +121,7 @@ int building_get_unlocking_level (Building *bp){
 int building_get_health (Building *bp){
   if(!bp){
     HE("pointer is NULL", "building_get_health");
-    return -1;
+    return UINT_ERROR;
   }
   return bp -> health;
 }
@@ -122,9 +129,12 @@ int building_get_health (Building *bp){
 int building_get_cost (Building *bp, const int resource_id){
   if(!bp){
     HE("pointer is NULL", "building_get_cost");
-    return -1;
+    return UINT_ERROR;
   }
-  return bp -> cost[resource_id];
+  if (resource_id >= MAX_RESOURCES)
+      return UINT_ERROR;
+
+  return bp->cost[resource_id];
 }
 
 int building_get_base_resources (Building *bp, const int resource_id){
@@ -143,6 +153,16 @@ char *building_get_sprite(Building *bp)
     }
 
     return bp->sprite;
+}
+
+char *building_get_description(Building *bp)
+{
+    if (!bp) {
+        HE("invalid arguments", "building_get_sprite");
+        return NULL;
+    }
+
+    return bp->description;
 }
 
 int building_is_townhall(Building *bp)

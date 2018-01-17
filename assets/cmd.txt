@@ -4,7 +4,7 @@
 b
 build
 11
-What do you want to build this tile?\nUse the arrow keys to select a building on the top right.
+What do you want to build this tile? Use the arrow keys to select a building on the top right.
 Okay, nothing will be built.
 Building was constructed and you leveled up!
 Building was constructed!

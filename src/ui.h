@@ -59,7 +59,7 @@ void ui_teardown();
  */
 void ui_draw_all();
 
-
+World *ui_get_world();
 /*
  * UIFont is a fundamental component needed for the graphical user interface,
  * as it is not capable of rendering legible text.

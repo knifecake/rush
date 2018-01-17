@@ -115,6 +115,13 @@ int ui_get_cursor()
     return ui_map_get_cursor(ui->map);
 }
 
+World *ui_get_world()
+{
+    if (ui)
+        return ui->w;
+    return NULL;
+}
+
 int ui_redraw_tile(int tile_index){
   ui_map_redraw_tile(ui->map, tile_index);
   return !UINT_ERROR;

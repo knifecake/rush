@@ -11,7 +11,7 @@
 # BEGIN: resource 1
 
 0         # (int) resource ID
-$       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
+manolos       # (string) resource name, must be shorter than MAX_RESOURCE_NAME
 
 # END: resource 1
 
@@ -24,16 +24,16 @@ gin
 # END: resource 2
 
 2
-chococrispies
+coffee
 
 3
-Special
+time
 
 4
 XP
 
 5
-IP
+ECTS
 
 6
-Soldiers
+marabinis
