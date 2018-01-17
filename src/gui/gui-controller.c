@@ -227,7 +227,11 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
         }
       }
     }
-
+    /*
+    if(INT_ERROR!=world_game_finished(world)){
+      exit(1);
+    }
+    */
     ui_redraw_sidebar();
     return CTRL_OK;
 }

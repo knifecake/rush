@@ -43,6 +43,9 @@ struct _World {
 
     // randomness source
     rnd_state *rs;
+
+    //save the index tile of the town_hall in the map
+    int town_hall_index;
 };
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -245,6 +248,40 @@ void world_destroy(World *w) {
   resource_list_destroy(w->resources, w->num_resources);
   free(w);
 }
+
+int world_game_finished(World *w){
+  if(!w){
+    HE("invalid parameters", "world_destroy")
+    return INT_ERROR;
+  }
+
+  if(w->wallet[3]<=0){
+    int turn = world_get_turn(w);
+    int score =0 ;
+    for(int i=0;i<MAX_RESOURCES;i++){
+      score+=w->wallet[i];
+    }
+    score+=100*turn;
+
+    return score;
+  }
+  if(tile_get_building(world_tile_at_index(w,w->town_hall_index))){
+    if(building_get_health(tile_get_building(world_tile_at_index(w,w->town_hall_index)))<=0){
+      show_msg("townhall destroyed");
+      int turn = world_get_turn(w);
+      int score =0 ;
+      for(int i=0;i<MAX_RESOURCES;i++){
+        score+=w->wallet[i];
+      }
+      score+=100*turn;
+
+      return score;
+    }
+  }
+
+  return INT_ERROR;
+}
+
 
 //Maybe we need to call some other functions like create events
 World *world_next_turn(World *w){
@@ -541,6 +578,7 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     // if building is a town-hall, signal player level upgrade
     if (building_is_townhall(b)) {
         w->level++;
+        w->town_hall_index=tile_index;
         return WORLD_BUILD_SUCCESS_LEVEL_UP;
     }
 
