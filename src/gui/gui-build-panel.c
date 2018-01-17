@@ -144,9 +144,13 @@ Building *ui_build_panel_control(UIBuildPanel *buildpanel){
       ui_build_panel_move_cursor(buildpanel, key);
     }
     if(old_cursor != buildpanel->cursor){
-      char message[128];
-      strcpy(message,_get_message_by_cursor(buildpanel->cursor));
-      ui_show_msg(message);
+      int selected_building_id = _get_lvl_one_building_by_cursor(buildpanel->cursor);
+      for (int i = 0; buildpanel->list[i]; i++) {
+          if (selected_building_id == building_get_id(buildpanel->list[i])) {
+              ui_show_msg(building_get_description(buildpanel->list[i]));
+              break;
+          }
+      }
     }
   }
   if(key == 'q'){
@@ -183,30 +187,4 @@ int _get_lvl_one_building_by_cursor(int cursor){
       HE("Cursor out of range", "_get_lvl_one_building_by_cursor");
   }
   return UINT_ERROR;
-}
-
-char *_get_message_by_cursor(int cursor){
-  switch (cursor) {
-    case 0:
-      return "TOWNHALL. YOUR MAIN BUILDING. YOU LIVE HERE."; //Town Hall
-    case 1:
-      return "EPS. FARM \"MANOLOS\". YOUR CURRENCY. 20 CENTS EACH."; //EPS
-    case 2:
-      return "A VAR, OR BAL, OR BAR... I DO NOT KNOW. GET GIN TO BUILD. SURPRISED?"; //A Var
-    case 3:
-      return "COFFEE MAKER. SIMPLE AS THAT. YOU NEED THIS TO SURVIVE. WHAT ELSE?"; //Coffee maker
-    case 4:
-      return "TIC-TAC (TOE?). GET THOSE MINUTES IF YOU DONT WANNA DIE!"; //Clock
-    case 5:
-      return "DONT STUDY! BUY YOUR ECTS INSTEAD ;)"; //Bank
-    case 6:
-      return "PRODUCES SOLDIERS. THERE IS NOTHING BETTER THAN AN ARMY OF MARABINI WARRIORS"; //Church
-    case 7:
-      return "WANNA SPENT THOSE MANOLOS FOLK?. THROW THEM HERE."; //Market
-    case 8:
-      return "YOU HACKER... .SPEND ECTS. WIN SKILLS."; //Computer
-    default:
-      HE("Cursor out of range", "_get_lvl_one_building_by_cursor");
-      return NULL;
-  }
 }
