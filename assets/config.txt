@@ -18,6 +18,11 @@ assets/img/pixeled
 general.initial_game_state
 assets/initial_game_state.txt
 
+# the ascii code for the key to press when multiple messages are to be
+# displayed at once
+general.next_message_key
+78 # n
+
 
 
 ################################################################

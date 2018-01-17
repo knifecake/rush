@@ -24,15 +24,12 @@ test_exes = $(test_sources:.c=.test)
 # care of not compiling anything that was already compiled, thus saving time.
 #
 .PHONY: game
-game: $(BUILD_DIR)/tui $(BUILD_DIR)/gui $(BUILD_DIR)/minigame
+game: $(BUILD_DIR)/tui $(BUILD_DIR)/gui
 
 $(BUILD_DIR)/tui: tui.o $(tui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(BUILD_DIR)/gui: gui.o $(gui_obj) $(obj)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(BUILD_DIR)/minigame: minigame.o $(gui_obj) $(obj)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # compiles all tests

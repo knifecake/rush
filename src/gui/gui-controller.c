@@ -406,7 +406,7 @@ int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg)
 int action_generic(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {
-        HE("invalid parameters", "cop_demo");
+        HE("invalid parameters", "action_generic");
         return UINT_ERROR;
     }
 

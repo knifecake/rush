@@ -147,6 +147,7 @@ Building *ui_build_panel_control(UIBuildPanel *buildpanel){
         char *msg = _get_message_by_cursor(buildpanel, buildpanel->cursor);
         ui_show_msg(msg);
         free(msg);
+    }
   }
   if(key == 'q'){
     ui_draw_interface();

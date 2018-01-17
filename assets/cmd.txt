@@ -60,7 +60,7 @@ Redrawing all UI.
 welcome
 welcome
 3
-Welcome to this awesome game! You may exit at any time by pressing q (possibly multiple times). Press any key to continue reading.
+Welcome to this awesome game! You may exit at any time by pressing q (possibly multiple times). Press n to continue reading.
 Right now, you need to start by building a town hall. Position yourself in a visible tile using the arrow keys.
 When you are ready, press b to show the building menu.
 

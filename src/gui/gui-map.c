@@ -123,7 +123,14 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
       return;
     }
   }
-  return;
+
+  // if an event is present, draw an overlaying cursor to warn the user
+  if (tile_get_event(m->tiles[tile_index])) {
+    if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, "event_cursor_on")) {
+        HE("error drawing event cursor in given index", "ui_map_redraw_tile");
+        return;
+    }
+  }
 }
 void ui_map_redraw_neighbours(UIMap *m, int current_tile){
   int *neighs = map_get_neighbour_tiles(current_tile);
@@ -225,7 +232,9 @@ int _draw_sprite_in_index(UIMap *m, int index, char* sprite_name){
     HE("Error retrieving sprite data from sprite dictionary", "_draw_sprite_in_index");
     return UINT_ERROR;
   }
-  if(strcmp(sprite_name, "cursor_on") == 0 || strcmp(sprite_name, "cursor_off") == 0){
+  if(strcmp(sprite_name, "cursor_on") == 0 
+          || strcmp(sprite_name, "event_cursor_on") == 0
+          || strcmp(sprite_name, "cursor_off") == 0){
     x -= 3;
     y -= 3;
   }
@@ -247,10 +256,18 @@ int _center_screen_index(UIMap* m, int central_index){
 }
 
 void _move(UIMap *m, UIMapVector dir, UIMapVector edge1, UIMapVector edge2){
-  if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off")){
-    HE("Error drawing sprite in given index", "ui_map_update_cursor");
-    return;
-  }
+    // if there's an event on the tile we're leaving, draw the event cursor instead of deleting the cursor
+    if (tile_get_event(m->tiles[m->previous_cursor])) {
+      if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "event_cursor_on")){
+        HE("Error drawing sprite in given index", "ui_map_update_cursor");
+        return;
+      }
+    } else {
+      if (UINT_ERROR == _draw_sprite_in_index(m, m->previous_cursor, "cursor_off")){
+        HE("Error drawing sprite in given index", "ui_map_update_cursor");
+        return;
+      }
+    }
 
   if (dir == edge1 || dir == edge2){
     m->first_index = _calculate_cursor(m->first_index, dir, m->true_height);
