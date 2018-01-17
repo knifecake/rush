@@ -43,6 +43,9 @@ struct _World {
 
     // randomness source
     rnd_state *rs;
+
+    // only one townhall at most
+    int n_townhalls;
 };
 
 int _world_load_game_state(World *w, char *game_state_file)
@@ -212,7 +215,7 @@ World *world_new(void) {
     w->map_tiles = height * columns;
 
     w->map = map_new(w->tiles, w->num_tiles, map_gen_random, w->map_tiles);
-
+    w->n_townhalls = 0;
 
     // load initial game state
     char *initial_game_state = config_get("general.initial_game_state");
@@ -434,6 +437,16 @@ Event **world_get_events(World *w)
   return w->events;
 }
 
+int world_get_num_townhalls(World *w)
+{
+  if (!w) {
+    HE("invalid parameters", "world_get_num_townhalls");
+    return UINT_ERROR;
+  }
+
+  return w->n_townhalls;
+}
+
 
 int world_get_num_events(World *w)
 {
@@ -513,6 +526,12 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     if (tile_get_building(map_tile_at_index(w->map, tile_index)) && !is_upgrade)
         return WORLD_BUILD_OCCUPIED;
 
+    // if there is already a townhall constructed and we are trying to construct another one,
+    // then it is rejected
+    if(building_is_townhall(b) && w->n_townhalls == config_get_int("max_townhalls")) {
+        return WORLD_BUILD_TOOMANY_TOWNHALLS;
+    }
+
     // check if building can be build at the player's current level
     int unlock_level = building_get_unlocking_level(b);
     if (unlock_level > w->level)
@@ -541,6 +560,7 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     // if building is a town-hall, signal player level upgrade
     if (building_is_townhall(b)) {
         w->level++;
+        w->n_townhalls++;
         return WORLD_BUILD_SUCCESS_LEVEL_UP;
     }
 

@@ -92,6 +92,9 @@ tiles_per_double_column # This must be a multiple of 4
 map height
 10
 
+max_townhalls
+1
+
 map columns # This must be of the form columns_in_screen + 2*n, in this case 7+2*n
 11
 

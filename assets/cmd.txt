@@ -3,7 +3,7 @@
 
 b
 build
-11
+12
 What do you want to build this tile? Use the arrow keys to select a building on the top right.
 Okay, nothing will be built.
 Building was constructed and you leveled up!
@@ -15,6 +15,7 @@ The building on this tile was upgraded to the next level.
 The tile is not visible.
 An error ocurred and nothing was built.
 There are enemies on this tile. Attack it first with a.
+There are already enough townhalls... Don't you think?
 
 u
 upgrade

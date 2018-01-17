@@ -97,6 +97,9 @@ int action_build(void *w, char *cmd, char **msg, int num_msg)
         case WORLD_BUILD_ENEMIES_PRESENT:
             show_msg(msg[10]);
             break;
+        case WORLD_BUILD_TOOMANY_TOWNHALLS:
+            show_msg(msg[11]);
+            break;
         default:
             show_msg(msg[9]);
             ui_redraw_sidebar();

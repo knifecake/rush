@@ -118,6 +118,11 @@ Map *world_get_map(World *w);
 Event **world_get_events(World *w);
 
 /*
+ * Returns the number of townhalls constructed
+ */
+int world_get_num_townhalls(World *w);
+
+/*
  * Returns the number of tiles that world_get_tiles returns, UINT_ERROR
  * in case of failure.
  */
@@ -230,5 +235,9 @@ int world_build_on_tile(World *w, int tile_index, Building *b);
  * Exchange was successfull
  */
 #define WORLD_EXCHANGE_DONE 14
+/*
+ * There is already the max number of townhalls
+ */
+#define WORLD_BUILD_TOOMANY_TOWNHALLS 15
 
 #endif
