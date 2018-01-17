@@ -1,4 +1,14 @@
 /*
+ * PPROG Game – Morzilla Firefox 2018
+ *
+ * Authors: Miguel Baquedano, Sergio Cordero, Elias Hernandis
+ *          and Rafael Sánchez.
+ *
+ * Lead author: <replace me>
+ */
+
+
+/*
  * Event loader.
  *
  * Contains functions to read a list of events from a file.

@@ -1,3 +1,13 @@
+/*
+ * PPROG Game – Morzilla Firefox 2018
+ *
+ * Authors: Miguel Baquedano, Sergio Cordero, Elias Hernandis
+ *          and Rafael Sánchez.
+ *
+ * Lead author: <replace me>
+ */
+
+
 #ifndef __COP_H__
 #define __COP_H__
 
