@@ -174,6 +174,12 @@ Tile *world_tile_at_index(World *w, int tile_index);
 int world_upgrade_building(World *w, int tile_index);
 
 int world_get_price_exchange(int price, int resource_from, int resource_to);
+/*
+ * Return the healed health
+ */
+ int world_repair_building(World *, Building *);
+
+ int world_get_price_exchange(int price, int resource_from, int resource_to);
 
 int world_exchange(World *w, int tile_index, int price, int res_from, int res_to);
 /*
