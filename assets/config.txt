@@ -15,7 +15,7 @@
 general.font_path
 assets/img/pixeled
 
-general.initial_game_state
+general.saved_game
 assets/initial_game_state.txt
 
 # the ascii code for the key to press when multiple messages are to be

@@ -1,4 +1,4 @@
-93
+96
 a_var_1
 a_var_2
 a_var_3
@@ -24,7 +24,6 @@ building_icon_5
 building_icon_6
 building_icon_7
 building_icon_8
-building-placeholder
 build_panel_back
 build_panel_cursor_off
 build_panel_cursor_on
@@ -68,6 +67,7 @@ jaen!
 jaen
 market_1
 market_2
+morcilla_firefox
 not_visible
 resource_0
 resource_1
@@ -77,6 +77,9 @@ resource_4
 resource_5
 resource_6
 resource_7
+rush_cursor_off
+rush_cursor_on
+rush
 skill_0
 skill_1
 skill_2

@@ -31,20 +31,6 @@ int main(int argc, char **argv) {
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
 
-    // load assets
-    World *w;
-    if (argc == 2)
-        w = world_new(argv[1]);
-    else
-        w = world_new(NULL);
-
-    if (!w) {
-        term_teardown(stdin, stdout);
-        HE("FATAL: could not load some asset", "main");
-
-        config_destroy();
-        abort();
-    }
 
     // TODO: this is a small hack, do this properly with getopts
     if (argc != 2) {
@@ -72,6 +58,7 @@ int main(int argc, char **argv) {
     cop_assoc(c, "redraw_ui", action_redraw_ui);
     cop_assoc(c, "next_turn", action_next_turn);
     cop_assoc(c, "welcome", action_welcome);
+    cop_assoc(c, "main_screen", action_main_screen);
     cop_assoc(c, "save_game", action_save_game);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
@@ -79,14 +66,27 @@ int main(int argc, char **argv) {
     // init terminal (saving previous state)
     term_setup(stdin, stdout);
 
+    ui_presetup();
+    cop_exec(c, "main_screen", c);
+    // load assets
+    World *w  = world_new(config_get("general.saved_game"));
+
+    if (!w) {
+      term_teardown(stdin, stdout);
+      HE("FATAL: could not load some asset", "main");
+
+      config_destroy();
+      abort();
+    }
+
     // setup UI
     ui_setup(w);
 
+    ui_draw_all();
     if (argc != 2) {
         // say hello to the user
         cop_exec(c, "welcome", w);
     }
-
     // GAME LOOP
     char input;
     char cmd[2];

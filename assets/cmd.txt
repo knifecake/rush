@@ -1,5 +1,5 @@
 # command file
-12 # number of commands
+13 # number of commands
 
 q
 quit
@@ -97,6 +97,11 @@ welcome
 Welcome to this awesome game! You may exit at any time by pressing q (possibly multiple times). Press n to continue reading.
 Right now, you need to start by building a town hall. Position yourself in a visible tile using the arrow keys.
 When you are ready, press b to show the building menu.
+
+main_screen
+main_screen
+1
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 # This command is run in case the command executed by the user is not defined.
 404_not_found

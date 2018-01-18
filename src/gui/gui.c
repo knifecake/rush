@@ -43,7 +43,17 @@ struct _UI {
     UIRect bottom_sidebar_dim;
     UIRect text_panel_dim;
 };
+void ui_presetup(){
+      ui = oopsalloc(1, sizeof(UI), "ui_setup");
 
+      ui->top_sidebar_dim         = (UIRect) { .x = 260,  .y = 12,     .w = 60,    .h = 95 };
+      ui->bottom_sidebar_dim      = (UIRect) { .x = 260,  .y = 132,   .w = 60,    .h = 70 };
+      ui->text_panel_dim          = (UIRect) { .x = 1,    .y = 153,   .w = 250,   .h = 27 };
+
+      ui->font = ui_font_new(config_get("general.font_path"));
+      ui->tp = ui_text_panel_new(ui->text_panel_dim, ui->font);
+      ui->sprite_dict = load_sprite_dict_from_file(config_get("asset_dbs.sprites"));
+}
 int ui_setup(World *w)
 {
     if (!w) {
@@ -51,20 +61,10 @@ int ui_setup(World *w)
         return UINT_ERROR;
     }
 
-    ui = oopsalloc(1, sizeof(UI), "ui_setup");
-
-    ui->top_sidebar_dim         = (UIRect) { .x = 260,  .y = 12,     .w = 60,    .h = 95 };
-    ui->bottom_sidebar_dim      = (UIRect) { .x = 260,  .y = 132,   .w = 60,    .h = 70 };
-    ui->text_panel_dim          = (UIRect) { .x = 1,    .y = 153,   .w = 250,   .h = 27 };
-
     ui->w = w;
-
-    ui->font = ui_font_new(config_get("general.font_path"));
     ui->map = ui_map_new(ui->w);
-    ui->tp = ui_text_panel_new(ui->text_panel_dim, ui->font);
     ui->wi = ui_world_info_new(ui->w, ui->top_sidebar_dim);
     ui->ti = ui_tile_info_new(ui->w, ui->bottom_sidebar_dim);
-    ui->sprite_dict = load_sprite_dict_from_file(config_get("asset_dbs.sprites"));
     ui->bp = ui_build_panel_new(world_get_buildings(ui->w));
     ui->ep = ui_exchange_panel_new(ui->w);
     ui->cp = ui_code_panel_new(ui->w);
@@ -74,7 +74,6 @@ int ui_setup(World *w)
         return UINT_ERROR;
     }
 
-    ui_draw_all();
     return !UINT_ERROR;
 }
 
@@ -121,6 +120,39 @@ int ui_move_cursor(int input)
 {
     ui_map_move_cursor(ui->map, _ui_keypress_to_vector(input));
     return !UINT_ERROR;
+}
+
+int ui_display_main_screen(){
+  int cursor = 0, old_cursor = 0;
+  int x = 94, y = 85;
+  sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "rush"), 0, 0);
+  sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "rush_cursor_on"), x, y);
+  int key = HERE_ARROW;
+  while( key != '\n' && key != 'q'){
+    key = term_read_key(stdin);
+    old_cursor = cursor;
+    if(term_is_arrow_key(key)){
+      switch (key) {
+      case UP_ARROW:
+        cursor--;
+        cursor = (cursor < 0) ? 0 : cursor;
+        break;
+      case DOWN_ARROW:
+        cursor++;
+        cursor = (cursor > 2) ? 2 : cursor;
+        break;
+      default:;
+      }
+    }
+    if(cursor != old_cursor){
+      sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "rush_cursor_off"), x, y + old_cursor*29);
+      sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "rush_cursor_on"), x, y + cursor*29);
+    }
+  }
+  if(key == 'q'){
+    return UINT_ERROR;
+  }
+  return cursor;
 }
 
 int ui_get_cursor()

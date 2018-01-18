@@ -285,14 +285,6 @@ World *world_new(char *archive) {
     // random source
     w->rs = r_init(time(NULL));
 
-    if (!archive)
-        archive = config_get("general.initial_game_state");
-    if (!archive) {
-        HE("don't know where to load resources from", "world_new");
-        free(w);
-        return NULL;
-    }
-
     FILE *game_file = fopen(archive, "r");
     if (!game_file) {
         HE("could not load game state", "world_new");

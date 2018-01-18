@@ -97,5 +97,7 @@ int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg);
 
 int action_save_game(void *w, char *cmd, char **msg, int num_msg);
 
+int action_main_screen(void *w, char *cmd, char **msg, int num_msg);
+
 int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg);
 #endif

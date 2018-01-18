@@ -262,6 +262,27 @@ int action_welcome(void *world, char *cmd, char **msg, int num_msg)
     return CTRL_OK;
 }
 
+int action_main_screen(void *w, char *cmd, char **msg, int num_msg){
+  if(!cmd || !msg || num_msg < 0) return CTRL_ERROR;
+  int option = 2;
+  while(option == 2){
+    option = ui_display_main_screen();
+    switch (option) {
+      case 0: return CTRL_OK;
+      case 1:
+      config_set("general.saved_game", "saved_game.txt");
+      return CTRL_OK;
+      case 2:
+      sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "morcilla_firefox"), 0, 0);
+      term_read_key(stdin);
+      break;
+      default: return CTRL_ERROR;
+    }
+
+  }
+  return CTRL_ERROR;
+}
+
 int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
 {
     int ntiles = world_get_num_tiles(world);
