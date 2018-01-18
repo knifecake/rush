@@ -29,6 +29,9 @@
 #include "../asset_loaders/event_loader.h"
 
 #define N_SKILLS 4
+#define MARAB_PROP 1.0
+#define EAT_SKILL_PROP 0.5
+#define EAT_SKILL_ID 1
 
 struct _World {
     Resource **resources;
@@ -573,6 +576,15 @@ int world_game_finished(World *w){
   return UINT_ERROR;
 }
 
+int _feed_rm(World* w, float coffee_consumed){
+  w->wallet[2] -= coffee_consumed*w->wallet[6];
+  if(w->wallet[2] < 0){
+    w->wallet[6] += w->wallet[2];
+    w->wallet[2] = 0;
+  }
+  return !UINT_ERROR;
+}
+
 
 //Maybe we need to call some other functions like create events
 World *world_next_turn(World *w, int *tiles_to_update){
@@ -580,12 +592,12 @@ World *world_next_turn(World *w, int *tiles_to_update){
     HE("invalid parameters", "world_next_turn");
     return NULL;
   }
-  /*Feed marabinis in proportion 1:1*/
-  w->wallet[2] -= w->wallet[6];
-  if (w->wallet[2] < 0){
-    w->wallet[6] += w->wallet[2];
-    w->wallet[2] = 0;
+  /*Feed marab in proportion 1 marab : MARAB_PROP coffee. If w->skills[EAT_SKILL_ID]=true, a skill is applied*/
+  float propotion = MARAB_PROP;
+  if(w->skills[EAT_SKILL_ID]){
+    proportion *= EAT_SKILL_PROP;
   }
+  _feed_rm(w, proportion);
 
   /*
   / Collect all the resources from the tiles with resources buildings and reduce by one
