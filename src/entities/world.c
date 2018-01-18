@@ -699,6 +699,32 @@ int world_get_price_exchange(int price, int resource_from, int resource_to){
   }
 }
 
+
+int world_repair_building(World *w, Building *b){
+  if(!w || !b){
+    HE("invalid parameters","world_repair_building")
+    return -1;
+  }
+  int b_health=building_get_health(b);
+
+  int b_id=building_get_id(b);
+  int b_can_id;
+
+  int i;
+  for(i=0;i<w->num_buildings;i++){
+    b_can_id=building_get_id(w->buildings[i]);
+    if(b_can_id==b_id){
+      break;
+    }
+  }
+  int b_can_health=building_get_health(w->buildings[i]);
+  
+  building_set_health(b,b_can_health);
+
+  return b_can_health-b_health;
+}
+
+
 int world_exchange(World *w, int tile_index, int price, int res_from, int res_to){
   if(!w) return INT_ERROR;
   Map *m = world_get_map(w);

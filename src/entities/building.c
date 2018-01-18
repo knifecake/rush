@@ -112,6 +112,20 @@ Building *building_edit_health (Building* bp, int increment){
   return bp;
 }
 
+Building *building_set_health(Building *bp, int value){
+  if(!bp){
+    HE("pointer is NULL", "building_set_health")
+    return NULL;
+  }
+  if(value<0){
+    HE("health value < 0", "building_set_health")
+    return NULL;
+  }
+  bp -> health = value;
+
+  return bp;
+}
+
 int building_get_id (Building *bp){
   if(!bp){
     HE("Pointer is NULL", "building_get_id");

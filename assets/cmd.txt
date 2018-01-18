@@ -35,6 +35,13 @@ You need more resources to upgrade this building.
 The building on this tile was upgraded to the next level.
 An error ocurred. The building was not upgraded.
 
+r
+repair
+3
+There is not building in this tile.
+You have not enough coffe.
+The building has been repared.
+
 e
 exchange
 6
@@ -73,7 +80,7 @@ next_turn
 Moving onto the next turn.
 New event %s in tile n. %d
 
-r
+p
 redraw_ui
 1
 Redrawing all UI.

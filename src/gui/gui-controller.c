@@ -509,6 +509,40 @@ finish:
     return CTRL_OK;
 }
 
+
+int action_repair(void *w, char *cmd, char **msg, int num_msg){
+  if (!w || !cmd || !msg || num_msg < 1) {
+      HE("invalid parameters", "action_repair");
+      return UINT_ERROR;
+  }
+  int tile_index=ui_get_cursor();
+  Tile *t=world_tile_at_index(w,tile_index);
+  Building *b=tile_get_building(t);
+
+  if(!b){
+    show_msg(msg[0]);
+    return CTRL_OK;
+  }
+
+  int b_initial_health=building_get_health(b);
+
+  int cost=world_repair_building(w,b);
+  int *wallet=world_get_wallet(w);
+
+  if(wallet[2]<cost){
+    show_msg(msg[1]);
+    building_set_health(b,b_initial_health);
+
+    return CTRL_OK;
+  }
+
+  world_wallet_delta(w,2,cost);
+
+  show_msg(msg[2]);
+
+  return CTRL_OK;
+}
+
 int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg)
 {
     return CTRL_REDRAW_ALL_UI;
