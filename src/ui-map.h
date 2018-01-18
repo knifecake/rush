@@ -56,6 +56,10 @@ void ui_map_redraw_neighbours(UIMap *, int);
 void ui_map_draw(UIMap *m);
 
 /*
+ * Prints all cursors in visible screen layer by layer
+ */
+void ui_map_layers_draw(UIMap *m);
+/*
  * Frees all memory allocated by ui_map_new.
  */
 void ui_map_destroy(UIMap *m);

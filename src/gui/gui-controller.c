@@ -286,11 +286,11 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     if (!world_next_turn(world, tiles_to_update))
         return CTRL_ERROR;
 
-    for (int i = 0; tiles_to_update[i]; i++) {
+    /*for (int i = 0; tiles_to_update[i]; i++) {
         ui_redraw_tile(tiles_to_update[i]);
-    }
-
-//We iterate over the map to show the player the new events that occur every turn.
+    }*/
+    ui_redraw_layers();
+/*//We iterate over the map to show the player the new events that occur every turn.
     for (int i = 0; i < ntiles; i++){
         Tile *t = world_tile_at_index(world, i);
 
@@ -306,7 +306,7 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
                 show_msg(msg[1], event_get_name(e), i);
             }
         }
-    }
+    }*/
     /*
     if(INT_ERROR!=world_game_finished(world)){
       exit(1);

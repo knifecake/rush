@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
                 int ret = cop_exec(c, cmd, w);
                 switch (ret) {
                     case CTRL_NEXT_TURN:
-                        action_next_turn(w, NULL, NULL, 0);
+                        cop_exec(c, "n", w);
                         break;
                     case CTRL_REDRAW_ALL_UI:
                         ui_draw_all();

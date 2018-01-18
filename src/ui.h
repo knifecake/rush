@@ -89,6 +89,8 @@ int ui_get_cursor();
 
 int ui_redraw_tile(int tile_index);
 
+int ui_redraw_layers();
+
 int ui_redraw_neighbours(int tile_index);
 
 int ui_update_world_info();

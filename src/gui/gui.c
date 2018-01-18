@@ -140,6 +140,11 @@ int ui_redraw_tile(int tile_index){
   return !UINT_ERROR;
 }
 
+int ui_redraw_layers(){
+  ui_map_layers_draw(ui->map);
+  return !UINT_ERROR;
+}
+
 int ui_redraw_neighbours(int tile_index){
   ui_map_redraw_neighbours(ui->map, tile_index);
   return !UINT_ERROR;
