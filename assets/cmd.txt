@@ -1,5 +1,5 @@
 # command file
-10 # number of commands
+11 # number of commands
 
 q
 quit
