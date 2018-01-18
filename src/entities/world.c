@@ -64,6 +64,45 @@ struct _World {
     time_t last_turn_timestamp;
 };
 
+//giving an id it returns a copy of the canonic tile with that id
+Tile *_world_canonical_tile_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(j < w->num_tiles && id != tile_get_id(w->tiles[j])){
+    j++;
+  }
+  return tile_copy(w->tiles[j]);
+}
+
+//giving an id it returns a copy of the canonic building with that id
+Building *_world_canonical_building_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(j < w->num_buildings && id != building_get_id(w->buildings[j])){
+      j++;
+  }
+  return building_copy(w->buildings[j]);
+}
+
+//giving an id it returns a copy of the canonic event with that id
+Event *_world_canonical_event_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(j < w->num_events && id != event_get_id(w->events[j])){
+      j++;
+  }
+  return event_copy(w->events[j]);
+}
+
 int _world_load_game_state(World *w, FILE *game_state_file)
 {
     if (!w || !game_state_file) {
@@ -114,14 +153,145 @@ int _world_load_game_state(World *w, FILE *game_state_file)
     return !UINT_ERROR;
 }
 
+/*
+ *TODO: Implement that function so that we can load a game
+ */
+
+
+int _world_load_map(World *w, FILE *game_state_file)
+{
+    if (!w || !game_state_file) {
+        HE("invalid arguments", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+
+    //read the map size
+    char *buff = fgetll(game_state_file);
+
+    if(!buff) {
+        // load the default map, if no map provided on this file
+
+        int height  = config_get_int("map height");
+        int columns = config_get_int("map columns");
+        w->map_tiles = height * columns;
+        w->map = map_new(w->tiles, w->num_tiles, map_gen_random, w->map_tiles);
+        w->n_townhalls = 0;
+        return !UINT_ERROR;
+
+    }
+
+    int size_map = atoi(buff); free(buff);
+
+    Tile *tiles_map[size_map];
+    for(int i = 0; i < size_map; i++){
+
+        //We read the id of the tile and create one canonic version of the tile with that id
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read part of the map", "_world_load_map");
+            return UINT_ERROR;
+        }
+
+        int id = atoi(buff); free(buff);
+
+        tiles_map[i] = _world_canonical_tile_copy(w, id);
+
+        // read the tile's visibility
+        buff = fgetll(game_state_file);
+        int visible = atoi(buff); free(buff);
+        tile_set_visible(tiles_map[i], visible);
+
+        //Now we read the remaining resources of that tile and update it
+        for(int k = 0; k < w->num_resources; k++){
+            buff = fgetll(game_state_file);
+            if(!buff) {
+                HE("could not read part of the remaining resources of a tile", "_world_load_map");
+            }
+            int remain_resource = atoi(buff); free(buff);
+            tiles_map[i] = tile_set_remaining_resources(tiles_map[i], k, remain_resource);
+        }
+
+        //if the tile have a building, we create it and associate it to that tile
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read a building", "_world_load_map");
+            return UINT_ERROR;
+        }
+        id = atoi(buff); free(buff);
+        if(id != -1){
+            Building *b = _world_canonical_building_copy(w, id);
+            if (!b) {
+                HE("could not recognize building", "_world_load_map");
+            }
+
+            buff = fgetll(game_state_file);
+            if(!buff) {
+                HE("could not read a building", "_world_load_map");
+                return UINT_ERROR;
+            }
+            int health = atoi(buff); free(buff);
+            building_set_health(b, health);
+
+            if(tile_build(tiles_map[i], b) == UINT_ERROR){
+                printf("peta con tile index = %d, building id = %d\n", i, id);
+                HE("could not connect tile and building", "_world_load_map");
+            }
+        }
+
+        //if the tile have an event, we create it and associate it to that tile
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read an event", "_world_load_map");
+            return UINT_ERROR;
+        }
+        id = atoi(buff); free(buff);
+        if(id != -1){
+            printf("peta con id = %d\n", id);
+          Event *e = _world_canonical_event_copy(w, id);
+          buff = fgetll(game_state_file);
+          if(!buff) {
+              HE("could not read an event", "_world_load_map");
+              return UINT_ERROR;
+          }
+          int rem_turns = atoi(buff); free(buff);
+          e = event_set_remaining_turns(e, rem_turns);
+
+          if(tile_set_event(tiles_map[i], e) == NULL){
+              HE("could not connect tile and event", "_world_load_map");
+              return UINT_ERROR;
+          }
+      }
+    }
+    //At this point we have all the information of the file in tiles_map
+    // We only need to create the real map with that information
+    Map *map = map_new(tiles_map, size_map, map_gen_standard, size_map);
+
+    w->map = map;
+  return !UINT_ERROR;
+}
+
 World *world_new(char *archive) {
 
     World *w = NULL;
     w = oopsalloc(1, sizeof(World), "world_new");
 
+    // random source
     w->rs = r_init(time(NULL));
 
+    if (!archive)
+        archive = config_get("general.initial_game_state");
+    if (!archive) {
+        HE("don't know where to load resources from", "world_new");
+        free(w);
+        return NULL;
+    }
+
     FILE *game_file = fopen(archive, "r");
+    if (!game_file) {
+        HE("could not load game state", "world_new");
+        free(w);
+        return NULL;
+    }
 
     //LOAD RESOURCES
     char *resources_db = fgetll(game_file);
@@ -239,12 +409,7 @@ World *world_new(char *archive) {
         }
 
     // create the map
-    int height  = config_get_int("map height");
-    int columns = config_get_int("map columns");
-    w->map_tiles = height * columns;
-
-    w->map = map_new(w->tiles, w->num_tiles, map_gen_random, w->map_tiles);
-    w->n_townhalls = 0;
+    _world_load_map(w, game_file);
 
     fclose(game_file);
 
@@ -254,6 +419,92 @@ World *world_new(char *archive) {
     tile_set_visible(init_tile, true);
 
     return w;
+}
+
+int world_save_game(const World *w, char *filename)
+{
+    if (!w || !filename) {
+        HE("invalid arguments", "world_save_game");
+        return UINT_ERROR;
+    }
+
+    // open the file to save the game, overwritting if necessary
+    FILE *f = fopen(filename, "w");
+    if (!f) {
+        HE("could not open file for saving", "world_save_game");
+        return UINT_ERROR;
+    }
+
+    // save canonical entity sources
+    fprintf(f, "%s\n", config_get("asset_dbs.resources"));
+    fprintf(f, "%s\n", config_get("asset_dbs.tiles"));
+    fprintf(f, "%s\n", config_get("asset_dbs.buildings"));
+    fprintf(f, "%s\n", config_get("asset_dbs.events"));
+
+    // save the current number of turns
+    fprintf(f, "%d\n", w->turn);
+
+    // save the current player level
+    fprintf(f, "%d\n", w->level);
+
+    // save the number of resources
+    fprintf(f, "%d\n", w->num_resources);
+
+    // save the wallet
+    for (int i = 0; i < w->num_resources; i++)
+        fprintf(f, "%d\n", w->wallet[i]);
+
+
+    // save the number of tiles
+    fprintf(f, "%d\n", w->map_tiles);
+
+    // save the tiles
+    for (int i = 0; i < w->map_tiles; i++) {
+        Tile *t = world_tile_at_index(w, i);
+        if (!t) {
+            HE("could not read a tile, saved game is corrupt", "world_save_game");
+            fclose(f);
+            return UINT_ERROR;
+        }
+
+        // save the tile id
+        fprintf(f, "%d\n", tile_get_id(t));
+
+        // save the tile's visibility
+        fprintf(f, "%d\n", tile_get_visible(t));
+
+        // save the remaining resources of the tile
+        for (int j = 0; j < w->num_resources; j++)
+            fprintf(f, "%d\n", tile_get_remaining_resources(t, j));
+
+        // if there's a bulding on this tile, save it
+        Building *b = tile_get_building(t);
+        if (b) {
+            // save the building id
+            fprintf(f, "%d\n", building_get_id(b));
+
+            // save the buildings health
+            fprintf(f, "%d\n", building_get_health(b));
+        } else {
+            fprintf(f, "-1\n");
+        }
+
+        // if there's an event on this tile, save it
+        Event *e = tile_get_event(t);
+        if (e) {
+            // save the event's id
+            fprintf(f, "%d\n", event_get_id(e));
+
+            // save the remaining turns
+            fprintf(f, "%d\n", event_get_num_turns(e));
+        } else {
+            fprintf(f, "-1\n");
+        }
+
+    }
+
+    fclose(f);
+    return !UINT_ERROR;
 }
 
 void world_destroy(World *w) {
@@ -571,7 +822,7 @@ int world_wallet_delta(World *w, int resource_id, int delta)
     return UINT_ERROR;
 }
 
-Tile *world_tile_at_index(World *w, int tile_index)
+Tile *world_tile_at_index(const World *w, int tile_index)
 {
     if (!w) {
         HE("invalid arguments", "world_tile_at_index");

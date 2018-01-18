@@ -512,8 +512,6 @@ finish:
     show_msg("");
     return CTRL_OK;
 }
-
-
 int action_repair(void *w, char *cmd, char **msg, int num_msg){
   if (!w || !cmd || !msg || num_msg < 1) {
       HE("invalid parameters", "action_repair");
@@ -549,6 +547,15 @@ int action_repair(void *w, char *cmd, char **msg, int num_msg){
   return CTRL_OK;
 }
 
+int action_save_game(void *w, char *cmd, char **msg, int num_msg)
+{
+    if (UINT_ERROR == world_save_game(w, "saved_game.txt"))
+        show_msg(msg[1]);
+    else
+        show_msg(msg[0]);
+
+    return CTRL_OK;
+}
 int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg)
 {
     return CTRL_REDRAW_ALL_UI;

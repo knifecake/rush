@@ -44,6 +44,13 @@ typedef struct _World World;
 World *world_new(char *);
 
 /*
+ * Saves the current game in filename.
+ *
+ * Returns UINT_ERROR on error.
+ */
+int world_save_game(const World *w, char *filename);
+
+/*
  * Destroys a world, freeing all associated objects.
  *
  * Does nothing on invalid input.
@@ -172,7 +179,7 @@ int world_update_neighbours(World *w,int tile_index);
 /*
  * Returns the tile at the given index, NULL on error.
  */
-Tile *world_tile_at_index(World *w, int tile_index);
+Tile *world_tile_at_index(const World *w, int tile_index);
 /*
  * Returns the price conversion of first resource into the second
  */
