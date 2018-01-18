@@ -59,6 +59,7 @@ void ui_teardown();
  */
 void ui_draw_all();
 
+// TODO: comment this file fully
 World *ui_get_world();
 /*
  * UIFont is a fundamental component needed for the graphical user interface,
@@ -109,6 +110,11 @@ Dict *ui_get_sprite_dict();
  * Displays a message where it's appropriate.
  */
 int ui_show_msg(char *msg);
+
+/*
+ * Shows a dialogue (yes or no) question where appropriate.
+ */
+bool ui_show_dialogue(char *question);
 
 UIRect ui_get_top_sidebar_dim();
 

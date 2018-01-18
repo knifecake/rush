@@ -11,6 +11,8 @@
 #ifndef __MESSAGES_H__
 #define __MESSAGES_H__
 
+#include <stdbool.h>
+
 /*
  * A library for handling messages to the user in our game.
  *
@@ -29,4 +31,6 @@
  * to change where things are output to.
  */
 int show_msg(const char *msg, ...);
+
+bool show_dialogue(const char *fs, ...);
 #endif

@@ -614,11 +614,8 @@ int world_build_on_tile(World *w, int tile_index, Building *b)
     // if building is a town-hall, signal player level upgrade
     if (building_is_townhall(b)) {
         w->level++;
-<<<<<<< HEAD
         w->n_townhalls++;
-=======
         w->town_hall_index=tile_index;
->>>>>>> 76ea6d133022f6f28bb6f9096a214a678afc7b83
         return WORLD_BUILD_SUCCESS_LEVEL_UP;
     }
 

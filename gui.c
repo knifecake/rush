@@ -57,6 +57,7 @@ int main(int argc, char **argv) {
     fclose(cf);
 
     // associate our game commands with it
+    cop_assoc(c, "quit", action_quit);
     cop_assoc(c, "build", action_build);
     cop_assoc(c, "upgrade", action_upgrade);
     cop_assoc(c, "exchange", action_exchange);
@@ -85,8 +86,8 @@ int main(int argc, char **argv) {
     while (1) {
         if ((input = term_read_key(stdin))) {
             if (input == 'q') {
-                ui_show_msg("\nExiting...\n");
-                break;
+                if (CTRL_ERROR != cop_exec(c, "q", w))
+                    break;
             }
             // check if we're moving the cursor
             else if (term_is_arrow_key(input)) {

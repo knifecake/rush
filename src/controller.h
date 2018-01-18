@@ -73,6 +73,8 @@
 /*
  * Actions to be bound to CoP commands through cop_assoc.
  */
+int action_quit(void *world, char *cmd, char **msg, int num_msg);
+
 int action_build(void *world, char *cmd, char **msg, int num_msg);
 
 int action_upgrade(void *world, char *cmd, char **msg, int num_msg);

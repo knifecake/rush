@@ -175,6 +175,13 @@ int ui_show_msg(char *msg) {
     return ui_text_panel_print(ui->tp, msg);
 }
 
+bool ui_show_dialogue(char *question)
+{
+    if (!ui)
+        return false;
+
+    return ui_text_panel_dialogue(ui->tp, question);
+}
 UIFont *ui_get_font()
 {
     if (!ui)

@@ -57,6 +57,22 @@ char *building_get_desc(Building *b)
     return buff;
 }
 
+int action_quit(void *w, char *cmd, char **msg, int num_msg)
+{
+    if (!w || !cmd || !msg || num_msg < 1) {
+        HE("invalid parameters", "action_build");
+        return CTRL_ERROR;
+    }
+
+    if (show_dialogue(msg[0])) {
+        show_msg(msg[1]);
+        return CTRL_OK;
+    }
+
+    show_msg(msg[2]);
+    return CTRL_ERROR;
+}
+
 int action_build(void *w, char *cmd, char **msg, int num_msg)
 {
     if (!w || !cmd || !msg || num_msg < 1) {

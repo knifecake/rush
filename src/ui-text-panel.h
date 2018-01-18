@@ -2,6 +2,7 @@
 #define __UI_TEXT_PANEL__
 
 #include "ui-font.h"
+#include "lib/terminal.h"
 
 /*
  * UITextPanel
@@ -36,6 +37,12 @@ int ui_text_panel_draw(UITextPanel *tp);
  * Returns UINT_ERROR on error.
  */
 int ui_text_panel_print(UITextPanel *tp, char *msg);
+
+/*
+ * Prints a dialoque and returns true or false depending on the yes/no answer
+ * provided by the user.
+ */
+bool ui_text_panel_dialogue(UITextPanel *tp, char *question);
 
 /*
  * Clears any text written in the given UIText panel.

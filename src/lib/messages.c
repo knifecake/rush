@@ -24,3 +24,13 @@ int show_msg(const char *fs, ...)
     va_end(args);
     return ui_show_msg(buff);
 }
+
+bool show_dialogue(const char *fs, ...)
+{
+    char buff[1000];
+    va_list args;
+    va_start(args, fs);
+    vsprintf(buff, fs, args);
+    va_end(args);
+    return ui_show_dialogue(buff);
+}

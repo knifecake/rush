@@ -155,6 +155,35 @@ int ui_text_panel_draw(UITextPanel *tp)
     return !UINT_ERROR;
 }
 
+bool ui_text_panel_dialogue(UITextPanel *tp, char *question)
+{
+    if (!tp || !question) {
+        HE("invalid arguments", "ui_text_panel_draw");
+        return false;
+    }
+
+    char *corollary = "(type y/n)";
+    char *buff = oopsalloc(strlen(question) + strlen(corollary), sizeof(char), "ui_text_panel_dialogue");
+
+    sprintf(buff, "%s %s", question, corollary);
+    ui_text_panel_print(tp, buff);
+
+    int ans;
+    while ((ans = term_read_key(stdin))) {
+        if (ans == 'y' || ans == 'Y')
+            return true;
+
+        if (ans == 'n' || ans == 'N')
+            return false;
+    }
+
+    ui_text_panel_clear(tp);
+    free(buff);
+
+    return false;
+}
+
+
 int ui_text_panel_clear(UITextPanel *tp)
 {
     if (!tp) {
