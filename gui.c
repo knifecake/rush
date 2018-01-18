@@ -83,6 +83,9 @@ int main(int argc, char **argv) {
     // GAME LOOP
     char input;
     char cmd[2];
+
+    // start the game
+    world_start_game(w);
     while (1) {
         if ((input = term_read_key(stdin))) {
             if (input == 'q') {
@@ -124,6 +127,9 @@ int main(int argc, char **argv) {
 
     // restore terminal configuration
     term_teardown(stdin, stdout);
+
+    // clear the screen
+    printf("\033[2J");
 
     // exit
     return 0;

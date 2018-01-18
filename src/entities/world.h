@@ -52,6 +52,11 @@ void world_destroy(World *);
 
 
 /*
+ * Starts the timer (sets it to the current time).
+ */
+int world_start_game(World *w);
+
+/*
  * Finish the game.
  */
 int world_game_finished(World *);

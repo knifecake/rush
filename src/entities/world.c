@@ -59,6 +59,9 @@ struct _World {
 
     //save the index tile of the town_hall in the map
     int town_hall_index;
+
+    // the timestamp of when the last turn happened
+    time_t last_turn_timestamp;
 };
 
 int _world_load_game_state(World *w, FILE *game_state_file)
@@ -267,9 +270,20 @@ void world_destroy(World *w) {
   free(w);
 }
 
+int world_start_game(World *w)
+{
+    if (!w) {
+        HE("invalid arguments", "world_start_game");
+        return UINT_ERROR;
+    }
+
+    w->last_turn_timestamp = time(NULL);
+    return !UINT_ERROR;
+}
+
 int world_game_finished(World *w){
   if(!w){
-    HE("invalid parameters", "world_destroy")
+    HE("invalid parameters", "world_game_finished")
     return INT_ERROR;
   }
 
@@ -365,6 +379,11 @@ World *world_next_turn(World *w, int *tiles_to_update){
 
 w->turn++;
 
+    int time_resource_id;
+    if ((time_resource_id = config_get_int("general.time_resource")) != -1) {
+        world_wallet_delta(w, time_resource_id, w->last_turn_timestamp - time(NULL));
+    }
+    w->last_turn_timestamp = time(NULL);
   return w;
 }
 
