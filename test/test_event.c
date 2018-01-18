@@ -28,7 +28,6 @@ int main(void) {
   assert("cannot create event with invalid multipliers", !event_new("sample1", NULL, 1, 3, -100));
   assert("cannot create event with invalid id", !event_new("sample1", mult, -1, 3, -100));
   assert("cannot create event with invalid number of turns", !event_new("sample1", mult, 1, 0, -100));
-  assert("cannot create event with invalid damage", !event_new("sample1", mult, 1, 3, 1));
   assert("cannot set next turn with invalid event", !event_next_turn(NULL));
 
   Event *e = event_new("sample", mult, 1, 3, -100);

@@ -36,4 +36,4 @@ XP
 ECTS
 
 6
-marabinis
+bomarinis
