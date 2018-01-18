@@ -31,7 +31,7 @@
 #define N_SKILLS 4
 #define MARAB_PROP 1.0
 #define EAT_SKILL_PROP 0.5
-#define EAT_SKILL_ID 1
+#define EAT_SKILL_ID 0
 
 struct _World {
     Resource **resources;
@@ -593,7 +593,7 @@ World *world_next_turn(World *w, int *tiles_to_update){
     return NULL;
   }
   /*Feed marab in proportion 1 marab : MARAB_PROP coffee. If w->skills[EAT_SKILL_ID]=true, a skill is applied*/
-  float propotion = MARAB_PROP;
+  float proportion = MARAB_PROP;
   if(w->skills[EAT_SKILL_ID]){
     proportion *= EAT_SKILL_PROP;
   }
@@ -1072,6 +1072,9 @@ int world_hack(World *w, int tile_index, int price, int res_from, int res_to){
   if(res_from == 5){
     int addition = world_get_price_exchange(price, res_from, res_to, level);
     w->wallet[res_to] += addition;
+  }
+  if(res_from == 4){
+    world_set_skill(w, res_to, true);
   }
   w->wallet[res_from] -= cash;
   return WORLD_CODING_DONE;
