@@ -318,7 +318,7 @@ int world_game_finished(World *w){
 //Maybe we need to call some other functions like create events
 World *world_next_turn(World *w, int *tiles_to_update){
   if(!w){
-    HE("invalid parameters", "world_player_turn");
+    HE("invalid parameters", "world_next_turn");
     return NULL;
   }
   /*
@@ -373,6 +373,9 @@ World *world_next_turn(World *w, int *tiles_to_update){
 
       if(tile_get_building(t)){
         building_edit_health(tile_get_building(t), event_get_damage(w->events[affecting_event]));
+        if(building_get_health(tile_get_building(t)) <= 0){
+          tile_demolish_building(t);
+        }
       }
     }
   }
@@ -719,7 +722,7 @@ int world_repair_building(World *w, Building *b){
     }
   }
   int b_can_health=building_get_health(w->buildings[i]);
-  
+
   building_set_health(b,b_can_health);
 
   return b_can_health-b_health;
