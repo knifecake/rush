@@ -18,7 +18,7 @@ UIExchangePanel *ui_exchange_panel_new(World *w);
 /*
  * Controls the exchange panel, returns price selected.
  */
-int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id);
+int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id, int building_level);
 
 /*
  * Frees all memory allocated by ui_map_new.

@@ -211,17 +211,17 @@ Building *ui_control_build_panel(){
   }
   return ui_build_panel_control(ui->bp);
 }
-int ui_control_exchange_panel(int *res_id){
+int ui_control_exchange_panel(int *res_id, int building_level){
   if(!ui){
     HE("Null user interface - REALLY WEIRD ERROR", "ui_control_build_panel")
     return UINT_ERROR;
   }
-  return ui_exchange_panel_control(ui->ep, res_id);
+  return ui_exchange_panel_control(ui->ep, res_id, building_level);
 }
-int ui_control_code_panel(int *res_from, int *res_id){
+int ui_control_code_panel(int *res_from, int *res_id, int building_level){
   if(!ui){
     HE("Null user interface - REALLY WEIRD ERROR", "ui_control_build_panel")
     return UINT_ERROR;
   }
-  return ui_code_panel_control(ui->cp, res_from, res_id);
+  return ui_code_panel_control(ui->cp, res_from, res_id, building_level);
 }

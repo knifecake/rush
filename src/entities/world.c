@@ -569,9 +569,16 @@ int world_game_finished(World *w){
 //Maybe we need to call some other functions like create events
 World *world_next_turn(World *w, int *tiles_to_update){
   if(!w){
-    HE("invalid parameters", "world_player_turn");
+    HE("invalid parameters", "world_next_turn");
     return NULL;
   }
+  /*Feed marabinis in proportion 1:1*/
+  w->wallet[2] -= w->wallet[6];
+  if (w->wallet[2] < 0){
+    w->wallet[6] += w->wallet[2];
+    w->wallet[2] = 0;
+  }
+
   /*
   / Collect all the resources from the tiles with resources buildings and reduce by one
   / the turns of the active events
@@ -624,6 +631,9 @@ World *world_next_turn(World *w, int *tiles_to_update){
 
       if(tile_get_building(t)){
         building_edit_health(tile_get_building(t), event_get_damage(w->events[affecting_event]));
+        if(building_get_health(tile_get_building(t)) <= 0){
+          tile_demolish_building(t);
+        }
       }
     }
   }
@@ -930,22 +940,23 @@ int world_upgrade_building(World *w, int tile_index){
   if (!b) return WORLD_UPGRADE_MAX_LEVEL; //If no upgrade is encountered, it's in max level already
 
   //Builds it
+  world_destroy_building_on_tile(w, tile_index);
   return world_build_on_tile(w, tile_index, b);
 }
 
 //TODO: Complete this
 
-int world_get_price_exchange(int price, int resource_from, int resource_to){
+int world_get_price_exchange(int price, int resource_from, int resource_to, int building_level){
   //TODO: Load these from files
   if(resource_from == resource_to){
     return resource_from;
   }
   switch (resource_from) {
     case 0:
-      if (resource_to == 1) return (int) (price * 1.5);
-      if (resource_to == 2) return (int) (price * 1.1);
+      if (resource_to == 1) return (int) (price * 1.5 * building_level);
+      if (resource_to == 2) return (int) (price * 1.1 * building_level);
     case 5:
-      if(resource_to == 4) return (int) (price * 0.1);
+      if(resource_to == 4) return (int) (price * 0.1 * building_level);
     default: return price;
   }
 }
@@ -969,7 +980,7 @@ int world_repair_building(World *w, Building *b){
     }
   }
   int b_can_health=building_get_health(w->buildings[i]);
-  
+
   building_set_health(b,b_can_health);
 
   return b_can_health-b_health;
@@ -984,8 +995,9 @@ int world_exchange(World *w, int tile_index, int price, int res_from, int res_to
   if(!building_is_market(current)){
     return WORLD_EXCHANGE_NOT_POSSIBLE;
   }
+  int level = building_get_level(current);
   if(price > w->wallet[res_from]) return WORLD_EXCHANGE_NO_MONEY;
-  int addition = world_get_price_exchange(price, res_from, res_to);
+  int addition = world_get_price_exchange(price, res_from, res_to, level);
   w->wallet[res_from] -= price;
   w->wallet[res_to] += addition;
   return WORLD_EXCHANGE_DONE;
@@ -1011,6 +1023,7 @@ int world_hack(World *w, int tile_index, int price, int res_from, int res_to){
   if(!building_is_coding_lab(current)){
     return WORLD_CODING_NOT_POSSIBLE;
   }
+  int level = building_get_level(current);
   int cash;
   if(res_from == 4){
     cash = world_get_skill_price(w, res_to);
@@ -1019,9 +1032,18 @@ int world_hack(World *w, int tile_index, int price, int res_from, int res_to){
   }
   if(cash > w->wallet[res_from]) return WORLD_CODING_NO_ECTS;
   if(res_from == 5){
-    int addition = world_get_price_exchange(price, res_from, res_to);
+    int addition = world_get_price_exchange(price, res_from, res_to, level);
     w->wallet[res_to] += addition;
   }
   w->wallet[res_from] -= cash;
   return WORLD_CODING_DONE;
+}
+
+void world_destroy_building_on_tile(World *w, int tile_index){
+  Building *b = tile_get_building(world_tile_at_index(w, tile_index));
+  if(!b) return;
+  if(building_is_townhall(b)){
+    w->n_townhalls--;
+  }
+  tile_demolish_building(world_tile_at_index(w, tile_index));
 }

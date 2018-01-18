@@ -185,7 +185,7 @@ Tile *world_tile_at_index(const World *w, int tile_index);
  */
 int world_upgrade_building(World *w, int tile_index);
 
-int world_get_price_exchange(int price, int resource_from, int resource_to);
+int world_get_price_exchange(int price, int resource_from, int resource_to, int building_level);
 
 
 int world_exchange(World *w, int tile_index, int price, int res_from, int res_to);
@@ -194,15 +194,10 @@ int world_exchange(World *w, int tile_index, int price, int res_from, int res_to
  */
 int world_repair_building(World *, Building *);
 
-int world_get_price_exchange(int price, int resource_from, int resource_to);
-
 /*
  * Return the healed health
  */
  int world_repair_building(World *, Building *);
-
- int world_get_price_exchange(int price, int resource_from, int resource_to);
-
 
 int world_get_skill_price(World *w, int skill_id);
 /*
@@ -216,6 +211,8 @@ int world_get_skill_price(World *w, int skill_id);
 int world_hack(World *w, int tile_index, int price, int resource_from, int resource_to);
 
 int world_build_on_tile(World *w, int tile_index, Building *b);
+
+void world_destroy_building_on_tile(World *w, int tile_index);
 /*
 * Player does not have enough resources to build this.
 */

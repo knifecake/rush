@@ -30,7 +30,7 @@ UIRect code_prices[]={
  /* Private functions */
  void _code_panel_draw(UICodePanel *cp, int x0, int y0);
  void _code_redraw_cursor(UICodePanel *cp, int old_cursor);
- void _code_rewrite_prices(UICodePanel *cp);
+ void _code_rewrite_prices(UICodePanel *cp, int building_level);
  void _code_redraw_big_resource(UICodePanel *cp);
 /* --------------- */
 UICodePanel *ui_code_panel_new(World *w){
@@ -59,14 +59,14 @@ void ui_code_panel_destroy(UICodePanel *cp){
  free(cp);
 }
 
-int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id){
+int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id, int building_level){
  if(!cp || !resource_id){
    HE("Invalid arguments", "ui_code_panel_control")
    return UINT_ERROR;
  }
  _code_panel_draw(cp, 259, 6);
  _code_redraw_cursor(cp, cp->cursor);
- _code_rewrite_prices(cp);
+ _code_rewrite_prices(cp, building_level);
  int key = HERE_ARROW;
  while(key != '\n' && key != 'q'){
    int old_cursor = cp->cursor;
@@ -77,7 +77,7 @@ int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id){
          cp->cursor--;
          cp->cursor = (cp->cursor < 0) ? 0 : cp->cursor;
          _code_redraw_cursor(cp, old_cursor);
-         _code_rewrite_prices(cp);
+         _code_rewrite_prices(cp, building_level);
          if(cp->cursor == 0){
            _code_redraw_big_resource(cp);
          }
@@ -86,7 +86,7 @@ int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id){
          cp->cursor++;
          cp->cursor = (cp->cursor > 4) ? 4 : cp->cursor;
          _code_redraw_cursor(cp, old_cursor);
-         _code_rewrite_prices(cp);
+         _code_rewrite_prices(cp, building_level);
          if(old_cursor == 0){
            _code_redraw_big_resource(cp);
          }
@@ -95,12 +95,12 @@ int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id){
          if(!old_cursor){
              cp->price-=10;
              cp->price = (cp->price < 0) ? 0 : cp->price;
-             _code_rewrite_prices(cp);
+             _code_rewrite_prices(cp, building_level);
          }else{
            cp->cursor--;
            cp->cursor = (cp->cursor < 0) ? 0 : cp->cursor;
            _code_redraw_cursor(cp, old_cursor);
-           _code_rewrite_prices(cp);
+           _code_rewrite_prices(cp, building_level);
            if(cp->cursor == 0){
              _code_redraw_big_resource(cp);
            }
@@ -111,12 +111,12 @@ int ui_code_panel_control(UICodePanel *cp,int *resource_from, int *resource_id){
            cp->price+=10;
            int ects_resource = world_get_resource_quantity(cp->w, 5);
            cp->price = (cp->price > ects_resource) ? ects_resource : cp->price;
-           _code_rewrite_prices(cp);
+           _code_rewrite_prices(cp, building_level);
          }else{
            cp->cursor++;
            cp->cursor = (cp->cursor > 4) ? 4 : cp->cursor;
            _code_redraw_cursor(cp, old_cursor);
-           _code_rewrite_prices(cp);
+           _code_rewrite_prices(cp, building_level);
            if(old_cursor == 0){
              _code_redraw_big_resource(cp);
            }
@@ -180,12 +180,12 @@ void _code_redraw_cursor(UICodePanel *cp, int old_cursor){
     sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "exchange_panel_cursor_off") , cp->first_x - 1 + cp->delta_x*old_col, cp->first_y + cp->delta_y*old_row - 1);
     sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "exchange_panel_cursor_on") , cp->first_x - 1 + cp->delta_x * new_col, cp->first_y + cp->delta_y*new_row - 1);
 }
-void _code_rewrite_prices(UICodePanel *cp){
+void _code_rewrite_prices(UICodePanel *cp, int building_level){
   char prices[9];
   if(!cp->cursor){
     sprintf(prices, "%08d", cp->price);
     ui_text_panel_print(cp->tp[0], prices);
-    sprintf(prices, "%08d", world_get_price_exchange(cp->price, 5, 4));
+    sprintf(prices, "%08d", world_get_price_exchange(cp->price, 5, 4, building_level));
     ui_text_panel_print(cp->tp[1], prices);
     return;
   }
