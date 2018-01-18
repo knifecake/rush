@@ -26,23 +26,6 @@
 #include <pthread.h>
 #include <time.h>
 
-// TODO: this is a temporary function until building sprites are done
-/*Sprite *get_placeholder_sprite(Building *b)
-{
-    char temporary[256]={'\0'};
-    sprintf(temporary,"%s",building_get_sprite(b));
-    int i = 0;
-    while (temporary[i] != '-') {
-      ++i;
-    }
-    temporary[i]='I';++i;
-    temporary[i]='C';++i;
-    temporary[i]='O';++i;
-    temporary[i]='N';++i;
-    temporary[i]='\0';++i;
-    return dict_get(ui_get_sprite_dict(), temporary);
-}*/
-
 //TODO:modify the sprintf so that it includes all the resources
 char *building_get_desc(Building *b)
 {
@@ -285,28 +268,7 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     int *tiles_to_update = oopsalloc(ntiles, sizeof(int), "action_next_turn");
     if (!world_next_turn(world, tiles_to_update))
         return CTRL_ERROR;
-
-    /*for (int i = 0; tiles_to_update[i]; i++) {
-        ui_redraw_tile(tiles_to_update[i]);
-    }*/
     ui_redraw_layers();
-/*//We iterate over the map to show the player the new events that occur every turn.
-    for (int i = 0; i < ntiles; i++){
-        Tile *t = world_tile_at_index(world, i);
-
-        if(tile_get_visible(t) && tile_get_event(t)){
-            ui_redraw_tile(i);
-            Event *e = tile_get_event(t);
-            int id = event_get_id(e);
-            Event **original_events = world_get_events(world);
-
-            //If the number of turns of the event in the tile is the same as the number of turns
-            // that this event is about to last, then it is a new one and we should show it.
-            if(event_get_num_turns(e) == event_get_num_turns(original_events[id])){
-                show_msg(msg[1], event_get_name(e), i);
-            }
-        }
-    }*/
     /*
     if(INT_ERROR!=world_game_finished(world)){
       exit(1);

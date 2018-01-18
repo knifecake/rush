@@ -136,18 +136,6 @@ void ui_map_redraw_tile(UIMap *m, int tile_index){
     }
   }
 
-  // if an event is present, draw an overlaying cursor to warn the user
-  /*if (tile_get_event(m->tiles[tile_index])) {
-    if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, "event_cursor_on")) {
-        HE("error drawing event cursor in given index", "ui_map_redraw_tile");
-        return;
-    }
-  } else {
-    if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, "cursor_off")) {
-        HE("error drawing event cursor in given index", "ui_map_redraw_tile");
-        return;
-    }
-  }*/
   if (UINT_ERROR == _draw_sprite_in_index(m, tile_index, "cursor_off")) {
       HE("error drawing event cursor in given index", "ui_map_redraw_tile");
       return;
