@@ -8,7 +8,7 @@
 /*
  * Maximum config dictionary size.
  */
-#define MAX_DICT_SIZE 25
+#define MAX_DICT_SIZE 250
 
 typedef struct {
     char **keys;

@@ -54,6 +54,7 @@ Building *building_level_up(Building *);
  */
 Building *building_edit_health(Building *, int);
 
+Building *building_set_health(Building *, int);
 /*
  * GETTERS. Returns -1 on error.
  */
