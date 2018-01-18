@@ -1,4 +1,4 @@
-96
+97
 a_var_1
 a_var_2
 a_var_3
@@ -24,6 +24,7 @@ building_icon_5
 building_icon_6
 building_icon_7
 building_icon_8
+building-placeholder
 build_panel_back
 build_panel_cursor_off
 build_panel_cursor_on
