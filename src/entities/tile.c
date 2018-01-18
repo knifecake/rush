@@ -347,6 +347,7 @@ Tile *tile_copy(Tile* src){
   if ((e = tile_get_event(src)))
     tile_set_event(dest, e);
 
+  tile_set_visible(dest, tile_get_visible(src));
   return dest;
 }
 

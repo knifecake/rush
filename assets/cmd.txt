@@ -1,5 +1,5 @@
 # command file
-10 # number of commands
+12 # number of commands
 
 q
 quit
@@ -84,6 +84,12 @@ p
 redraw_ui
 1
 Redrawing all UI.
+
+y
+save_game
+2
+Game was saved
+Game could not be saved
 
 welcome
 welcome

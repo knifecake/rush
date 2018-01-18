@@ -32,7 +32,12 @@ int main(int argc, char **argv) {
     load_config_from_file(CONFIG_FILE);
 
     // load assets
-    World *w = world_new("assets/initial_game_state.txt");
+    World *w;
+    if (argc == 2)
+        w = world_new(argv[1]);
+    else
+        w = world_new(NULL);
+
     if (!w) {
         term_teardown(stdin, stdout);
         HE("FATAL: could not load some asset", "main");
@@ -67,6 +72,7 @@ int main(int argc, char **argv) {
     cop_assoc(c, "redraw_ui", action_redraw_ui);
     cop_assoc(c, "next_turn", action_next_turn);
     cop_assoc(c, "welcome", action_welcome);
+    cop_assoc(c, "save_game", action_save_game);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
 

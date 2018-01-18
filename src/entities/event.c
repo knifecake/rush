@@ -36,7 +36,8 @@ Event *event_new (char *name, float *mult, int id, int num_turns, int damage){
     HE("missing event\'s resouce multipliers", "event_new")
     return NULL;
   }
-  if(id<0 || num_turns < 1 || damage>0){
+  if(id<0 || num_turns < 1){
+      printf("id = %d, turns = %d, damage = %d", id, num_turns, damage);
     HE("incorrect values for id, num_turns or damage", "event_new")
     return NULL;
   }
