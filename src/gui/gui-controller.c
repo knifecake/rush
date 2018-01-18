@@ -413,12 +413,13 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     fclose(player_sprite_file);
 
     // TODO: tie this to game config
-    UIRect gru_dim = (UIRect) {40, 5, 300, 150};
-    SKGru *g = sk_gru_new(gru_dim, 'M');
+    sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "ui-attack"), 0, 0);
+    UIRect gru_dim = (UIRect) {0, 19, 320, 145};
+    SKGru *g = sk_gru_new(gru_dim, ' ');
 
     // create the player
     _game_player = sk_minion_new(
-            (UIRect) { 11, 11, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
+            (UIRect) { 1, 19, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
             'P', 'P', (SKVector) { 0 }, player_sprite);
     sk_gru_add_minion(g, _game_player);
 

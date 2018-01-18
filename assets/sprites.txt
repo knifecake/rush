@@ -1,4 +1,4 @@
-92
+93
 a_var_1
 a_var_2
 a_var_3
@@ -88,6 +88,7 @@ town_hall_2
 town_hall_3
 town_hall_4
 town_hall_5
+ui-attack
 visible
 void_icon
 welcome
