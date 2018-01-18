@@ -47,7 +47,7 @@ UI *ui;
  * Creates the global UI structure (hidden in ui-something.c) and configures it
  * to have the common UI components defined below.
  */
- void ui_presetup();
+void ui_presetup();
 int ui_setup(World *w);
 
 /*

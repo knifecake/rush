@@ -4,7 +4,7 @@
  * Authors: Miguel Baquedano, Sergio Cordero, Elias Hernandis
  *          and Rafael Sánchez.
  *
- * Lead author: <replace me>
+ * Lead author: A but of everything
  */
 
 
@@ -32,6 +32,8 @@
 #define MARAB_PROP 1.0
 #define EAT_SKILL_PROP 0.5
 #define EAT_SKILL_ID 0
+#define TIME_SKILL_ID 2
+#define TIME_SKILL_PROP 0.5
 
 struct _World {
     Resource **resources;
@@ -675,8 +677,14 @@ World *world_next_turn(World *w, int *tiles_to_update){
 w->turn++;
 
     int time_resource_id;
-    if ((time_resource_id = config_get_int("general.time_resource")) != -1) {
+    if(w->skill[TIME_SKILL_ID]){
+      if ((time_resource_id = config_get_int("general.time_resource")) != -1) {
+        world_wallet_delta(w, time_resource_id, TIME_SKILL_PROP*(w->last_turn_timestamp - time(NULL)));
+      }
+    }else{
+      if ((time_resource_id = config_get_int("general.time_resource")) != -1) {
         world_wallet_delta(w, time_resource_id, w->last_turn_timestamp - time(NULL));
+      }
     }
     w->last_turn_timestamp = time(NULL);
   return w;

@@ -26,6 +26,9 @@
 #include <pthread.h>
 #include <time.h>
 
+#define COFFEE_SKILL_ID 1
+#define COFFEE_SKILL_PROP 0.5
+
 //TODO:modify the sprintf so that it includes all the resources
 char *building_get_desc(Building *b)
 {
@@ -526,8 +529,11 @@ int action_repair(void *w, char *cmd, char **msg, int num_msg){
 
     return CTRL_OK;
   }
-
-  world_wallet_delta(w,2,-cost);
+  if(world_get_skill(w, COFFEE_SKILL_ID)){
+    world_wallet_delta(w,2,-cost*COFFEE_SKILL_PROP);
+  }else{
+    world_wallet_delta(w, 2, -cost);
+  }
 
   show_msg(msg[2]);
 
