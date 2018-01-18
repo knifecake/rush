@@ -321,6 +321,13 @@ World *world_next_turn(World *w, int *tiles_to_update){
     HE("invalid parameters", "world_next_turn");
     return NULL;
   }
+  /*Feed marabinis in proportion 1:1*/
+  w->wallet[2] -= w->wallet[6];
+  if (w->wallet[2] < 0){
+    w->wallet[6] += w->wallet[2];
+    w->wallet[2] = 0;
+  }
+
   /*
   / Collect all the resources from the tiles with resources buildings and reduce by one
   / the turns of the active events
