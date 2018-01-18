@@ -99,9 +99,9 @@ void ui_redraw_sidebar();
 
 Building *ui_control_build_panel();
 
-int ui_control_exchange_panel(int *res_id);
+int ui_control_exchange_panel(int *res_id, int building_level);
 
-int ui_control_code_panel(int *res_from, int *res_id);
+int ui_control_code_panel(int *res_from, int *res_id, int building_level);
 
 // TODO: esto cada vez me da más asco
 Dict *ui_get_sprite_dict();

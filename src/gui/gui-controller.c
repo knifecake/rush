@@ -178,7 +178,7 @@ int action_upgrade(void *w, char *cmd, char **msg, int num_msg)
       case WORLD_BUILD_NO_MONEY:
           show_msg(msg[4]);
           break;
-      case WORLD_BUILD_SUCCESS_UPGRADE:
+      case WORLD_BUILD_SUCCESS:
           show_msg(msg[5]);
           break;
       default:
@@ -202,7 +202,9 @@ int action_exchange(void *w, char *cmd, char **msg, int num_msg){
     ui_redraw_sidebar();
     return CTRL_OK;
   }
-  price = ui_control_exchange_panel(&res_id);
+
+  int building_level = building_get_level(tile_get_building(world_tile_at_index(w, tile_index)));
+  price = ui_control_exchange_panel(&res_id, building_level);
   if(price == UINT_ERROR){
     show_msg(msg[5]);
     ui_redraw_sidebar();
@@ -237,8 +239,9 @@ int action_hack(void *w, char *cmd, char **msg, int num_msg){
     ui_redraw_sidebar();
     return CTRL_OK;
   }
+  int building_level = building_get_level(tile_get_building(world_tile_at_index(w, tile_index)));
   int res_from;
-  price = ui_control_code_panel(&res_from, &res_id);
+  price = ui_control_code_panel(&res_from, &res_id, building_level);
   if(price == UINT_ERROR){
     show_msg(msg[5]);
     ui_redraw_sidebar();

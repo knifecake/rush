@@ -18,7 +18,7 @@ UICodePanel *ui_code_panel_new(World *w);
 /*
  * Controls the exchange panel, returns the amount of resource spent. Res id would be the resource won (4 - code, [-1,-4] skills).
  */
-int ui_code_panel_control(UICodePanel *cp,int *res_from, int *res_id);
+int ui_code_panel_control(UICodePanel *cp,int *res_from, int *res_id, int building_level);
 
 /*
  * Frees all memory allocated by ui_code_panel_new.

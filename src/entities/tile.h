@@ -127,6 +127,11 @@ int tile_collect_resources(Tile *, int);
 int tile_get_resource_per_turn(Tile *, int);
 
 /*
+ * Destroys a building on a tile and set it to NULL.
+ */
+int tile_demolish_building(Tile *tile);
+
+/*
  * Finds the index of the only resource that will be collected
  */
 int tile_find_resource_index(Tile *);

@@ -41,7 +41,7 @@ struct _UIExchangePanel{
 /* Private functions */
 void _panel_draw(UIExchangePanel *ep, int x0, int y0);
 void _redraw_cursor(UIExchangePanel *ep, int old_cursor);
-void _rewrite_prices(UIExchangePanel *ep);
+void _rewrite_prices(UIExchangePanel *ep, int building_level);
 
 UIExchangePanel *ui_exchange_panel_new(World *w){
   if(!w) return NULL;
@@ -59,14 +59,14 @@ UIExchangePanel *ui_exchange_panel_new(World *w){
   ep->w = w;
   return ep;
 }
-int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id){
+int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id, int building_level){
   if(!exchangepanel || !resource_id){
     HE("Invalid arguments", "ui_exchange_panel_control")
     return UINT_ERROR;
   }
   _panel_draw(exchangepanel, 259, 6);
   _redraw_cursor(exchangepanel, exchangepanel->cursor);
-  _rewrite_prices(exchangepanel);
+  _rewrite_prices(exchangepanel, building_level);
   int key = HERE_ARROW;
   while(key != '\n' && key != 'q'){
     int old_cursor = exchangepanel->cursor;
@@ -86,13 +86,13 @@ int ui_exchange_panel_control(UIExchangePanel *exchangepanel, int *resource_id){
         case LEFT_ARROW:
           exchangepanel->price--;
           exchangepanel->price = (exchangepanel->price < 0) ? 0 : exchangepanel->price;
-          _rewrite_prices(exchangepanel);
+          _rewrite_prices(exchangepanel, building_level);
           break;
         case RIGHT_ARROW:
           exchangepanel->price++;
           int manolos_resource = world_get_resource_quantity(exchangepanel->w, 0);
           exchangepanel->price = (exchangepanel->price > manolos_resource) ? manolos_resource : exchangepanel->price;
-          _rewrite_prices(exchangepanel);
+          _rewrite_prices(exchangepanel, building_level);
           break;
         default:
           HE("Cannot move cursor", "ui_exchange_panel_new")
@@ -138,12 +138,12 @@ void _redraw_cursor(UIExchangePanel *ep, int old_cursor){
   sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "exchange_panel_cursor_on") , ep->first_x - 1, ep->first_y + ep->delta_y*ep->cursor - 1);
 }
 
-void _rewrite_prices(UIExchangePanel *ep){
+void _rewrite_prices(UIExchangePanel *ep, int building_level){
   char prices[9];
   sprintf(prices, "%08d", ep->price);
   ui_text_panel_print(ep->tp[0], prices);
-  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 1));
+  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 1, building_level));
   ui_text_panel_print(ep->tp[1], prices);
-  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 2));
+  sprintf(prices, "%08d", world_get_price_exchange(ep->price, 0, 2, building_level));
   ui_text_panel_print(ep->tp[2], prices);
 }
