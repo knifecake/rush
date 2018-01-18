@@ -68,6 +68,7 @@
 #define CTRL_NEXT_TURN 20
 #define CTRL_REDRAW_ALL_UI 30
 #define CTRL_REDRAW_SIDEBAR 40
+#define CTRL_GAME_ENDED 50
 
 
 /*
@@ -98,6 +99,8 @@ int action_redraw_ui(void *w, char *cmd, char **msg, int num_msg);
 int action_save_game(void *w, char *cmd, char **msg, int num_msg);
 
 int action_main_screen(void *w, char *cmd, char **msg, int num_msg);
+
+int action_end_screen(void *w, char *cmd, char **msg, int num_msg);
 
 int cop_error_cmd(void *w, char *cmd, char **msg, int num_msg);
 #endif

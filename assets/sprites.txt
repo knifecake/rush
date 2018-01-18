@@ -60,6 +60,7 @@ event_cursor_on
 exchange_panel_back
 exchange_panel_cursor_off
 exchange_panel_cursor_on
+game_over
 highway!
 highway
 hp

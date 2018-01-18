@@ -17,7 +17,7 @@ assets/events.txt
 500000 # quantity of resource 1
 500000 # quantity of resource 2
 50000 # ...
-300
+100
 2000
 2000
 5

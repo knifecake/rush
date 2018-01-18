@@ -293,14 +293,33 @@ int action_next_turn(void *world, char *cmd, char **msg, int num_msg)
     if (!world_next_turn(world, tiles_to_update))
         return CTRL_ERROR;
     ui_redraw_layers();
-    /*
-    if(INT_ERROR!=world_game_finished(world)){
-      exit(1);
+
+    int score;
+    if(0 < (score = world_game_finished(world))) {
+        show_msg("The game ended. Press any key to continue.");
+        term_read_key(stdin);
+        return CTRL_GAME_ENDED;
     }
-    */
     ui_redraw_sidebar();
     return CTRL_OK;
 }
+
+int action_end_screen(void *w, char *cmd, char **msg, int num_msg)
+{
+    sprite_draw(stdout, dict_get(ui_get_sprite_dict(), "game_over"), 0, 0);
+    int score = world_game_finished(w);
+    if (score < config_get_int("general.winning_threshold")) {
+        show_msg("You lost! Score: %d", score);
+    }
+    else {
+        show_msg("You won! Score: %d", score);
+    }
+
+    term_read_key(stdin);
+
+    return !UINT_ERROR;
+}
+
 
 typedef enum { ERROR, NOT_ENDED, PLAYER_LOST, PLAYER_WON } _game_state_t;
 

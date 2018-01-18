@@ -103,6 +103,11 @@ main_screen
 1
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
+end_screen
+end_screen
+1
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
 # This command is run in case the command executed by the user is not defined.
 404_not_found
 error_cmd

@@ -26,6 +26,9 @@ general.next_message_key
 general.time_resource
 3
 
+general.score_threshold
+1000000
+
 
 
 ################################################################

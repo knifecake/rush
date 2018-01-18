@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
     cop_assoc(c, "next_turn", action_next_turn);
     cop_assoc(c, "welcome", action_welcome);
     cop_assoc(c, "main_screen", action_main_screen);
+    cop_assoc(c, "end_screen", action_end_screen);
     cop_assoc(c, "save_game", action_save_game);
     cop_assoc(c, "error_cmd", cop_error_cmd);
     cop_set_error_cmd(c, "404_not_found");
@@ -118,6 +119,8 @@ int main(int argc, char **argv) {
                     case CTRL_REDRAW_ALL_UI:
                         ui_draw_all();
                         break;
+                    case CTRL_GAME_ENDED:
+                        goto end_game;
                     default:
                         break;
                 }
@@ -125,6 +128,9 @@ int main(int argc, char **argv) {
         }
     }
     // END GAME LOOP
+
+end_game:
+    cop_exec(c, "end_screen", w);
 
     // free
     ui_teardown();
