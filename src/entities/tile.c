@@ -170,6 +170,16 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
+int tile_set_enemies(Tile *t, int enemies)
+{
+    if (!t) {
+        return UINT_ERROR;
+    }
+
+    t->enemies = enemies;
+    return !UINT_ERROR;
+}
+
 Tile *tile_set_remaining_resources(Tile *tile, int resource, int amount_of_resource){
   if(!tile || resource < 0 || resource > MAX_RESOURCES){
     HE("invalid tile", "tile_set_remaining_resources")

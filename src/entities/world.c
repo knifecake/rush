@@ -212,6 +212,10 @@ int _world_load_map(World *w, FILE *game_state_file)
         int visible = atoi(buff); free(buff);
         tile_set_visible(tiles_map[i], visible);
 
+        // read the number of enemies
+        buff = fgetll(game_state_file);
+        tile_set_enemies(tiles_map[i], atoi(buff)); free(buff);
+
         //Now we read the remaining resources of that tile and update it
         for(int k = 0; k < w->num_resources; k++){
             buff = fgetll(game_state_file);
@@ -491,6 +495,9 @@ int world_save_game(const World *w, char *filename)
 
         // save the tile's visibility
         fprintf(f, "%d\n", tile_get_visible(t));
+
+        // save the number of enemies
+        fprintf(f, "%d\n", tile_get_enemies(t));
 
         // save the remaining resources of the tile
         for (int j = 0; j < w->num_resources; j++)

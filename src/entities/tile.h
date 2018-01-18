@@ -74,8 +74,7 @@ Event *tile_get_event (Tile *tile);
 
 char *tile_get_sprite(Tile *t);
 
-/*Tile *tile_set_id (Tile *, int); Is it useful?*/
-
+int tile_set_enemies(Tile *t, int enemies);
 /*
  * Creates a copy of an event loaded and insert it into tile.
  * It ALLOCATES memory.
