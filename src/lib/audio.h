@@ -4,7 +4,7 @@
  * Authors: Miguel Baquedano, Sergio Cordero, Elias Hernandis
  *          and Rafael Sánchez.
  *
- * Lead author: <replace me>
+ * Lead author: Rafael Sánchez
  */
 
 
@@ -20,7 +20,7 @@ typedef struct _Audios Audios;
 typedef enum { PID, NAME } audio_key_t;
 
 //TODO: Decide whether if this is static or not.
-static Audios *playing_audios;
+Audios *playing_audios;
 
 /*
  * Plays an audio file, starting a process for it.

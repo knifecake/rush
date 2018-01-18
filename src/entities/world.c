@@ -677,7 +677,7 @@ World *world_next_turn(World *w, int *tiles_to_update){
 w->turn++;
 
     int time_resource_id;
-    if(w->skill[TIME_SKILL_ID]){
+    if(w->skills[TIME_SKILL_ID]){
       if ((time_resource_id = config_get_int("general.time_resource")) != -1) {
         world_wallet_delta(w, time_resource_id, TIME_SKILL_PROP*(w->last_turn_timestamp - time(NULL)));
       }
