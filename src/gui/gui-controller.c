@@ -536,9 +536,11 @@ int action_repair(void *w, char *cmd, char **msg, int num_msg){
     return CTRL_OK;
   }
 
-  world_wallet_delta(w,2,cost);
+  world_wallet_delta(w,2,-cost);
 
   show_msg(msg[2]);
+
+  ui_redraw_sidebar();
 
   return CTRL_OK;
 }
