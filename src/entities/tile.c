@@ -208,6 +208,17 @@ int tile_build (Tile *tile, Building *bp){
   return !UINT_ERROR;
 }
 
+int tile_demolish_building(Tile *tile){
+  if(!tile){
+    HE("invalid tile", "tile_demolish_building")
+    return UINT_ERROR;
+  }
+  if(!tile->building) return !UINT_ERROR;
+  building_destroy(tile->building);
+  tile->building = NULL;
+  return !UINT_ERROR;
+}
+
 /* In order to calculate the number of resources each tile returns, follow this order:
         1. First of all, it checks if the remining resource is enough to collect the
         base resources of its building. If not, it catch all that remains.
