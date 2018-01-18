@@ -189,6 +189,10 @@ int world_repair_building(World *, Building *);
 
 int world_get_price_exchange(int price, int resource_from, int resource_to);
 
+World * world_set_skill(World *, int, bool);
+
+bool world_get_skill(World *, int);
+
 /*
  * Return the healed health
  */

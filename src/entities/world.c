@@ -28,6 +28,8 @@
 #include "../asset_loaders/building_loader.h"
 #include "../asset_loaders/event_loader.h"
 
+#define N_SKILLS 4
+
 struct _World {
     Resource **resources;
     int wallet[MAX_RESOURCES];
@@ -62,6 +64,8 @@ struct _World {
 
     // the timestamp of when the last turn happened
     time_t last_turn_timestamp;
+
+    bool skills[N_SKILLS];
 };
 
 int _world_load_game_state(World *w, FILE *game_state_file)
@@ -248,6 +252,10 @@ World *world_new(char *archive) {
 
     fclose(game_file);
 
+    for(int i=0;i<N_SKILLS;i++){
+      w->skills[i]=false;
+    }
+
     //TODO: Change these lines below when issue #21 is fixed.
     int initial_tile = config_get_int("initial cursor");
     Tile *init_tile = world_tile_at_index(w, initial_tile);
@@ -284,7 +292,7 @@ int world_start_game(World *w)
 int world_game_finished(World *w){
   if(!w){
     HE("invalid parameters", "world_game_finished")
-    return INT_ERROR;
+    return UINT_ERROR;
   }
 
   if(w->wallet[3]<=0){
@@ -311,7 +319,7 @@ int world_game_finished(World *w){
     }
   }
 
-  return INT_ERROR;
+  return UINT_ERROR;
 }
 
 
@@ -700,6 +708,24 @@ int world_get_price_exchange(int price, int resource_from, int resource_to){
 }
 
 
+World * world_set_skill(World *w, int skill, bool value){
+  if(!w){
+    HE("invalid parameters","world_set_skill")
+    return NULL;
+  }
+  w->skills[skill]=value;
+
+  return w;
+}
+
+bool world_get_skill(World *w, int skill){
+  if(!w){
+    HE("invalid parameters","world_get_skill")
+    return false;
+  }
+  return w->skills[skill];
+}
+
 int world_repair_building(World *w, Building *b){
   if(!w || !b){
     HE("invalid parameters","world_repair_building")
@@ -718,7 +744,7 @@ int world_repair_building(World *w, Building *b){
     }
   }
   int b_can_health=building_get_health(w->buildings[i]);
-  
+
   building_set_health(b,b_can_health);
 
   return b_can_health-b_health;
