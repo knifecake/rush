@@ -183,6 +183,17 @@ char *building_get_description(Building *bp)
     return bp->description;
 }
 
+Building *building_set_health(Building *b, int health)
+{
+    if(!b || health < 0) {
+      HE("invalid arguments", "building_set_health");
+      return NULL;
+    }
+
+    b->health = health;
+    return b;
+}
+
 int building_is_townhall(Building *bp)
 {
     if (!bp) {

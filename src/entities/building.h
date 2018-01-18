@@ -80,6 +80,8 @@ char *building_get_description(Building *b);
  */
 int building_get_base_resources(Building *, const int);
 
+Building *building_set_health(Building *, int);
+
 /*
  * Returns true if the building is a town hall.
  */

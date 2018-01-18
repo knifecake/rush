@@ -73,6 +73,7 @@ char *tile_get_sprite(Tile *t);
  */
 Tile *tile_set_event (Tile *, Event *);
 
+Tile *tile_set_remaining_resources (Tile *, int, int);
 /*
  * Sets visibility of a tile, true for visible, false for not visible.
  * Returns UINT_ERROR on error.

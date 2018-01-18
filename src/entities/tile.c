@@ -157,6 +157,16 @@ Tile *tile_set_event (Tile *tile, Event *event){
   return tile;
 }
 
+Tile *tile_set_remaining_resources(Tile *tile, int resource, int amount_of_resource){
+  if(!tile || resource < 0 || resource > MAX_RESOURCES){
+    HE("invalid tile", "tile_set_remaining_resources")
+    return NULL;
+  }
+
+  tile->remaining_resources[resource] = amount_of_resource;
+  return tile;
+}
+
 int tile_conquer(Tile *tile)
 {
     if (!tile) {
