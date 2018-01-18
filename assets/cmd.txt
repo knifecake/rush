@@ -4,7 +4,7 @@
 q
 quit
 3
-Are you sure you want to exit? Progress will be lost.
+Are you sure you want to exit? Progress will be lost unless you save it first by typing g.
 See you soon!
 Okay, you may continue playing.
 
@@ -85,7 +85,7 @@ redraw_ui
 1
 Redrawing all UI.
 
-y
+g
 save_game
 2
 Game was saved
