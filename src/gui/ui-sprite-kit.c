@@ -53,12 +53,13 @@ struct _SKMinion {
     bool is_drawn, is_speed_updated;
     Sprite *s;
 
-    // TODO: do this properly
     UIRect new_dim;
     bool requests_position_update;
+
+    UIRect *container;
 };
 
-SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Sprite *sprite)
+SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Sprite *sprite, UIRect *container)
 {
     SKMinion *m = oopsalloc(1, sizeof(SKMinion), "sk_minion_new");
     m->dim = dim;
@@ -69,6 +70,7 @@ SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Spri
     m->requests_position_update = false;
     m->new_dim = (UIRect) { 0 };
     m->s = sprite;
+    m->container = container;
     return m;
 }
 
@@ -81,7 +83,6 @@ void sk_minion_draw(SKMinion *m)
 {
     m->is_drawn = true;
     sprite_draw(OUTPUT_STREAM, m->s, m->dim.x / 2, m->dim.y - 1);
-    /* _draw_rect(m->dim, m->border, m->fill); */
 }
 
 void sk_minion_update_position(SKMinion *m, int dx, int dy)
@@ -113,6 +114,20 @@ void sk_minion_move(SKMinion *m, int x, int y)
     } else {
         m->dim.x = x;
         m->dim.y = y;
+    }
+
+    if (m->container) {
+        // limit the left side
+        m->dim.x = (m->dim.x < m->container->x) ? m->container->x : m->dim.x;
+
+        // limit the right side
+        m->dim.x = (m->dim.x + 2 * m->dim.w > m->container->x + 2 * m->container->w) ? m->container->x + 2 * (m->container->w - m->dim.w) : m->dim.x;
+
+        // limit the upper side
+        m->dim.y = (m->dim.y < m->container->y) ? m->container->y : m->dim.y;
+
+        // limit the lower side
+        m->dim.y = (m->dim.y + m->dim.h > m->container->y + m->container->h) ? m->container->y + m->container->h - m->dim.h: m->dim.y;
     }
 
     if (m->dim.x <= 0)

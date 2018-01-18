@@ -70,6 +70,9 @@ attack_minigame.soldier_resource
 attack_minigame.speed_resource
 4
 
+attack_minigame.skill_num
+3
+
 ################################################################
 # Other stuff that's left to organize
 ################################################################

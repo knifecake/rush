@@ -9,7 +9,7 @@ typedef struct _SKMinion SKMinion;
 /*
  * SKMinion: a particle.
  */
-SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Sprite *sprite);
+SKMinion *sk_minion_new(UIRect dim, char border, char fill, SKVector speed, Sprite *sprite, UIRect *container);
 
 void sk_minion_destroy(SKMinion *m);
 

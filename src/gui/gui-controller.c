@@ -401,9 +401,15 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
     SKGru *g = sk_gru_new(gru_dim, ' ');
 
     // create the player
+    UIRect player_box = (UIRect) {1, 17, 340, 148 };
+
+    // if the player has a special skill, enable jumping over the box
+    if (world_get_skill(world, config_get_int("attack_minigame.skill_num")))
+        player_box.h += 40;
+
     _game_player = sk_minion_new(
             (UIRect) { 1, 19, sprite_get_w(player_sprite), sprite_get_h(player_sprite) },
-            'P', 'P', (SKVector) { 0 }, player_sprite);
+            'P', 'P', (SKVector) { 0 }, player_sprite, &player_box);
     sk_gru_add_minion(g, _game_player);
 
     // create the enemies
@@ -422,7 +428,7 @@ int action_attack(void *world, char *cmd, char **msg, int num_msg)
                 (UIRect) {rand_x, rand_y, sprite_get_w(enemy_sprite), sprite_get_h(enemy_sprite)},
                 '1', '@',
                 (SKVector) { rand_dx, rand_dy},
-                enemy_sprite);
+                enemy_sprite, NULL);
 
         sk_gru_add_minion(g, e);
     }

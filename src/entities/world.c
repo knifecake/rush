@@ -157,6 +157,13 @@ int _world_load_game_state(World *w, FILE *game_state_file)
         w->wallet[i] = atoi(buff); free(buff);
     }
 
+    // load the skills learned through the game
+    for (int i = 0; i < N_SKILLS; i++) {
+        buff = fgetll(game_state_file);
+        w->skills[i] = atoi(buff); free(buff);
+        printf("loaded skill %d = %d", i, w->skills[i]);
+    }
+
     return !UINT_ERROR;
 }
 
@@ -422,10 +429,6 @@ World *world_new(char *archive) {
 
     fclose(game_file);
 
-    for(int i=0;i<N_SKILLS;i++){
-      w->skills[i]=false;
-    }
-
     //TODO: Change these lines below when issue #21 is fixed.
     int initial_tile = config_get_int("initial cursor");
     Tile *init_tile = world_tile_at_index(w, initial_tile);
@@ -466,6 +469,10 @@ int world_save_game(const World *w, char *filename)
     // save the wallet
     for (int i = 0; i < w->num_resources; i++)
         fprintf(f, "%d\n", w->wallet[i]);
+
+    // save the skills
+    for (int i = 0; i < N_SKILLS; i++)
+        fprintf(f, "%d\n", w->skills[i]);
 
     // save the number of tiles
     fprintf(f, "%d\n", w->map_tiles);
@@ -1000,7 +1007,7 @@ World * world_set_skill(World *w, int skill, bool value){
 }
 
 bool world_get_skill(World *w, int skill){
-  if(!w){
+  if(!w || skill > N_SKILLS){
     HE("invalid parameters","world_get_skill")
     return false;
   }

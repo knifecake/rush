@@ -18,6 +18,12 @@ assets/events.txt
 500000 # quantity of resource 2
 50000 # ...
 300
-0
-0
+2000
+2000
 5
+
+# skills
+0
+0
+0
+0
