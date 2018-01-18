@@ -77,6 +77,7 @@ float *event_get_mult(Event *);
 int event_get_num_turns(Event *);
 int event_get_damage(Event *);
 
+Event* event_set_remaining_turns(Event *, int);
 /*
  * Prints the given resource, for debugging purposes.
  */

@@ -64,6 +64,45 @@ struct _World {
     time_t last_turn_timestamp;
 };
 
+//giving an id it returns a copy of the canonic tile with that id
+Tile *_world_canonic_tile_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(id != tile_get_id(w->tiles[j])){
+    j++;
+  }
+  return tile_copy(w->tiles[j]);
+}
+
+//giving an id it returns a copy of the canonic building with that id
+Building *_world_canonic_building_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(id != building_get_id(w->buildings[j])){
+      j++;
+  }
+  return building_copy(w->buildings[j]);
+}
+
+//giving an id it returns a copy of the canonic event with that id
+Event *_world_canonic_event_copy(World *w, int id)
+{
+  if(w==NULL || id < 0){
+    return NULL;
+  }
+  int j = 0;
+  while(id != event_get_id(w->events[j])){
+      j++;
+  }
+  return event_copy(w->events[j]);
+}
+
 int _world_load_game_state(World *w, FILE *game_state_file)
 {
     if (!w || !game_state_file) {
@@ -112,6 +151,104 @@ int _world_load_game_state(World *w, FILE *game_state_file)
     }
 
     return !UINT_ERROR;
+}
+
+/*
+ *TODO: Implement that function so that we can load a game
+ */
+
+
+int _world_load_map(World *w, FILE *game_state_file)
+{
+    if (!w || !game_state_file) {
+        HE("invalid arguments", "_world_load_game_state");
+        return UINT_ERROR;
+    }
+
+    //read the map size
+    char *buff = fgetll(game_state_file);
+    if(!buff) {
+        HE("could not read the map size", "_world_load_map");
+        return UINT_ERROR;
+    }
+
+    int size_map = atoi(buff);
+
+    Tile *tiles_map[size_map];
+    for(int i = 0; i < size_map; i++){
+
+        //We read the id of the tile and create one canonic version of the tile with that id
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read part of the map", "_world_load_map");
+            return UINT_ERROR;
+        }
+
+        int id = atoi(buff);
+
+        tiles_map[i] = _world_canonic_tile_copy(w, id);
+        //Now we read the remaining resources of that tile and update it
+        for(int k = 0; k < w->num_resources; k++){
+            buff = fgetll(game_state_file);
+            if(!buff) {
+                HE("could not read part of the remaining resources of a tile", "_world_load_map");
+            }
+            int remain_resource = atoi(buff);
+            tiles_map[i] = tile_set_remaining_resources(tiles_map[i], k, remain_resource);
+        }
+
+        //if the tile have a building, we create it and associate it to that tile
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read a building", "_world_load_map");
+            return UINT_ERROR;
+        }
+        id = atoi(buff);
+        if(id != -1){
+            Building *b = _world_canonic_building_copy(w, id);
+
+            buff = fgetll(game_state_file);
+            if(!buff) {
+                HE("could not read a building", "_world_load_map");
+                return UINT_ERROR;
+            }
+            int health = atoi(buff);
+            b = building_set_health(b, health);
+
+            if(tile_build(tiles_map[i], b) == UINT_ERROR){
+                HE("could not connect tile and building", "_world_load_map");
+            }
+        }
+
+        //if the tile have an event, we create it and associate it to that tile
+        buff = fgetll(game_state_file);
+        if(!buff) {
+            HE("could not read an event", "_world_load_map");
+            return UINT_ERROR;
+        }
+        id = atoi(buff);
+        if(id != -1){
+          Event *e = _world_canonic_event_copy(w, id);
+          buff = fgetll(game_state_file);
+          if(!buff) {
+              HE("could not read an event", "_world_load_map");
+              return UINT_ERROR;
+          }
+          int rem_turns = atoi(buff);
+          e = event_set_remaining_turns(e, rem_turns);
+
+          if(tile_set_event(tiles_map[i], e) == NULL){
+              HE("could not connect tile and event", "_world_load_map");
+              return UINT_ERROR;
+          }
+      }
+    }
+    //At this point we have all the information of the file in tiles_map
+    // We only need to create the real map with that information
+    Map *map = map_new(tiles_map, size_map, map_gen_standard, size_map);
+
+    w->map = map;
+  return !UINT_ERROR;
 }
 
 World *world_new(char *archive) {

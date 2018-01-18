@@ -119,6 +119,15 @@ int event_get_damage(Event *e){
   return e->damage;
 }
 
+Event* event_set_remaining_turns(Event *e, int rem_turns){
+  if(!e || rem_turns < 0){
+    HE("invalid arguments", "event_set_remaining_turns")
+    return NULL;
+  }
+  e->num_turns = rem_turns;
+  return e;
+}
+
 void event_print(FILE *s, Event *e)
 {
     if (!s || !e) {
