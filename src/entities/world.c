@@ -187,10 +187,14 @@ int _world_load_map(World *w, FILE *game_state_file)
 
     }
 
-    int size_map = atoi(buff); free(buff);
+    w->map_tiles = atoi(buff); free(buff);
 
-    Tile *tiles_map[size_map];
-    for(int i = 0; i < size_map; i++){
+    // read the number of town halls
+    buff = fgetll(game_state_file);
+    w->n_townhalls = atoi(buff); free(buff);
+
+    Tile **tiles_map = oopsalloc(w->map_tiles, sizeof(Tile *), "_world_load_map");
+    for(int i = 0; i < w->map_tiles; i++){
 
         //We read the id of the tile and create one canonic version of the tile with that id
         buff = fgetll(game_state_file);
@@ -271,9 +275,11 @@ int _world_load_map(World *w, FILE *game_state_file)
     }
     //At this point we have all the information of the file in tiles_map
     // We only need to create the real map with that information
-    Map *map = map_new(tiles_map, size_map, map_gen_standard, size_map);
+    w->map = map_new(tiles_map, w->map_tiles, map_gen_standard, w->map_tiles);
 
-    w->map = map;
+    if (!w->map)
+        return UINT_ERROR;
+
   return !UINT_ERROR;
 }
 
@@ -465,9 +471,11 @@ int world_save_game(const World *w, char *filename)
     for (int i = 0; i < w->num_resources; i++)
         fprintf(f, "%d\n", w->wallet[i]);
 
-
     // save the number of tiles
     fprintf(f, "%d\n", w->map_tiles);
+
+    // save the number of town halls
+    fprintf(f, "%d\n", w->n_townhalls);
 
     // save the tiles
     for (int i = 0; i < w->map_tiles; i++) {
