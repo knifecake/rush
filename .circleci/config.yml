@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: Compile
+          command: make game
+      - run:
+          name: Unit tests
+          command: make test
