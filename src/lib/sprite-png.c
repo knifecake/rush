@@ -151,7 +151,7 @@ void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
         for (int x = 0; x < s->width; x++) {
             png_byte *p = _sprite_pixel_at(s, x, y);
             if (p[RGB_ALPHA] == 255)
-                fprintf(f, "\033[38;2;%d;%d;%dm\u2588\u2588", p[RGB_RED], p[RGB_GREEN], p[RGB_BLUE]);
+                fprintf(f, "\033[48;2;%d;%d;%dm  ", p[RGB_RED], p[RGB_GREEN], p[RGB_BLUE]);
             else
                 fprintf(f, "\033[%d;%dH", y0 + y, x0 + 2 * (x + 1));
 

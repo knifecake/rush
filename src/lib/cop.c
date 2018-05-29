@@ -377,7 +377,7 @@ int cop_exec(CoP *c, char *cmd, void *p)
         if (c->error_cmd != UINT_ERROR) {
             ec = c->error_cmd;
         } else {
-            HE("don't know how to run this cmd, and no error cmd was set", "cop_exec");
+            //HE("don't know how to run this cmd, and no error cmd was set", "cop_exec");
             return UINT_ERROR;
         }
     }
