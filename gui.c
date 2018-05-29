@@ -22,6 +22,7 @@
 #include "src/lib/cop.h"
 #include "src/lib/terminal.h"
 #include "src/lib/config.h"
+#include "src/lib/audio.h"
 
 #include "src/ui.h"
 #include "src/controller.h"
@@ -32,14 +33,19 @@
 #define CMD_FILE "assets/cmd.txt"
 
 int audio_img_sem;
+
 int main(int argc, char **argv) {
+    setvbuf(stdout, NULL, _IONBF, 0);
     //create Semaphore
     crear_semaforo(ftok("/bin/bash", 2018), 1, &audio_img_sem);
     unsigned short init = 1;
     inicializar_semaforo(audio_img_sem, &init);
+
+    // Allocate audios
+    playing_audios = audios_new();
+
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
-
 
     // TODO: this is a small hack, do this properly with getopts
     if (argc != 2) {
@@ -77,6 +83,8 @@ int main(int argc, char **argv) {
     term_setup(stdin, stdout);
 
     ui_presetup();
+    //play_audio("assets/audio/tocartetoa.ogg", true);
+    printf("%s\n", "I played the audio!!!");
     cop_exec(c, "main_screen", c);
     // load assets
     World *w  = world_new(config_get("general.saved_game"));

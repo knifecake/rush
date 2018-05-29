@@ -55,6 +55,9 @@ pid_t play_audio(char *filename, bool repeating){
       return 0;
     }
     if((pid = fork()) == 0){ //Child process until end of this if.
+      if(ERROR == up_semaforo(audio_img_sem, 0 , 0)){
+          fprintf(stderr, "%s\n", "Something fucked up");
+      }
       int ret = execl(OGG123_PATH, OGG123_PATH, "-q", "-r", filename, NULL);
       if (ret == -1){//TODO: Think about this.
         return 0;
@@ -68,6 +71,9 @@ pid_t play_audio(char *filename, bool repeating){
     return pid;
   }
   if((pid = fork()) == 0){ //Child process until end of this if.
+    if(ERROR == up_semaforo(audio_img_sem, 0 , 0)){
+      fprintf(stderr, "%s\n", "Something fucked up");
+    }
     int ret = execl(OGG123_PATH, OGG123_PATH, "-q", filename, NULL);
     if (ret == -1){//TODO: Think about this.
       return 0;
@@ -75,7 +81,6 @@ pid_t play_audio(char *filename, bool repeating){
     exit(0);
   }
   return pid;
-  up_semaforo(audio_img_sem, 0 , 0);
 }
 
 int stop_audio(void *key, audio_key_t type){
