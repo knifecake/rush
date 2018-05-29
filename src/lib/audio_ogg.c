@@ -1,12 +1,13 @@
 /*
- * PPROG Game – Morzilla Firefox 2018
+ * Rush – Morzilla Firefox 2018
  *
  * Authors: Miguel Baquedano, Sergio Cordero, Elias Hernandis
  *          and Rafael Sánchez.
  *
- * Lead author: <replace me>
+ * Lead author: Rafael Sanchez
  */
 
+#define _GNU_SOURCE
 
 #include "audio.h"
 
@@ -15,6 +16,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+
+#include "../../lib/semaforos.h"
 
 //TODO: Load these from file.
 #define MAX_AUDIO_NAME_LEN 128
@@ -26,6 +32,10 @@ struct _Audios{
   int num_pids;
   int last_pid;
 };
+
+/* Semaphore */
+extern int audio_img_sem;
+
 /* Private functions */
 int _add_rec(pid_t pid, char *name);
 int _del_rec(pid_t pid);
@@ -33,6 +43,7 @@ int _search(void *key, audio_key_t type);
 bool _file_exists(const char *name);
 
 pid_t play_audio(char *filename, bool repeating){
+  down_semaforo(audio_img_sem, 0 , 0);
   if(!filename || !_file_exists(filename)){
     HE("Audio file does not exists", "play_audio")
     return 0;
@@ -64,6 +75,7 @@ pid_t play_audio(char *filename, bool repeating){
     exit(0);
   }
   return pid;
+  up_semaforo(audio_img_sem, 0 , 0);
 }
 
 int stop_audio(void *key, audio_key_t type){
@@ -95,7 +107,7 @@ int stop_audio(void *key, audio_key_t type){
   }
   char command[20];
   sprintf(command, "kill %d", pid);
-  system(command); //TODO: Shall we fork this?
+  system(command);
   return !UINT_ERROR;
 }
 

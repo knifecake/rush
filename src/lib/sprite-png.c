@@ -6,15 +6,19 @@
  *
  * Lead author: <replace me>
  */
-
+#define _GNU_SOURCE
 
 #include "sprite.h"
 
 #include <stdlib.h>
 #include <math.h>
 #include <png.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
 
 #include "error_handling.h"
+#include "../../lib/semaforos.h"
 
 struct _SpritePNG {
     png_structp png;
@@ -30,6 +34,8 @@ struct _SpritePNG {
 #define RGB_BLUE    2
 #define RGB_ALPHA   3
 #define BYTES_PER_PIXEL 4
+
+extern int audio_img_sem;
 
 png_byte *_sprite_pixel_at(Sprite *s, int x, int y);
 
@@ -139,6 +145,9 @@ void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
       HE("sprite is null", "sprite_draw")
       return;
     }
+
+    down_semaforo(audio_img_sem, 0 , 0);
+
     x0++;
     y0++;
     x0 *= 2;
@@ -162,6 +171,7 @@ void sprite_draw(FILE *f, Sprite *s, int x0, int y0)
     }
 
     printf("\033[0m");
+    up_semaforo(audio_img_sem, 0 , 0);
 }
 png_byte *_sprite_pixel_at(Sprite *s, int x, int y)
 {

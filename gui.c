@@ -7,10 +7,15 @@
  * Lead author: <replace me>
  */
 
+#define _GNU_SOURCE
 
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
 
 #include "lib/lineread.h"
+#include "lib/semaforos.h"
 
 #include "src/lib/error_handling.h"
 #include "src/lib/messages.h"
@@ -26,8 +31,12 @@
 #define CONFIG_FILE "assets/config.txt"
 #define CMD_FILE "assets/cmd.txt"
 
-
+int audio_img_sem;
 int main(int argc, char **argv) {
+    //create Semaphore
+    crear_semaforo(ftok("/bin/bash", 2018), 1, &audio_img_sem);
+    unsigned short init = 1;
+    inicializar_semaforo(audio_img_sem, &init);
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
 
