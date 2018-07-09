@@ -15,10 +15,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 
 //TODO: Load these from file.
 #define MAX_AUDIO_NAME_LEN 128
 #define APLAY_PATH "/usr/bin/aplay"
+#define APLAY_PATH_R "assets/audio/play.sh"
 
 struct _Audios{
   pid_t pids[MAX_AUDIOS_REPEATING];
@@ -44,9 +46,10 @@ pid_t play_audio(char *filename, bool repeating){
       return 0;
     }
     if((pid = fork()) == 0){ //Child process until end of this if.
-      int ret = execl(APLAY_PATH, APLAY_PATH, "-q", "-P", filename, NULL);
-      if (ret == -1){//TODO: Think about this.
-        return 0;
+      int ret = execl(APLAY_PATH_R, APLAY_PATH_R, filename, "&>/dev/null", NULL);
+      if(ret == -1){
+          HE("Couldnt exec program", "play_audio")
+          perror("ERRNO: ");
       }
       exit(0);
     }
@@ -57,7 +60,7 @@ pid_t play_audio(char *filename, bool repeating){
     return pid;
   }
   if((pid = fork()) == 0){ //Child process until end of this if.
-    int ret = execl(APLAY_PATH, APLAY_PATH, "-q", filename, NULL);
+    int ret = execl(APLAY_PATH, APLAY_PATH, "-q", filename, "&>/dev/null", NULL);
     if (ret == -1){//TODO: Think about this.
       return 0;
     }
@@ -107,7 +110,7 @@ Audios *audios_new(){
 }
 
 void audios_destroy(){
-  for(int i = 0; i < playing_audios->last_pid; ++i){
+  for(int i = 0; i <= playing_audios->last_pid; ++i){
     if (playing_audios->pids[i] == 0) continue;
     stop_audio(&playing_audios->pids[i], PID);
   }

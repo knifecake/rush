@@ -17,6 +17,7 @@
 #include "src/lib/cop.h"
 #include "src/lib/terminal.h"
 #include "src/lib/config.h"
+#include "src/lib/audio.h"
 
 #include "src/ui.h"
 #include "src/controller.h"
@@ -28,6 +29,10 @@
 
 
 int main(int argc, char **argv) {
+
+    // Allocate audios
+    playing_audios = audios_new();
+
     // load configuration dictionary
     load_config_from_file(CONFIG_FILE);
 
@@ -68,6 +73,7 @@ int main(int argc, char **argv) {
     term_setup(stdin, stdout);
 
     ui_presetup();
+    play_audio("assets/audio/tocartetoa.wav", true);
     cop_exec(c, "main_screen", c);
     // load assets
     World *w  = world_new(config_get("general.saved_game"));
@@ -137,6 +143,7 @@ end_game:
     world_destroy(w);
     cop_destroy(c);
     config_destroy();
+    audios_destroy();
 
     // restore terminal configuration
     term_teardown(stdin, stdout);
