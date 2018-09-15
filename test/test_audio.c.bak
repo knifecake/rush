@@ -5,8 +5,8 @@
 #include "../src/lib/audio.h"
 #include "../src/lib/error_handling.h"
 
-#define NON_REPEATING "test/assets/audio/non_repeat.ogg"
-#define REPEATING "test/assets/audio/repeat.ogg"
+#define NON_REPEATING "test/assets/audio/non_repeat.wav"
+#define REPEATING "test/assets/audio/repeat.wav"
 int main(void) {
   Audios *auds = audios_new();
   assert("Can create a list of process ids", auds);
